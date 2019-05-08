@@ -5,15 +5,15 @@ public class Gameobj {
 	public int xoffset;
 	public int yoffset;
 	
-	public void Draw(void)
+	public void Draw()
 	{
 		
 	}
-	public void Update(void)
+	public void Update()
 	{
 		
 	}
-	public void Destroy(void)
+	public void Destroy()
 	{
 		
 	}
