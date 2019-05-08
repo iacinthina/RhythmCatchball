@@ -1,4 +1,4 @@
-public class Gameobj {
+public class GameObj {
 	public float xpos;
 	public float ypos;
 	public int imageIndex;
