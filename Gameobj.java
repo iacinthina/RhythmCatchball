@@ -1,9 +1,9 @@
 public class Gameobj {
-	private float xpos;
-	private float ypos;
-	private int imageIndex;
-	private int xoffset;
-	private int yoffset;
+	public float xpos;
+	public float ypos;
+	public int imageIndex;
+	public int xoffset;
+	public int yoffset;
 	
 	public void Draw(void)
 	{
@@ -19,11 +19,14 @@ public class Gameobj {
 	}
 	public void ShiftPos(float x, float y)
 	{
+		xpos += x;
+		ypos += y;
 		
 	}
 	public void SetPos(float x, float y)
 	{
-		
+		xpos = x;
+		ypos = y;
 	}
 	public void SetOffset(int x, int y)
 	{
