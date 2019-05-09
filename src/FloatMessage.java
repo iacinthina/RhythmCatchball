@@ -9,7 +9,7 @@ public class FloatMessage extends GameObj
 	{
 		this.framesLeft = 30;
 		this.vspeed = 10;
-		this.friction = 2;
+		this.friction 2;
 		xpos = x;
 		ypos = y;
 	}
@@ -19,7 +19,7 @@ public class FloatMessage extends GameObj
 		framesLeft--;
 		
 		if(vspeed > 0) {
-			vspeed -= Integer.signum((int) vspeed) * Math.min(friction, Math.abs(vspeed)); //ï¿½ï¿½ï¿½ 1 ï¿½ï¿½ï¿½ï¿½ -1
+			vspeed -= Integer.signum(vspeed) * Math.min(friction, Math.abs(vspeed)); //¾ç¼ö 1 À½¼ö -1
 			ypos = ypos + vspeed;
 		}
 		
