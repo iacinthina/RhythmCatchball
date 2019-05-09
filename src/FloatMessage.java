@@ -18,15 +18,11 @@ public class FloatMessage extends GameObj
 	{
 		framesLeft--;
 		
-		if(vspeed > 0) {
-			vspeed -= Integer.signum((int) vspeed) * Math.min(friction, Math.abs(vspeed)); //��� 1 ���� -1
-			ypos = ypos + vspeed;
-		}
-		
+		ypos = ypos + vspeed;
+		vspeed -= Integer.signum((int) vspeed) * Math.min(friction, Math.abs(vspeed)); //+ : 1, -: -1
+
 		if(framesLeft <= 0) {
 			Destroy();
 		}
-			
-		Draw();
 	}
 }
