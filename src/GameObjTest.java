@@ -16,16 +16,10 @@ class GameObjTest {
 
 	@Test
 	void testDestroy() {
-		fail("Not yet implemented");
-		/*GameObj test = new GameObj();
-		test = null;
-		Boolean state = null;
+		GameObj test = new GameObj();
+		test.Destroy();
 		
-		if(test == null)
-			state = true;
-		
-		assertTrue(state, "Destroy error");
-		*/
+		assertTrue((test.alive == false), "Destroy error");
 	}
 
 	@Test
@@ -50,13 +44,5 @@ class GameObjTest {
 		assertTrue((test.xpos == 3.0f)&&(test.ypos == 4.0f), "SetPos error");
 	}
 
-	@Test
-	void testSetOffset() {
-		GameObj test = new GameObj();
-		
-		test.SetOffset(2, 9);
-		
-		assertTrue((test.xpos == 2)&&(test.ypos == 9), "SetOffset error");
-	}
 
 }

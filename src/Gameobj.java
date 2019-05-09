@@ -4,6 +4,7 @@ public class GameObj {
 	public int imageIndex;
 	public int xoffset;
 	public int yoffset;
+	public Boolean alive;
 	
 	public void Draw()
 	{
@@ -15,7 +16,7 @@ public class GameObj {
 	}
 	public void Destroy()
 	{
-		
+		alive = false;
 	}
 	public void ShiftPos(float x, float y)
 	{
@@ -30,6 +31,6 @@ public class GameObj {
 	}
 	public void SetOffset(int x, int y)
 	{
-		
+		//삭제 예정 
 	}
 }
