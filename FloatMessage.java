@@ -1,5 +1,5 @@
 
-public class FloatMessage 
+public class FloatMessage extends GameObj
 {
 	public int framesLeft;
 	public float vspeed;
@@ -7,17 +7,16 @@ public class FloatMessage
 	
 	public FloatMessage(float x, float y)
 	{
-		this.framesLeft = 15;
-		
-		
+		this.framesLeft = 30;
+		this.vspeed = 10;
+		this.friction 2;
+		xpos = x;
+		ypos = y;
 	}
 	
 	public void Update()
 	{
-		y + vspeed
-		vs - fr
-		
-		
-		vs -= sign(vs)*min(fr, avs(vs)) //양수 1 음수 -1
+		vspeed -= Integer.signum(vspeed) * Math.min(friction, Math.abs(vspeed)); //양수 1 음수 -1
+		Draw();
 	}
 }
