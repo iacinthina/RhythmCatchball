@@ -16,7 +16,17 @@ public class FloatMessage extends GameObj
 	
 	public void Update()
 	{
-		vspeed -= Integer.signum(vspeed) * Math.min(friction, Math.abs(vspeed)); //양수 1 음수 -1
+		framesLeft--;
+		
+		if(vspeed > 0) {
+			vspeed -= Integer.signum(vspeed) * Math.min(friction, Math.abs(vspeed)); //양수 1 음수 -1
+			ypos = ypos + vspeed;
+		}
+		
+		if(framesLeft <= 0) {
+			Destroy();
+		}
+			
 		Draw();
 	}
 }
