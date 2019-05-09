@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends GameObj {
 	public Player opponent;
@@ -11,8 +13,8 @@ public class Player extends GameObj {
 	public Player() {
 		opponent = null;
 		throwQueue = new Ball[3];
-		catchQueue = new List<Ball>();
-		ballsGot = new List<Ball>();
+		List<Ball> catchQueue = new ArrayList<Ball>();
+		List<Ball> ballsGot = new ArrayList<Ball>();
 		score = 0;
 		combo = 0;
 		comboLevel = 0;
@@ -20,17 +22,17 @@ public class Player extends GameObj {
 	
 	public void Catch() {
 		int precision = 0;
-		bool canGrab = true;
+		boolean canGrab = true;
 		
 		for(Ball grab: catchQueue) {
 			precision = grab.Judgement();
 			if (canGrab) {
-				ballsGot.add(Grab);
-				catchQueue.remove(Grab);
+				ballsGot.add(grab);
+				catchQueue.remove(grab);
 				canGrab = false;
 				getScore(precision);
 			} else {
-				Grab.caughtHold = 1;
+				grab.caughtHold = 1;
 			}
 		}
 	}
@@ -83,9 +85,26 @@ public class Player extends GameObj {
 	public void ReadyThrow(int type) {
 		if (throwQueue[type] == null) {
 			Ball pickup = null;
-			pickup = ballsGot.pop();
+			if(!ballsGot.isEmpty()) {
+				pickup = ballsGot.get(0);
+				ballsGot.remove(0);
+			}
 			if (pickup != null) {
 				throwQueue[type] = pickup;
+			}
+		}
+	}
+	
+	public void Throw(int type) {
+		boolean check;
+		Ball shoot;
+		for(int i = 0; i < 3; i++) {
+			shoot = throwQueue[i];
+			if(shoot != null) {
+				
+				//초기화 
+				throwQueue[i] = null;//throwQueue 비우기
+				opponent.catchQueue.add(shoot);
 			}
 		}
 	}
