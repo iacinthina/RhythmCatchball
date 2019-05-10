@@ -19,7 +19,6 @@ public class Ball extends GameObj
 		if(caughtHold > 0){
 			if (caughtHold-- <= 0) {
 				//lame
-				return -30;
 				Destroy();
 			}
 		}
@@ -30,16 +29,37 @@ public class Ball extends GameObj
 		
 	}
 	
-	public void ResetValue(int x, int y, int total) {
+	public void ResetValue(float x, float y, int total, Player target) {
 		xstart = x;
 		ystart = y;
 		framesTotal = total;
 		framesLeft = framesTotal;
+		toward = target;
 		caughtHold = 0;
 	}
 	
 	public int Judgement() {
-		if(framesLeft == 0)
+		int returnScore = 0;
+		switch(Math.abs(framesLeft)) {
+		case 0: //framesLeft가 0일때, 1/60초만큼 지속된다. 
+			//exactly
+			returnScore = 50;
+			break;
+		case 1: //if(framesLeft == 1 || framesLeft == -1)
+			//neat
+			returnScore = 40;
+			break;
+		case 2: //if(framesLeft == 2 || framesLeft == -2)
+			//cool
+			returnScore = 30;
+			break;
+		case 3: //if(framesLeft == 3 || framesLeft == -3)
+			//lame
+			returnScore = -30;
+			break;
+		}
+		return returnScore;
+		/*if(framesLeft == 0)
 			return 50;
 		else if(framesLeft == 1 || framesLeft == -1)
 			return 40;
@@ -48,6 +68,6 @@ public class Ball extends GameObj
 		else if(framesLeft >= 3)
 			return -30;
 		else //framesLeft >= -3
-			
+			*/
 	}
 }

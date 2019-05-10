@@ -15,19 +15,37 @@ public class GameManager extends JFrame {
 	}
 	
 	Graphics buffg;
-	private ArrayList<Gameobj> gameInst;
+	private ArrayList<GameObj> gameInst;
 	private Image[] sprite;
 	private GameManager() {
-		gameInst = new ArrayList<Gameobj>();
+		gameInst = new ArrayList<GameObj>();
 	}
 	
+	//gameInst를 돌아가면서 스프라이트 그림
 	public void Draw() {
-		for(Gameobj o : gameInst) {
-			buffg.drawImage(sprite[o.image], (int)o.xpos-o.xoffset, (int)o.ypos-o.yoffset, this);
+		//게임오브젝트의 int가
+		for(GameObj o : gameInst) {
+			buffg.drawImage(sprite[o.imageIndex], (int)o.xpos-o.xoffset, (int)o.ypos-o.yoffset, this);
 		}
 	}
 	
-	public void Desrtoy() {	
-	}	
+	
+	public void Update() {	
+	}
+	
+	//파일로부터 이미지를 읽어온다
+	public boolean LoadImages() {
+		/*
+		 * 파일을 돌아가며 설정. Image[] sprite에 넣는다.
+		 */
+		return true;
+	}
+	
+	//이미지 타입 전달은 고민을 좀 해봐야할듯
+	public void SetImage(GameObj o, int index) {
+		o.imageIndex = index;
+		o.xoffset = sprite[index].getWidth(singleton)/2;
+		o.yoffset = sprite[index].getHeight(singleton)/2;
+	}
 }
 
