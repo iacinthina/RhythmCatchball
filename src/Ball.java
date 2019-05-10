@@ -1,4 +1,9 @@
-
+/**
+ * Ball.java
+ * @author pc1
+ * @date   2019. 5. 10.
+ * 주고받는 공. 게임 시작에 생성되고 계속 유지됨
+ */
 public class Ball extends GameObj
 {
 	public int framesLeft;
@@ -8,13 +13,20 @@ public class Ball extends GameObj
 	public float ystart;
 	public Player toward;
 	
+	/**
+	 * 생성자는 게임 시작시 호출될 것이기 때문에 특별히 뭐 할 필요는 없음. 에러에 주의
+	 */
 	public Ball() {
 		//framesTotal :총 몇프레임 가야하는지
 		//
 	}
 	
+	/**
+	 * purpose : 공 움직이게 하기
+	 * mechanism : 매 프레임 진행시간에 따라서 현재위치 계산함. SetPos로 이동
+	 * comment : 
+	 */
 	public void Update() {
-		framesLeft--;
 		
 		if(caughtHold > 0){
 			if (caughtHold-- <= 0) {
@@ -24,11 +36,19 @@ public class Ball extends GameObj
 		}
 		else {
 			//move
+			//포물선 운동 표현
+			framesLeft--;//framesLeft는 판정할때 쓰이기 때문에 고정된 상태에서 움직이면 안된다.
+			//framesLeft가 -4 이하가 되면, 더이상 판정을 받을 수 없는 상태이다. 따라서 공을 되돌려주거나 그냥 추가하거나 처리를 해줘야 한다.
 		}
 		
 		
 	}
 	
+	/**
+	 * purpose : 공을 던지는 순간에 공의 파라미터를 변경함
+	 * mechanism : 
+	 * comment : 
+	 */
 	public void ResetValue(float x, float y, int total, Player target) {
 		xstart = x;
 		ystart = y;
@@ -38,6 +58,11 @@ public class Ball extends GameObj
 		caughtHold = 0;
 	}
 	
+	/**
+	 * purpose : 타이밍의 정확도 판정, 날아온 시간에 따라 오기로 한 박자가 다 됐는가 검사 
+	 * mechanism : framesLeft가 0일때 제일 정확함
+	 * comment : 좀더 보기 좋게 코드 수정했습니다.
+	 */
 	public int Judgement() {
 		int returnScore = 0;
 		switch(Math.abs(framesLeft)) {
@@ -59,15 +84,5 @@ public class Ball extends GameObj
 			break;
 		}
 		return returnScore;
-		/*if(framesLeft == 0)
-			return 50;
-		else if(framesLeft == 1 || framesLeft == -1)
-			return 40;
-		else if(framesLeft == 2 || framesLeft == -2)
-			return 30;
-		else if(framesLeft >= 3)
-			return -30;
-		else //framesLeft >= -3
-			*/
 	}
 }
