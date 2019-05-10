@@ -13,12 +13,12 @@ public class Ball extends GameObj
 	public float ystart;
 	public Player toward;
 	
+	
 	/**
 	 * 생성자는 게임 시작시 호출될 것이기 때문에 특별히 뭐 할 필요는 없음. 에러에 주의
 	 */
 	public Ball() {
-		//framesTotal :총 몇프레임 가야하는지
-		//
+		
 	}
 	
 	/**
@@ -35,13 +35,16 @@ public class Ball extends GameObj
 			}
 		}
 		else {
+			float lerpPos = framesLeft/ framesTotal;
+			
 			//move
-			//포물선 운동 표현
+			//포물선 운동 표현			
+			xpos = lerp(toward.xpos, xstart, lerpPos);
+			ypos = (float) (lerp(toward.xpos, xstart, lerpPos) - Math.sin(Math.PI * lerpPos));
+			
 			framesLeft--;//framesLeft는 판정할때 쓰이기 때문에 고정된 상태에서 움직이면 안된다.
-			//framesLeft가 -4 이하가 되면, 더이상 판정을 받을 수 없는 상태이다. 따라서 공을 되돌려주거나 그냥 추가하거나 처리를 해줘야 한다.
+			//framesLeft가 -4 이하가 되면, 더이상 판정을 받을 수 없는 상태이다. 따라서 공을 되돌려주거나 그냥 추가하거나 처리를 해줘야 한다. > Update함수에서 공 놓친거 체크
 		}
-		
-		
 	}
 	
 	/**
@@ -57,7 +60,10 @@ public class Ball extends GameObj
 		toward = target;
 		caughtHold = 0;
 	}
-	
+	float lerp(float a, float b, float f) //f : 0 - 1 사이 값
+	{
+	  return (float) ((a * (1.0 - f)) + (b * f));
+	}
 	/**
 	 * purpose : 타이밍의 정확도 판정, 날아온 시간에 따라 오기로 한 박자가 다 됐는가 검사 
 	 * mechanism : framesLeft가 0일때 제일 정확함
@@ -83,6 +89,6 @@ public class Ball extends GameObj
 			returnScore = -30;
 			break;
 		}
-		return returnScore;
+		return returnScore;	//0이라면 무시
 	}
 }
