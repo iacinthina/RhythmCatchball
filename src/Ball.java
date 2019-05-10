@@ -72,26 +72,27 @@ public class Ball extends GameObj
 	 * mechanism : framesLeft가 0일때 제일 정확함
 	 * comment : 좀더 보기 좋게 코드 수정했습니다.
 	 */
-	public int Judgement() {
-		int returnScore = 0;
+	public Checkout Judgement() {
+		Checkout checkout = null;
+
 		switch(Math.abs(framesLeft)) {
 		case 0: //framesLeft가 0일때, 1/60초만큼 지속된다. 
-			//exactly
-			returnScore = 50;
+			//exactly 50
+			checkout = Checkout.EXACTLY;
 			break;
 		case 1: //if(framesLeft == 1 || framesLeft == -1)
-			//neat
-			returnScore = 40;
+			//neat 40
+			checkout = Checkout.NEAT;
 			break;
 		case 2: //if(framesLeft == 2 || framesLeft == -2)
-			//cool
-			returnScore = 30;
+			//cool 30
+			checkout = Checkout.COOL;
 			break;
 		case 3: //if(framesLeft == 3 || framesLeft == -3)
-			//lame
-			returnScore = -30;
+			//lame -30
+			checkout = Checkout.LAME;
 			break;
 		}
-		return returnScore;	//0이라면 무시
+		return checkout;	//0이라면 무시
 	}
 }

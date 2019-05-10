@@ -35,7 +35,7 @@ public class Player extends GameObj {
 	 * comment : 
 	 */
 	public void Catch() {
-		int precision = 0; //잡은 타이밍에 따른 판정. 자료형 고민
+		Checkout precision = null; //잡은 타이밍에 따른 판정. 자료형 고민
 		boolean canGrab = true; //한번에 하나의 공만 잡을 수 있다.
 		
 		//나한테 오고있는 모든 공을 검사
@@ -66,7 +66,7 @@ public class Player extends GameObj {
 	 * mechanism : 콤보에 따른 보너스 점수도 부여.
 	 * comment : 현재 판정의 자료형을 고민중
 	 */
-	public void getScore(int precision) {
+	public void getScore(Checkout precision) {
 		int[] comboReq = {5, 10, 20, 40, 70, 99999};//각 index는 요구 콤보수를 뜻함
 		int[] bonus = {25, 50, 100, 200, 300, 0}; //요구 콤보수에 도달했을 때 얻는 점수
 		
@@ -79,17 +79,17 @@ public class Player extends GameObj {
 			 * neat 40
 			 * cool 30
 			 */
-			score += 3450;
+			score += precision.Score();
 			//콤보 하나 추가해주고 보너스 얻을 수 있는지 검사
 			if (++combo >= comboReq[comboLevel]) {
 				score += bonus[comboLevel];
 				comboLevel = Math.max(comboLevel+1, 5);
 			}
 			break;
-		case -1:
+		case LAME:
 			//실패했을 경우 콤보와 콤보레벨 0으로 만들고, 점수를 30 깎는다
 			//점수는 0 이하로 내려가지 않음.
-			score = Math.max(score - 30, 0);
+			score = Math.max(score - precision.Score(), 0);
 			combo = 0;
 			comboLevel = 0; //콤보레벨도 초기화해서 5콤보를 두번째 달성했을 때도 점수부여. 이후도 마찬가지
 			break;
@@ -140,7 +140,7 @@ public class Player extends GameObj {
 		}
 	}
 	
-	public void GiveBall(Ball b) {
+	public void GiveBall(Ball b) {	//놓쳤을 떄 공을 돌려주는 함수
 		ballsGot.add(b);
 		catchQueue.remove(b);
 	}
