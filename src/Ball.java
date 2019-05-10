@@ -44,6 +44,9 @@ public class Ball extends GameObj
 			
 			framesLeft--;//framesLeft는 판정할때 쓰이기 때문에 고정된 상태에서 움직이면 안된다.
 			//framesLeft가 -4 이하가 되면, 더이상 판정을 받을 수 없는 상태이다. 따라서 공을 되돌려주거나 그냥 추가하거나 처리를 해줘야 한다. > Update함수에서 공 놓친거 체크
+			if(framesLeft <= -4) {
+				toward.GiveBall(this);
+			}
 		}
 	}
 	

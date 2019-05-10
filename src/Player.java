@@ -139,4 +139,9 @@ public class Player extends GameObj {
 			}
 		}
 	}
+	
+	public void GiveBall(Ball b) {
+		ballsGot.add(b);
+		catchQueue.remove(b);
+	}
 }
