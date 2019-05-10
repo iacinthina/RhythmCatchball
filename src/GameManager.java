@@ -20,7 +20,11 @@ public class GameManager extends JFrame {
 	Graphics buffg;
 	private ArrayList<GameObj> gameInst; //게임 진행중에 활성화된 오브젝트는 전부 여기로 들어간다.
 	private Image[] sprite; //게임 내에서 오브젝트가 가질 수 있는 모든 이미지를 담고있음. 저장방식이 애매하다.
+	/**
+	 * 생성자
+	 */
 	private GameManager() {
+		LoadImages();
 		gameInst = new ArrayList<GameObj>();
 	}
 	
@@ -56,6 +60,18 @@ public class GameManager extends JFrame {
 		/*
 		 * 파일을 돌아가며 설정. Image[] sprite에 넣는다.
 		 */
+		Image loadimg;
+		String[] fnameList = {"sprites/spr_message_", ""};
+		int[] subimg = {11, 0};
+		int i, sprType;
+		
+		for(sprType = 0; sprType < 1; sprType++) {
+			for(i=0; i<subimg[sprType]; i++)
+			{
+				loadimg = new ImageIcon(fnameList[sprType] +i+ ".png").getImage();
+				sprite[i] = loadimg;
+			}
+		}
 		return false;//성공시 true
 	}
 	
