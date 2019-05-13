@@ -27,6 +27,7 @@ public class Player extends GameObj {
 		score = 0;
 		combo = 0;
 		comboLevel = 0;
+		
 	}
 	
 	/**
@@ -79,7 +80,7 @@ public class Player extends GameObj {
 			 * neat 40
 			 * cool 30
 			 */
-			score += precision.Score();
+			score += precision.getScore();
 			//콤보 하나 추가해주고 보너스 얻을 수 있는지 검사
 			if (++combo >= comboReq[comboLevel]) {
 				score += bonus[comboLevel];
@@ -89,7 +90,7 @@ public class Player extends GameObj {
 		case LAME:
 			//실패했을 경우 콤보와 콤보레벨 0으로 만들고, 점수를 30 깎는다
 			//점수는 0 이하로 내려가지 않음.
-			score = Math.max(score - precision.Score(), 0);
+			score = Math.max(score - precision.getScore(), 0);
 			combo = 0;
 			comboLevel = 0; //콤보레벨도 초기화해서 5콤보를 두번째 달성했을 때도 점수부여. 이후도 마찬가지
 			break;
@@ -128,8 +129,7 @@ public class Player extends GameObj {
 		Ball shoot; //던질 공
 		for(int i = 0; i < 3; i++) {
 			shoot = throwQueue[i];
-			if(shoot != null) {
-				
+			if(shoot != null) {				
 				//초기화
 				//아마도 (i+1)*beat만큼의 프레임동안 날아갈 것. shoot에 그 값을 할당한다
 				shoot.ResetValue(xpos, ypos, (i*1), opponent);
@@ -143,5 +143,9 @@ public class Player extends GameObj {
 	public void GiveBall(Ball b) {	//놓쳤을 떄 공을 돌려주는 함수
 		ballsGot.add(b);
 		catchQueue.remove(b);
+	}
+	
+	public void Beat() {
+		Throw();
 	}
 }
