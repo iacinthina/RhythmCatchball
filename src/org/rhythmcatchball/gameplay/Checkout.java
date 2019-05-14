@@ -1,3 +1,4 @@
+package org.rhythmcatchball.gameplay;
 
 public enum Checkout {
 	EXACTLY(50),

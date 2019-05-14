@@ -1,3 +1,4 @@
+package org.rhythmcatchball.core;
 
 public enum Key {
 	LOW(0),
@@ -7,4 +8,8 @@ public enum Key {
 	
 	int index_num;
 	Key(int index_num){this.index_num = index_num;}
+	
+	public int getIndex() {
+		return index_num;
+	}
 }

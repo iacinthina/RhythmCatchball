@@ -1,3 +1,4 @@
+import org.rhythmcatchball.gameplay.Player;
 
 public interface Controller {
 	public void setPlayer(Player playertoset);

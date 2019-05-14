@@ -1,5 +1,5 @@
+package org.rhythmcatchball.gameplay;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Player.java
@@ -12,7 +12,7 @@ public class Player extends GameObj {
 	private Ball[] throwQueue; //박자가 경신되는 순간에, 이 배열에 있는 공을 위치에 따라 다른 속도로 던진다.
 	private ArrayList<Ball> catchQueue; //내가 받을 공들. 상태를 체크할 수 있다.
 	private ArrayList<Ball> ballsGot; //내가 가진 공들. throwQueue로만 이동할 수 있다.
-	public int score; //점수. 출력할 수 있어야 한다
+	private int score; //점수. 출력할 수 있어야 한다
 	private int combo; //놓치지만 않으면 하나씩 쌓인다.
 	private int comboLevel; //콤보에 따른 보너스 점수를 얻기 위한 마커
 	
@@ -29,26 +29,64 @@ public class Player extends GameObj {
 		comboLevel = 0;
 		
 	}
+
+	public void update() {
+		// TODO Auto-generated method stub
+		/**
+		 * (대충 catchQueue에 있는 Ball.isOver() 불러서 못잡으면 점수깎는다는 내용)
+		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
+		 */
+	}
+	
+	public void onBeat() {
+		// TODO Auto-generated method stub
+		/**
+		 * (대충 throwAll() 불러온다는 내용)
+		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
+		 */
+	}
+	
+	public static GameObj create(float xpos, float ypos, Player opponent) {
+		// TODO Auto-generated method stub
+		/**
+		 * (반드시 register() 사용하고, Player형 인스턴스 생성해서 리턴해야 한다.)
+		 * 이미지 설정도 같이 해주세요
+		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
+		 */
+		return create(xpos, ypos);
+	}
+	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		super.destroy();
+		/**
+		 * (ArrayList flush)
+		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
+		 */
+	}
+	
 	
 	/**
 	 * purpose : 잡기키를 누르면 공을 잡으려고
 	 * mechanism : 나한테 오고있는 공을 모두 검사해서 받을지 안받을지 검사
 	 * comment : 
 	 */
-	public void Catch() {
+	public void catchOnce() {
 		Checkout precision = null; //잡은 타이밍에 따른 판정. 자료형 고민
 		boolean canGrab = true; //한번에 하나의 공만 잡을 수 있다.
 		
 		//나한테 오고있는 모든 공을 검사
 		for(Ball grab: catchQueue) {
 			//공의 위치를 검사한다. 받지 못할경우엔 무시해야 함.
-			precision = grab.Judgement();
+			precision = grab.judgement();
 			//if (precision != 0) 받지 못할경우에 무시하는 내용이 빠짐
 			if (canGrab) {
 				ballsGot.add(grab);
 				catchQueue.remove(grab);
+				grab.caught(true);
 				canGrab = false;
-				getScore(precision); //정확도에 따라 점수를 얻는다. 안좋은 판정을 받더라도
+				addScore(precision); //정확도에 따라 점수를 얻는다. 안좋은 판정을 받더라도
 			} else {
 				/*
 				 * 두개 이상의 공이 한꺼번에 올때 멈추게 하기 위해서 caughtHold를 바꿔준다.
@@ -57,7 +95,50 @@ public class Player extends GameObj {
 				 * caughtHold가 true면 Beat()메서드가 실행됐을 때 제거하는 방향도 괜찮을 것 같음.
 				 * 그렇게하면 다음 박자 전까지 중복되는 공을 받아야 함
 				 */
-				grab.caughtHold = 1;
+				grab.caught(false);
+			}
+		}
+	}
+
+	/**
+	 * purpose : 던질 공을 준비하려고
+	 * mechanism : 박자가 경신되는 순간에 던져질 것이기 때문에, 미리 준비만 해놓는다.
+	 * comment : type을 3가지로 제한해야 함. throwQueue 배열 인덱스를 벗어나지 않게 하는것이 중요
+	 * 또한 온라인 플레이시 어긋나지 않게 할 필요도 있다.
+	 */
+	public void readyToThrow(int type) {
+		//3종류는 한 박자에 각각 하나씩만 던질 수 있다. 이미 던질 준비가 돼있다면 다시 던질필요 없음
+		if (throwQueue[type] == null) {
+			Ball pickup = null;//던질공이 있나 체크할 변수
+			//공이 있을때만 던져야 한다.
+			if(!ballsGot.isEmpty()) {
+				pickup = ballsGot.get(0); //아무거나 집는다. 비어있지 않다면 첫번째는 항상 존재
+				ballsGot.remove(0);
+			}
+			if (pickup != null) {
+				//빼온걸 집어넣는다.
+				throwQueue[type] = pickup;
+			}
+		}
+	}
+	
+
+	/**
+	 * purpose : 준비된 공을 모두 던집니다. 단 준비된 공만 던진다.
+	 * mechanism : 박자가 경신되는 순간에 호출할 메서드. throwQueue를 검사해서 위치에 따라 공을 던진다
+	 * comment : 
+	 */
+	public void throwAll() {
+		Ball shoot; //던질 공
+		for(int i = 0; i < 3; i++) {
+			shoot = throwQueue[i];
+			if(shoot != null) {				
+				//초기화
+				//아마도 (i+1)*beat만큼의 프레임동안 날아갈 것. shoot에 그 값을 할당한다
+				shoot.reset(xpos, ypos, (i*1), opponent);
+				
+				throwQueue[i] = null;//throwQueue 비우기
+				opponent.catchQueue.add(shoot);
 			}
 		}
 	}
@@ -67,7 +148,7 @@ public class Player extends GameObj {
 	 * mechanism : 콤보에 따른 보너스 점수도 부여.
 	 * comment : 현재 판정의 자료형을 고민중
 	 */
-	public void getScore(Checkout precision) {
+	public void addScore(Checkout precision) {
 		int[] comboReq = {5, 10, 20, 40, 70, 99999};//각 index는 요구 콤보수를 뜻함
 		int[] bonus = {25, 50, 100, 200, 300, 0}; //요구 콤보수에 도달했을 때 얻는 점수
 		
@@ -98,54 +179,18 @@ public class Player extends GameObj {
 	}
 	
 	/**
-	 * purpose : 던질 공을 준비하려고
-	 * mechanism : 박자가 경신되는 순간에 던져질 것이기 때문에, 미리 준비만 해놓는다.
-	 * comment : type을 3가지로 제한해야 함. throwQueue 배열 인덱스를 벗어나지 않게 하는것이 중요
-	 * 또한 온라인 플레이시 어긋나지 않게 할 필요도 있다.
-	 */
-	public void ReadyThrow(int type) {
-		//3종류는 한 박자에 각각 하나씩만 던질 수 있다. 이미 던질 준비가 돼있다면 다시 던질필요 없음
-		if (throwQueue[type] == null) {
-			Ball pickup = null;//던질공이 있나 체크할 변수
-			//공이 있을때만 던져야 한다.
-			if(!ballsGot.isEmpty()) {
-				pickup = ballsGot.get(0); //아무거나 집는다. 비어있지 않다면 첫번째는 항상 존재
-				ballsGot.remove(0);
-			}
-			if (pickup != null) {
-				//빼온걸 집어넣는다.
-				throwQueue[type] = pickup;
-			}
-		}
-	}
-	
-	/**
-	 * purpose : 진짜 공을 던질거임
-	 * mechanism : 박자가 경신되는 순간에 호출할 메서드. throwQueue를 검사해서 위치에 따라 공을 던진다
+	 * purpose : score은 접근전용
+	 * mechanism : 
 	 * comment : 
 	 */
-	public void Throw() {
-		boolean check;
-		Ball shoot; //던질 공
-		for(int i = 0; i < 3; i++) {
-			shoot = throwQueue[i];
-			if(shoot != null) {				
-				//초기화
-				//아마도 (i+1)*beat만큼의 프레임동안 날아갈 것. shoot에 그 값을 할당한다
-				shoot.ResetValue(xpos, ypos, (i*1), opponent);
-				
-				throwQueue[i] = null;//throwQueue 비우기
-				opponent.catchQueue.add(shoot);
-			}
-		}
-	}
+	public int getScore() { return score; }
 	
-	public void GiveBall(Ball b) {	//놓쳤을 떄 공을 돌려주는 함수
+	/**
+	 * purpose : 가져가겠다
+	 * mechanism : 
+	 * comment : 
+	 */
+	public void takeBall(Ball b) {
 		ballsGot.add(b);
-		catchQueue.remove(b);
-	}
-	
-	public void Beat() {
-		Throw();
 	}
 }

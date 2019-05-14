@@ -1,9 +1,12 @@
+package org.rhythmcatchball.core;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.*;
+
+import org.rhythmcatchball.gameplay.GameObj;
 
 /**
  * GameManager.java
@@ -12,6 +15,7 @@ import javax.swing.*;
  * 게임 총괄. 시작부터 끝까지 항상 존재해야 한다.
  */
 
+@SuppressWarnings("serial")
 public class GameManager extends JFrame {
 	private static GameManager singleton;
 	public static GameManager getref() {
@@ -23,7 +27,10 @@ public class GameManager extends JFrame {
 	public Graphics buffg;
 	public Image buffImage;
 	private ArrayList<GameObj> gameInst; //게임 진행중에 활성화된 오브젝트는 전부 여기로 들어간다.
-	//private Image[] sprite; //게임 내에서 오브젝트가 가질 수 있는 모든 이미지를 담고있음. 저장방식이 애매하다.
+	public int modeBeatrate;
+	public int modeTimeLimit;
+	
+	
 	private HashMap<String, sprite> sprites;
 	class sprite 
 	{
@@ -58,15 +65,14 @@ public class GameManager extends JFrame {
 	 * mechanism : gameInst를 돌아가면서 스프라이트 그림
 	 * comment : Draw에서 그릴거 다그려둠.
 	 */
-	public void Draw() {
+	public void draw() {
 		//게임오브젝트의 int가
 		sprite spr = null; 
 		for(GameObj o : gameInst) {
-			//if (o.visible) //보여야 그릴 수 있다.(?)
-			spr = sprites.get(o.imageIndex);
+			//if (o.visible) 보여야 그릴 수 있다.(?)
+			spr = sprites.get(o.getSpriteKey());
 			buffg.drawImage(spr.img, (int)o.xpos-spr.xoffset, (int)o.ypos-spr.yoffset, this);
 		}
-		
 	}
 	
 	
@@ -126,37 +132,37 @@ public class GameManager extends JFrame {
 			buffg.drawLine(xpos - 30, ypos, xpos + 30, ypos);
 
 		}
+		
+		draw();
 
 		g.drawImage(buffImage, 0, 0, this);
 	}
 	
+	//SetImage(GameObj o, int index) 제거
+	
 	/**
-	 * purpose : 오브젝트 생성하고 이미지 설정하기
+	 * purpose : gameInstances 리스트에 추가
 	 * mechanism : 
-	 * comment : 이게 여기있어도 정말 괜찮을까? 이미지 타입 전달은 고민을 좀 해봐야할듯
+	 * comment : 
 	 */
-	public void SetImage(GameObj o, int index) {
-		o.imageIndex = index;
+	public void addInstance(GameObj instance) {
+		
 	}
 	
-
 	public static void main(String[] args)
 	{
-		GameManager gm = GameManager.getref();
-		sprite spr = gm.sprites.get("0");
+		GameManager gm;
+		gm = GameManager.getref();
 		int f_width = 640;
 		int f_height = 360;
-		//gm.buffImage = gm.createImage(f_width, f_height); 
-		//gm.buffg = gm.buffImage.getGraphics();
-		//gm.buffg.drawImage(spr.img, spr.xoffset, spr.yoffset,gm );
-		//JFrame frame = new JFrame();
+		
 		gm.setSize(f_width, f_height);
 		gm.setLayout(null);
 		gm.setVisible(true);
 
 		try {
 			while(true) {
-				GameManager.getref().repaint();
+				gm.repaint();
 				Thread.sleep(20);
 			}
 		} catch (Exception e) {}

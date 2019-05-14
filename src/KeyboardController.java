@@ -1,6 +1,9 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import org.rhythmcatchball.core.Key;
+import org.rhythmcatchball.gameplay.Player;
+
 public class KeyboardController implements Controller, KeyListener {
 	public Player player;
 	public int[] keyval = new int[4];
@@ -17,16 +20,16 @@ public class KeyboardController implements Controller, KeyListener {
 	//누른 키에 대해 작동 
 	public void keyTyped(KeyEvent e) {
 		if(e.getKeyCode() == keyval[0]) {
-			player.ReadyThrow(Key.LOW.index_num);
+			player.readyToThrow(Key.LOW.getIndex());
 		}
 		else if (e.getKeyCode() == keyval[1]) {
-			player.ReadyThrow(Key.MIDDLE.index_num);
+			player.readyToThrow(Key.MIDDLE.getIndex());
 		}
 		else if(e.getKeyCode() == keyval[2]) {
-			player.ReadyThrow(Key.HIGH.index_num);
+			player.readyToThrow(Key.HIGH.getIndex());
 		}
 		else if(e.getKeyCode() == keyval[3]) {
-			player.ReadyThrow(Key.RECEIVE.index_num);
+			player.readyToThrow(Key.RECEIVE.getIndex());
 		}
 	}
 	

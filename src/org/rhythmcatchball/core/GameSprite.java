@@ -1,3 +1,5 @@
+package org.rhythmcatchball.core;
+
 import java.awt.Image;
 import java.util.HashMap;
 import java.io.BufferedReader;
@@ -39,7 +41,7 @@ public class GameSprite {
 	 * comment : 
 	 * @throws IOException 
 	 */
-	public static boolean LoadImages() throws IOException {
+	public static boolean loadImages() throws IOException {
 		/*
 		 * 파일을 돌아가며 설정. Image[] sprite에 넣는다.
 		 */
@@ -49,7 +51,7 @@ public class GameSprite {
 		String[] fnameList = {"sprites/spr_message_", ""};
 		int[] subimg = {11, 0};
 		int i, sprType;
-		File file = new File("/Users/imseoglyeol/RhythmCatchball/sprites/spritesName.txt");
+		File file = new File("sprites/spritesName.txt");
 		//파일 directory 바꿔줘야함
 		
 		FileReader filereader= new FileReader(file);
@@ -89,7 +91,7 @@ public class GameSprite {
 	 * comment : 
 	 */
 	//해당 키값에 대해 해쉬맵에 value존재하는지 확인, 있다면 sprite값 리턴, 없으면 null 리턴 
-	public static GameSprite GetImage(String key) {
+	public static GameSprite getImage(String key) {
 		GameSprite spr = null;
 		
 		spr = sprites.get(key);
