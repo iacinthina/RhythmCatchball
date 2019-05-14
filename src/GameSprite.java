@@ -1,5 +1,11 @@
 import java.awt.Image;
 import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 
 import javax.swing.ImageIcon;
 
@@ -31,8 +37,9 @@ public class GameSprite {
 	 * purpose : 
 	 * mechanism : 
 	 * comment : 
+	 * @throws IOException 
 	 */
-	public static boolean LoadImages() {
+	public static boolean LoadImages() throws IOException {
 		/*
 		 * 파일을 돌아가며 설정. Image[] sprite에 넣는다.
 		 */
@@ -42,7 +49,25 @@ public class GameSprite {
 		String[] fnameList = {"sprites/spr_message_", ""};
 		int[] subimg = {11, 0};
 		int i, sprType;
+		File file = new File("/Users/imseoglyeol/RhythmCatchball/sprites/spritesName.txt");
+		//파일 directory 바꿔줘야함
 		
+		FileReader filereader= new FileReader(file);
+		
+		BufferedReader bufferedreader = new BufferedReader(filereader);
+		
+		while(true)
+		{
+			String filename = bufferedreader.readLine();
+			if(filename == null)
+				break;
+			loadimg = new ImageIcon(filename + ".png").getImage();//이미지 파일 로드시 오류처리? 필요?
+			spr = new GameSprite(loadimg.getWidth(gm)/2, loadimg.getHeight(gm)/2, loadimg);
+			sprites.put(filename, spr);
+		}
+		//파일로부터 파일명 읽어서 그대로 키값으로 활용, 해쉬맵에 추가 
+		
+		/*이전에 있던
 		for(sprType = 0; sprType < 1; sprType++) {
 			for(i=0; i<subimg[sprType]; i++)
 			{
@@ -51,6 +76,10 @@ public class GameSprite {
 				sprites.put("" + i, spr);
 			}
 		}
+		*/
+		
+		
+		
 		return false;//성공시 true
 	}
 	
@@ -59,8 +88,15 @@ public class GameSprite {
 	 * mechanism : 
 	 * comment : 
 	 */
+	//해당 키값에 대해 해쉬맵에 value존재하는지 확인, 있다면 sprite값 리턴, 없으면 null 리턴 
 	public static GameSprite GetImage(String key) {
 		GameSprite spr = null;
+		
+		spr = sprites.get(key);
+		
+		if(!sprites.containsKey(key)) {			return null;
+		}
+		
 		return spr;
 	}
 }
