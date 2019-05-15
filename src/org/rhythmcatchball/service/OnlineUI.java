@@ -11,20 +11,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-//가로 : 768 세로: 480
-
-public class MainUI {
-    private Frame mainFrame;
+public class OnlineUI {
+	private Frame mainFrame;
     private Label headerLabel;
     private Label statusLabel;
     private Panel controlPanel;
  
-    public MainUI() {
+    public OnlineUI() {
         prepareGUI();
     }
  
     public static void main(String[] args) {
-    	MainUI mainButtonControl = new MainUI();
+    	OnlineUI mainButtonControl = new OnlineUI();
         mainButtonControl.showButton();
     }
  
@@ -40,7 +38,7 @@ public class MainUI {
  
         headerLabel = new Label();
         headerLabel.setAlignment(Label.CENTER);
-        headerLabel.setText("메인화면");
+        headerLabel.setText("Select Mode");
  
         statusLabel = new Label();
         statusLabel.setText("click button");
@@ -58,47 +56,23 @@ public class MainUI {
  
     private void showButton() {
  
-        Button onePlay = new Button("1p GAME PLAY");
-        Button twoPlay = new Button("2p GAME PLAY");
-        Button onlinePlay = new Button("Online GAME PLAY");
-        Button preference = new Button("PREFERENCE");
-        Button close = new Button("CLOSE");
+        Button mkRoomButton = new Button("MAKE ROOM");
+        Button joinRoomButton = new Button("JOIN ROOM");
  
-        onePlay.addActionListener(new ActionListener() {
+        mkRoomButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("onePlay Button clicked.");
+                statusLabel.setText("mkRoomButton Button clicked.");
             }
         });
  
-        twoPlay.addActionListener(new ActionListener() {
+        joinRoomButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("twoPlay Button clicked.");
-            }
-        });
- 
-        onlinePlay.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("onlinePlay Button clicked.");
-            }
-        });
- 
-        preference.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("preference Button clicked.");
-            }
-        });
-
-        close.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("close Button clicked.");
+                statusLabel.setText("joinRoomButton Button clicked.");
             }
         });
         
-        controlPanel.add(onePlay);
-        controlPanel.add(twoPlay);
-        controlPanel.add(onlinePlay);
-        controlPanel.add(preference);
-        controlPanel.add(close);
+        controlPanel.add(mkRoomButton);
+        controlPanel.add(joinRoomButton);
  
         mainFrame.setVisible(true);
  
