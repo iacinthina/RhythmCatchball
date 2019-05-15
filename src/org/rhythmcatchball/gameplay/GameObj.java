@@ -9,23 +9,23 @@ import org.rhythmcatchball.core.GameManager;
  */
 public class GameObj {
 	//게임 오브젝트의 중심 위치, 직접 접근 가능
-	public float xpos;
-	public float ypos;
+	public float xpos = 0;
+	public float ypos = 0;
 	//스프라이트는 GameManager에서 관리함. 파일이름을 해시맵의 Key값으로 사용
-	private String sprKey;
+	private String sprKey = "";
 	//직접 접근하지 못하도록 private로
-	private Boolean alive;
+	private Boolean alive = true;
 	//이미지 그릴까 말까
-	private Boolean visible;
+	private Boolean visible = true;
 	//update 굴릴까 말까
-	private Boolean active;
+	private Boolean active = true;
 
 	/**
 	 * purpose : GameManager에서 매 프레임마다 호출됨
 	 * mechanism : 
 	 * comment : 
 	 */
-	protected void update() {}
+	public void update() {}
 	
 	/**
 	 * purpose : 박자 순간 경신되는 내용

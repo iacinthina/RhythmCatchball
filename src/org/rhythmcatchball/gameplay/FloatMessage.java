@@ -39,6 +39,9 @@ public class FloatMessage extends GameObj
 		floatMessage.friction = friction;
 		floatMessage.xpos = xpos;
 		floatMessage.ypos = ypos;
+		floatMessage.setSpriteKey(sprKey);
+		
+		register(floatMessage);
 		
 		return floatMessage;
 	}
@@ -51,7 +54,7 @@ public class FloatMessage extends GameObj
 		 * 이미지 설정도 같이 해주세요
 		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
 		 */
-		return create(xpos, ypos, sprKey, 30, 10, 2);
+		return create(xpos, ypos, sprKey, 30, -5, 0.3f);
 	}
 	
 	/**

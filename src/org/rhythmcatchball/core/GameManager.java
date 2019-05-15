@@ -1,11 +1,13 @@
 package org.rhythmcatchball.core;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.*;
 
+import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.GameObj;
 
 /**
@@ -30,34 +32,15 @@ public class GameManager extends JFrame {
 	public int modeBeatrate;
 	public int modeTimeLimit;
 	
-	
-	private HashMap<String, sprite> sprites;
-	class sprite 
-	{
-		int xoffset;
-		int yoffset;
-		Image img;
-		
-		public sprite(int xoffset, int yoffset, Image img) {
-			this.xoffset = xoffset;
-			this.yoffset = yoffset;
-			this.img = img;
-		}
-		
-		public int getxoff() {return xoffset;}
-		public int getyoff() {return yoffset;}
-		public Image getImage() {return img;}
-	}
 	/**
 	 * 생성자
+	 * @throws IOException 
 	 */
 	
 	private GameManager() {
 		gameInst = new ArrayList<GameObj>();
-		sprites = new HashMap<String, sprite>();
 		buffg = null;
 		buffImage = null;
-		LoadImages();
 	}
 	
 	/**
@@ -66,12 +49,31 @@ public class GameManager extends JFrame {
 	 * comment : Draw에서 그릴거 다그려둠.
 	 */
 	public void draw() {
-		//게임오브젝트의 int가
-		sprite spr = null; 
+		GameSprite spr = null; 
 		for(GameObj o : gameInst) {
-			//if (o.visible) 보여야 그릴 수 있다.(?)
-			spr = sprites.get(o.getSpriteKey());
-			buffg.drawImage(spr.img, (int)o.xpos-spr.xoffset, (int)o.ypos-spr.yoffset, this);
+			System.out.println(o);
+			if (o.getVisible()) { //보여야 그릴 수 있다.(?)
+				spr = GameSprite.get(o.getSpriteKey());
+
+				System.out.println(spr);
+				System.out.println(o.getSpriteKey());
+				
+				if(spr==null) continue;
+				System.out.println(spr.xoffset);
+				System.out.println(spr.yoffset);
+				System.out.println(spr.img);
+				System.out.println(spr.getxoff());
+				System.out.println(spr.getyoff());
+				System.out.println(spr.getImage());
+				
+				
+				buffg.drawImage(spr.getImage(), (int)o.xpos-spr.getxoff(), (int)o.ypos-spr.getyoff(), this);
+				
+				buffg.drawLine((int)o.xpos, (int)o.ypos - 30, (int)o.xpos, (int)o.ypos + 30);
+				
+				buffg.drawLine((int)o.xpos - 30, (int)o.ypos, (int)o.xpos + 30, (int)o.ypos);
+
+			}
 		}
 	}
 	
@@ -82,33 +84,12 @@ public class GameManager extends JFrame {
 	 * comment : 
 	 */
 	public void Update() {
-		
-	}
-	
-	/**
-	 * purpose : 파일로부터 이미지를 읽어온다
-	 * mechanism : sprite[i] = new ImageIcon(fname).getImage;
-	 * comment : 인덱스 번호를 인식하는 방법 필요. 예를들면 sprite_name이라던지
-	 */
-	public boolean LoadImages() {
-		/*
-		 * 파일을 돌아가며 설정. Image[] sprite에 넣는다.
-		 */
-		Image loadimg;
-		sprite spr;
-		String[] fnameList = {"sprites/spr_message_", ""};
-		int[] subimg = {11, 0};
-		int i, sprType;
-		
-		for(sprType = 0; sprType < 1; sprType++) {
-			for(i=0; i<subimg[sprType]; i++)
-			{
-				loadimg = new ImageIcon(fnameList[sprType] +i+ ".png").getImage();
-				spr = new sprite(loadimg.getWidth(this)/2, loadimg.getHeight(this)/2, loadimg);
-				sprites.put("" + i, spr);
+		for(GameObj o : gameInst) {
+			System.out.println(o);
+			if (o.isAlive()) { //보여야 그릴 수 있다.(?)
+				o.update();
 			}
 		}
-		return false;//성공시 true
 	}
 	
 	public void paint(Graphics g){
@@ -117,28 +98,26 @@ public class GameManager extends JFrame {
 		buffImage = createImage(f_width, f_height); 
 		buffg = buffImage.getGraphics();
 		
-		sprite spr = null;
+		/*GameSprite spr = null;
 		int xpos = 0;
 		int ypos = 0;
 		for(int i=0; i<11; i++) {
-			//if (o.visible) //보여야 그릴 수 있다.(?)
-			spr = sprites.get(""+i);
+			spr = GameSprite.get("spr_message_"+i);
+			if (spr == null) continue;
 			xpos = 40+i*40;//-spr.img.getWidth(this)/2;
 			ypos = 30+i*30;//-spr.img.getHeight(this)/2;
 			buffg.drawImage(spr.img, xpos-spr.xoffset, ypos-spr.yoffset, this);
-			System.out.println("is same? "+spr.xoffset+" ?= "+spr.img.getWidth(this)/2);
-			System.out.println("is same? "+spr.yoffset+" ?= "+spr.img.getHeight(this)/2);
+			//System.out.println("is same? "+spr.xoffset+" ?= "+spr.img.getWidth(this)/2);
+			//System.out.println("is same? "+spr.yoffset+" ?= "+spr.img.getHeight(this)/2);
 			buffg.drawLine(xpos, ypos - 30, xpos, ypos + 30);
 			buffg.drawLine(xpos - 30, ypos, xpos + 30, ypos);
 
-		}
+		}*/
 		
 		draw();
 
 		g.drawImage(buffImage, 0, 0, this);
 	}
-	
-	//SetImage(GameObj o, int index) 제거
 	
 	/**
 	 * purpose : gameInstances 리스트에 추가
@@ -146,24 +125,53 @@ public class GameManager extends JFrame {
 	 * comment : 
 	 */
 	public void addInstance(GameObj instance) {
-		
+		gameInst.add(instance);
 	}
 	
 	public static void main(String[] args)
 	{
 		GameManager gm;
 		gm = GameManager.getref();
+		GameSprite.loadImages(gm);
 		int f_width = 640;
 		int f_height = 360;
+		int xpos = 0;
+		int ypos = 0;
+		String sprkey;
+		GameObj o = null;
+		for(int i=0; i<11; i++) {
+			sprkey = "spr_message_"+i;
+			xpos = 40+i*40;
+			ypos = 30+i*30;
+
+			/*o = new GameObj();
+			o.xpos = xpos;
+			o.ypos = ypos;
+			o.setSpriteKey(sprkey);
+			o.setActive(true);
+			o.setVisible(true);
+			gm.gameInst.add(o);
+			
+			System.out.println("i = "+i+" "+(gm.gameInst.get(i).xpos == o.xpos));
+
+			System.out.println("i = "+i+" "+(gm.gameInst.get(i).getVisible()));
+			*/
+			FloatMessage.create(xpos, ypos, sprkey, false);
+			
+		}
+		System.out.println(gm.gameInst.size());
 		
 		gm.setSize(f_width, f_height);
 		gm.setLayout(null);
 		gm.setVisible(true);
 
+		//gm.repaint();
+		
 		try {
 			while(true) {
 				gm.repaint();
 				Thread.sleep(20);
+				gm.Update();
 			}
 		} catch (Exception e) {}
 	}
