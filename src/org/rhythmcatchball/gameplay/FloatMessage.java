@@ -11,7 +11,6 @@ public class FloatMessage extends GameObj
 	public float vspeed;
 	public float friction;
 	
-	
 	/**
 	 * purpose : 메세지의 움직임
 	 * mechanism : 매 프레임 vspeed만큼 이동하고, vspeed는 점점 0으로, 시간이 다되면 제거.
@@ -26,13 +25,12 @@ public class FloatMessage extends GameObj
 		}
 	}
 	
+	/**
+	 * purpose : (대충 인스턴스 생성한다는 내용. 다만 더 구체적으로)
+	 * mechanism : 
+	 * comment : 
+	 */
 	public static GameObj create(float xpos, float ypos, String sprKey, int framesLeft, float vspeed, float friction) {
-		// TODO Auto-generated method stub
-		/**
-		 * (대충 인스턴스 생성한다는 내용. 다만 더 구체적으로)
-		 * 이미지 설정도 같이 해주세요
-		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
-		 */
 		FloatMessage floatMessage = new FloatMessage();
 		floatMessage.framesLeft = framesLeft;
 		floatMessage.vspeed = vspeed;
@@ -42,19 +40,19 @@ public class FloatMessage extends GameObj
 		floatMessage.setSpriteKey(sprKey);
 		
 		register(floatMessage);
-		
 		return floatMessage;
 	}
 	
+	/**
+	 * purpose : (대충 인스턴스 생성한다는 내용)
+	 * mechanism : 
+	 * comment : isMove가 true면 preset 값 호출하는거로
+	 */
 	public static GameObj create(float xpos, float ypos, String sprKey, boolean isMove) {
-		// TODO Auto-generated method stub
-		/**
-		 * (대충 인스턴스 생성한다는 내용)
-		 * isMove가 true면 preset 값 호출하는거로
-		 * 이미지 설정도 같이 해주세요
-		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
-		 */
-		return create(xpos, ypos, sprKey, 30, -5, 0.3f);
+		GameObj floatMessage = null;
+		if (isMove) floatMessage = create(xpos, ypos, sprKey, 30, -5, 0.3f);
+		else floatMessage = create(xpos, ypos, sprKey, 30, 0, 0);
+		return floatMessage;
 	}
 	
 	/**

@@ -32,7 +32,7 @@ public class GameObj {
 	 * mechanism : 
 	 * comment : 쓰일것임. 고민중
 	 */
-	protected void onBeat() {}
+	public void onBeat() {}
 	
 	/**
 	 * purpose : 생성자로는 좀 그래
@@ -45,6 +45,10 @@ public class GameObj {
 		instance = new GameObj();
 		instance.xpos = xpos;
 		instance.ypos = ypos;
+		instance.sprKey = "";
+		instance.alive = true;
+		instance.visible = true;
+		instance.active = true;
 		
 		register(instance);
 		

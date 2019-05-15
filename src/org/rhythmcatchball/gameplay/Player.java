@@ -32,6 +32,13 @@ public class Player extends GameObj {
 
 	public void update() {
 		// TODO Auto-generated method stub
+		for(Ball b : catchQueue) {
+			if (b.isOver()) {
+				addScore(Checkout.LAME);
+				ballsGot.add(b);
+				catchQueue.remove(b);
+			}
+		}
 		/**
 		 * (대충 catchQueue에 있는 Ball.isOver() 불러서 못잡으면 점수깎는다는 내용)
 		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
@@ -40,20 +47,26 @@ public class Player extends GameObj {
 	
 	public void onBeat() {
 		// TODO Auto-generated method stub
-		/**
-		 * (대충 throwAll() 불러온다는 내용)
-		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
-		 */
+		throwAll();
+		int holdingPenalty = ballsGot.size();
+		score = (int) Math.max(0, score - Math.pow(holdingPenalty, 2));
 	}
 	
-	public static GameObj create(float xpos, float ypos, Player opponent) {
+	public static GameObj create(float xpos, float ypos) {
 		// TODO Auto-generated method stub
 		/**
 		 * (반드시 register() 사용하고, Player형 인스턴스 생성해서 리턴해야 한다.)
 		 * 이미지 설정도 같이 해주세요
 		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
 		 */
-		return create(xpos, ypos);
+		Player player = new Player();
+		player.xpos = xpos;
+		player.ypos = ypos;
+		player.opponent = null;
+		player.setSpriteKey("spr_player");
+		register(player);
+		
+		return player;
 	}
 	
 	@Override
@@ -80,22 +93,23 @@ public class Player extends GameObj {
 		for(Ball grab: catchQueue) {
 			//공의 위치를 검사한다. 받지 못할경우엔 무시해야 함.
 			precision = grab.judgement();
-			//if (precision != 0) 받지 못할경우에 무시하는 내용이 빠짐
-			if (canGrab) {
-				ballsGot.add(grab);
-				catchQueue.remove(grab);
-				grab.caught(true);
-				canGrab = false;
-				addScore(precision); //정확도에 따라 점수를 얻는다. 안좋은 판정을 받더라도
-			} else {
-				/*
-				 * 두개 이상의 공이 한꺼번에 올때 멈추게 하기 위해서 caughtHold를 바꿔준다.
-				 * caughtHold의 자료형과, 받기까지 유예시간을 설정해야 함.
-				 * caughtHold를 boolean형으로 바꾸고, 박자가 경신되는 메서드 ex) Beat()를 만들어서
-				 * caughtHold가 true면 Beat()메서드가 실행됐을 때 제거하는 방향도 괜찮을 것 같음.
-				 * 그렇게하면 다음 박자 전까지 중복되는 공을 받아야 함
-				 */
-				grab.caught(false);
+			if (precision != null) {
+				if (canGrab) {
+					ballsGot.add(grab);
+					catchQueue.remove(grab);
+					grab.caught(true);
+					canGrab = false;
+					addScore(precision); //정확도에 따라 점수를 얻는다. 안좋은 판정을 받더라도
+				} else {
+					/*
+					 * 두개 이상의 공이 한꺼번에 올때 멈추게 하기 위해서 caughtHold를 바꿔준다.
+					 * caughtHold의 자료형과, 받기까지 유예시간을 설정해야 함.
+					 * caughtHold를 boolean형으로 바꾸고, 박자가 경신되는 메서드 ex) Beat()를 만들어서
+					 * caughtHold가 true면 Beat()메서드가 실행됐을 때 제거하는 방향도 괜찮을 것 같음.
+					 * 그렇게하면 다음 박자 전까지 중복되는 공을 받아야 함
+					 */
+					grab.caught(false);
+				}
 			}
 		}
 	}
@@ -130,6 +144,7 @@ public class Player extends GameObj {
 	 */
 	public void throwAll() {
 		Ball shoot; //던질 공
+		if (opponent == null) return; 
 		for(int i = 0; i < 3; i++) {
 			shoot = throwQueue[i];
 			if(shoot != null) {				

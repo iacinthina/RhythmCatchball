@@ -8,9 +8,10 @@ package org.rhythmcatchball.gameplay;
  */
 public class Ball extends GameObj
 {
-	private int framesLeft;
-	private int framesTotal;
-	private boolean caughtHold;
+	private static final int timeover = -4;
+	private int framesLeft = 1;
+	private int framesTotal = 1;
+	private int caughtHold = 0;
 	private float xstart;
 	private float ystart;
 	private Player toward;
@@ -22,26 +23,24 @@ public class Ball extends GameObj
 	 * comment : 
 	 */
 	public void update() {
-		if(!caughtHold){
-			float lerpPos = framesLeft/ framesTotal;
+		if(caughtHold == 0){
+			float lerpPos = (float)framesLeft / (float)framesTotal;
 			
-			//move
-			//포물선 운동 표현			
-			xpos = lerp(toward.xpos, xstart, lerpPos);
-			ypos = (float) (lerp(toward.xpos, ystart, lerpPos) - Math.sin(Math.PI * lerpPos));
-			
-			framesLeft--;//framesLeft는 판정할때 쓰이기 때문에 고정된 상태에서 움직이면 안된다.
-			//framesLeft가 -4 이하가 되면, 더이상 판정을 받을 수 없는 상태이다. 따라서 공을 되돌려주거나 그냥 추가하거나 처리를 해줘야 한다. > Update함수에서 공 놓친거 체크
-			/*if(framesLeft <= -4) {
-				toward.takeBall(this);
-			}*/
-			//리스트로 되돌려줘야 하기때문에 제거
+			//포물선 운동 표현
+			if (toward != null) {
+				xpos = lerp(toward.xpos, xstart, lerpPos);
+				ypos = lerp(toward.xpos, ystart, lerpPos) - (float)(Math.sin(Math.PI * lerpPos));
+			}
+			framesLeft--;
 		}
 	}
 	
 	public void onBeat() {
-		if (caughtHold) {
+		if (caughtHold > 0) {
 			//lame판정 띄워줘야 함... Player 인스턴스가, update때 이 공을 보고 얘는 글러먹었구나 라고 판단할 수 있어야 함.
+			if (--caughtHold == 0) {
+				framesLeft = timeover;
+			}
 		}
 	}
 
@@ -52,7 +51,17 @@ public class Ball extends GameObj
 		 * 이미지 설정도 같이 해주세요
 		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
 		 */
-		return create(xpos, ypos);
+		Ball ball = new Ball();
+		ball.framesLeft = 1;
+		ball.framesTotal = 1;
+		ball.caughtHold = 0;
+		ball.xstart = xpos;
+		ball.ystart = ypos;
+		ball.toward = null;
+		ball.setSpriteKey("spr_ball");
+		
+		register(ball);
+		return ball;
 	}
 	
 
@@ -92,7 +101,7 @@ public class Ball extends GameObj
 		framesTotal = airTime * getBeatrate();
 		framesLeft = framesTotal;
 		toward = target;
-		caughtHold = false;
+		caughtHold = 0;
 		setActive(true); //중요
 		setVisible(true);
 	}
@@ -103,25 +112,21 @@ public class Ball extends GameObj
 	 * comment : 
 	 */
 	public void caught(boolean isInList) {
-		caughtHold = !isInList;
 		if (isInList) {
 			setActive(false);
 			setVisible(false);
+		} else {
+			caughtHold = (framesLeft > 0)? 2 : 1;
 		}
 	}
 
 	/**
-	 * purpose : 잡혔을때 호출하면 가시성이 좋다.
+	 * purpose : lame 판정을 띄울 기준
 	 * mechanism : 
 	 * comment : 
 	 */
 	public boolean isOver() {
-		// TODO
-		/**
-		 * 시간이 다돼서 못잡게 됐을경우를 판별
-		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
-		 */
-		return false;
+		return (framesLeft <= timeover);
 	}
 	
 	/**
