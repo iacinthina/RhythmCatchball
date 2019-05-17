@@ -4,17 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.rhythmcatchball.gameplay.GameObj;
 
 class GameObjTest {
-
-	@Test
-	void testDraw() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdate() {
-		fail("Not yet implemented");
-	}
-
 	@Test
 	void testDestroy() {
 		GameObj test = new GameObj();

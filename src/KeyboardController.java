@@ -19,24 +19,26 @@ public class KeyboardController implements Controller, KeyListener {
 
 	//누른 키에 대해 작동 
 	public void keyTyped(KeyEvent e) {
-		if(e.getKeyCode() == keyval[0]) {
-			player.readyToThrow(Key.LOW.getIndex());
-		}
-		else if (e.getKeyCode() == keyval[1]) {
-			player.readyToThrow(Key.MIDDLE.getIndex());
-		}
-		else if(e.getKeyCode() == keyval[2]) {
-			player.readyToThrow(Key.HIGH.getIndex());
-		}
-		else if(e.getKeyCode() == keyval[3]) {
-			player.readyToThrow(Key.RECEIVE.getIndex());
-		}
+		
 	}
 	
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-				
+		int keyCode = e.getKeyCode();
+		System.out.println("keyCode = "+keyCode);
+		if(keyCode == keyval[Key.LOW.getIndex()]) {
+			player.readyToThrow(0);
+		}
+		if (keyCode == keyval[Key.MIDDLE.getIndex()]) {
+			player.readyToThrow(1);
+		}
+		if(keyCode == keyval[Key.HIGH.getIndex()]) {
+			player.readyToThrow(2);
+		}
+		if(keyCode == keyval[Key.RECEIVE.getIndex()]) {
+			player.catchOnce();
+		}
 	}
 
 	@Override

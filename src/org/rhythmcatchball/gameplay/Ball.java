@@ -16,7 +16,7 @@ public class Ball extends GameObj
 	private float ystart;
 	private Player toward;
 	
-	
+	Checkout checkout;
 	/**
 	 * purpose : 공 움직이게 하기
 	 * mechanism : 매 프레임 진행시간에 따라서 현재위치 계산함. SetPos로 이동
@@ -24,14 +24,15 @@ public class Ball extends GameObj
 	 */
 	public void update() {
 		if(caughtHold == 0){
+			framesLeft -= 1;
+			
 			float lerpPos = (float)framesLeft / (float)framesTotal;
 			
 			//포물선 운동 표현
 			if (toward != null) {
 				xpos = lerp(toward.xpos, xstart, lerpPos);
-				ypos = lerp(toward.xpos, ystart, lerpPos) - (float)(Math.sin(Math.PI * lerpPos));
+				ypos = lerp(toward.ypos, ystart, lerpPos) - (float)(Math.sin(Math.PI * lerpPos) * framesTotal);
 			}
-			framesLeft--;
 		}
 	}
 	
@@ -39,6 +40,7 @@ public class Ball extends GameObj
 		if (caughtHold > 0) {
 			//lame판정 띄워줘야 함... Player 인스턴스가, update때 이 공을 보고 얘는 글러먹었구나 라고 판단할 수 있어야 함.
 			if (--caughtHold == 0) {
+				checkout = Checkout.LAME;
 				framesLeft = timeover;
 			}
 		}
@@ -52,13 +54,14 @@ public class Ball extends GameObj
 		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
 		 */
 		Ball ball = new Ball();
-		ball.framesLeft = 1;
-		ball.framesTotal = 1;
+		ball.framesLeft = 60;
+		ball.framesTotal = 60;
 		ball.caughtHold = 0;
 		ball.xstart = xpos;
 		ball.ystart = ypos;
 		ball.toward = null;
 		ball.setSpriteKey("spr_ball");
+		ball.checkout = null;
 		
 		register(ball);
 		return ball;
@@ -71,8 +74,7 @@ public class Ball extends GameObj
 	 * comment : 좀더 보기 좋게 코드 수정했습니다.
 	 */
 	public Checkout judgement() {
-		Checkout checkout = null;
-
+		checkout = null;
 		switch(Math.abs(framesLeft)) {
 		case 0: //framesLeft가 0일때, 1/60초만큼 지속된다. 
 			checkout = Checkout.EXACTLY;
@@ -102,6 +104,7 @@ public class Ball extends GameObj
 		framesLeft = framesTotal;
 		toward = target;
 		caughtHold = 0;
+		checkout = null;
 		setActive(true); //중요
 		setVisible(true);
 	}
@@ -113,10 +116,26 @@ public class Ball extends GameObj
 	 */
 	public void caught(boolean isInList) {
 		if (isInList) {
+			if (checkout != null) {
+				switch(checkout) {
+				case EXACTLY:
+					FloatMessage.create(xpos, ypos, "spr_message_0", true);
+					break;
+				case NEAT:
+					FloatMessage.create(xpos, ypos, "spr_message_1", true);
+					break;
+				case COOL:
+					FloatMessage.create(xpos, ypos, "spr_message_2", true);
+					break;
+				case LAME:
+					FloatMessage.create(xpos, ypos, "spr_message_3", true);
+					break;
+				}
+			}
 			setActive(false);
 			setVisible(false);
 		} else {
-			caughtHold = (framesLeft > 0)? 2 : 1;
+			caughtHold = (framesLeft >= 0)? 2 : 1;
 		}
 	}
 

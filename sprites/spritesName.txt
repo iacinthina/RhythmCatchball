@@ -10,3 +10,5 @@ spr_message_8
 spr_message_9
 spr_message_10
 spr_message_11
+spr_ball
+spr_player

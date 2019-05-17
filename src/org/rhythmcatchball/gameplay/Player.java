@@ -32,12 +32,21 @@ public class Player extends GameObj {
 
 	public void update() {
 		// TODO Auto-generated method stub
+		ArrayList<Ball> removeList = new ArrayList<Ball>();
+		Checkout precision = null;
 		for(Ball b : catchQueue) {
 			if (b.isOver()) {
+				b.checkout = Checkout.LAME;
+				System.out.println("it's over: "+b.checkout);
+				//precision = b.judgement();
 				addScore(Checkout.LAME);
-				ballsGot.add(b);
-				catchQueue.remove(b);
+				opponent.takeBall(b);
+				removeList.add(b);
+				b.caught(true);
 			}
+		}
+		for(Ball b : removeList) {
+			catchQueue.remove(b);
 		}
 		/**
 		 * (대충 catchQueue에 있는 Ball.isOver() 불러서 못잡으면 점수깎는다는 내용)
@@ -88,6 +97,7 @@ public class Player extends GameObj {
 	public void catchOnce() {
 		Checkout precision = null; //잡은 타이밍에 따른 판정. 자료형 고민
 		boolean canGrab = true; //한번에 하나의 공만 잡을 수 있다.
+		Ball removeOnce = null; //잡은 공은 ballsGot리스트에서 제외
 		
 		//나한테 오고있는 모든 공을 검사
 		for(Ball grab: catchQueue) {
@@ -96,22 +106,17 @@ public class Player extends GameObj {
 			if (precision != null) {
 				if (canGrab) {
 					ballsGot.add(grab);
-					catchQueue.remove(grab);
+					removeOnce = grab;
 					grab.caught(true);
 					canGrab = false;
 					addScore(precision); //정확도에 따라 점수를 얻는다. 안좋은 판정을 받더라도
 				} else {
-					/*
-					 * 두개 이상의 공이 한꺼번에 올때 멈추게 하기 위해서 caughtHold를 바꿔준다.
-					 * caughtHold의 자료형과, 받기까지 유예시간을 설정해야 함.
-					 * caughtHold를 boolean형으로 바꾸고, 박자가 경신되는 메서드 ex) Beat()를 만들어서
-					 * caughtHold가 true면 Beat()메서드가 실행됐을 때 제거하는 방향도 괜찮을 것 같음.
-					 * 그렇게하면 다음 박자 전까지 중복되는 공을 받아야 함
-					 */
 					grab.caught(false);
 				}
 			}
 		}
+		if (removeOnce != null)
+			catchQueue.remove(removeOnce);
 	}
 
 	/**
@@ -144,16 +149,19 @@ public class Player extends GameObj {
 	 */
 	public void throwAll() {
 		Ball shoot; //던질 공
-		if (opponent == null) return; 
+		boolean targetMissing = (opponent == null);
 		for(int i = 0; i < 3; i++) {
 			shoot = throwQueue[i];
-			if(shoot != null) {				
-				//초기화
-				//아마도 (i+1)*beat만큼의 프레임동안 날아갈 것. shoot에 그 값을 할당한다
-				shoot.reset(xpos, ypos, (i*1), opponent);
-				
+			if(shoot != null) {
 				throwQueue[i] = null;//throwQueue 비우기
-				opponent.catchQueue.add(shoot);
+				if (targetMissing) {
+					//적이 없다
+					ballsGot.add(shoot);
+				} else {
+					//(i+1)*beat만큼의 프레임동안 날아갈 것. shoot에 그 값을 할당한다
+					shoot.reset(xpos, ypos, (i+1), opponent);
+					opponent.catchQueue.add(shoot);
+				}
 			}
 		}
 	}
@@ -167,29 +175,18 @@ public class Player extends GameObj {
 		int[] comboReq = {5, 10, 20, 40, 70, 99999};//각 index는 요구 콤보수를 뜻함
 		int[] bonus = {25, 50, 100, 200, 300, 0}; //요구 콤보수에 도달했을 때 얻는 점수
 		
-		//판정에 따라 다른 점수. switch를 써야 할까?
-		switch(precision) {
-		default:
-			/*
-			 * 공을 받았을 경우, 판정에 따라 점수를 얻는다
-			 * exact 50
-			 * neat 40
-			 * cool 30
-			 */
-			score += precision.getScore();
-			//콤보 하나 추가해주고 보너스 얻을 수 있는지 검사
-			if (++combo >= comboReq[comboLevel]) {
-				score += bonus[comboLevel];
-				comboLevel = Math.max(comboLevel+1, 5);
+		//판정에 따라 다른 점수.
+		if (precision != null) {
+			score = Math.max(score + precision.getScore(), 0);
+			if (precision == Checkout.LAME) {
+				combo = 0;
+				comboLevel = 0; //콤보레벨도 초기화해서 5콤보를 두번째 달성했을 때도 점수부여. 이후도 마찬가지
+			} else {
+				if (++combo >= comboReq[comboLevel]) {
+					score += bonus[comboLevel];
+					comboLevel = Math.max(comboLevel+1, 5);
+				}
 			}
-			break;
-		case LAME:
-			//실패했을 경우 콤보와 콤보레벨 0으로 만들고, 점수를 30 깎는다
-			//점수는 0 이하로 내려가지 않음.
-			score = Math.max(score - precision.getScore(), 0);
-			combo = 0;
-			comboLevel = 0; //콤보레벨도 초기화해서 5콤보를 두번째 달성했을 때도 점수부여. 이후도 마찬가지
-			break;
 		}
 	}
 	
