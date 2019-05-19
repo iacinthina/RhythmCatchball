@@ -6,30 +6,37 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.Panel;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class OnlineUI {
-	private Frame mainFrame;
+    private Frame mainFrame;
     private Label headerLabel;
     private Label statusLabel;
-    private Panel controlPanel;
- 
+    private Panel roomPanel;
+    private Panel textPanel;
+    private boolean isMKroom = false;
+    private boolean isJNroom = false;
+    private Panel jnpanel;
+    private Panel mkpanel;
+    
     public OnlineUI() {
         prepareGUI();
     }
  
     public static void main(String[] args) {
-    	OnlineUI mainButtonControl = new OnlineUI();
-        mainButtonControl.showButton();
+        OnlineUI mainControl = new OnlineUI();
+        mainControl.RoomButton();
+        
     }
  
     private void prepareGUI() {
         mainFrame = new Frame("Rhythm Catchball");
         mainFrame.setSize(768, 480);
-        mainFrame.setLayout(new GridLayout(3, 1));
+        mainFrame.setLayout(new GridLayout(4, 1));
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
                 System.exit(0);
@@ -45,36 +52,96 @@ public class OnlineUI {
         statusLabel.setAlignment(Label.CENTER);
         statusLabel.setSize(350, 100);
  
-        controlPanel = new Panel();
-        controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        roomPanel = new Panel();
+        roomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        
+        textPanel = new Panel();
+        textPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
  
         mainFrame.add(headerLabel);
-        mainFrame.add(controlPanel);
+        mainFrame.add(roomPanel);
+        mainFrame.add(textPanel);
         mainFrame.add(statusLabel);
         mainFrame.setVisible(true);
     }
  
-    private void showButton() {
- 
+    private void RoomButton() { 
         Button mkRoomButton = new Button("MAKE ROOM");
         Button joinRoomButton = new Button("JOIN ROOM");
  
         mkRoomButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText("mkRoomButton Button clicked.");
+                if(isMKroom == false){
+                    if(isJNroom == true){
+                       jnpanel.setVisible(false);
+                       isJNroom = false;   
+                    }
+                    MakeRoom();
+                }
+                else{
+                    if(isJNroom == true)
+                        statusLabel.setText("error");
+                }
             }
         });
  
         joinRoomButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText("joinRoomButton Button clicked.");
+                if(isJNroom == false){
+                    if(isMKroom == true){
+                       mkpanel.setVisible(false);
+                       isMKroom = false;   
+                    }
+                    JoinRoom();
+                }
+                else{
+                    if(isMKroom == true)
+                        statusLabel.setText("error");
+                }
             }
         });
         
-        controlPanel.add(mkRoomButton);
-        controlPanel.add(joinRoomButton);
+        roomPanel.add(mkRoomButton);
+        roomPanel.add(joinRoomButton);
  
-        mainFrame.setVisible(true);
- 
+        mainFrame.setVisible(true); 
+    }
+    
+    public void JoinRoom(){
+        jnpanel = new Panel();
+        
+        Label port_l = new Label("Port Num");
+        Label ip_l = new Label("IP Address");
+        TextField port_t = new TextField("",10);
+        TextField ip_t = new TextField("",15);
+
+        jnpanel.add(ip_l);
+        jnpanel.add(ip_t);
+        jnpanel.add(port_l);
+        jnpanel.add(port_t);
+        
+        textPanel.add(jnpanel);
+        
+        //jnpanel.setVisible(false);
+        isJNroom = true;
+        mainFrame.setVisible(true);        
+    }
+
+    public void MakeRoom(){
+        mkpanel = new Panel();
+        
+        Label port_l = new Label("Port Num");
+        TextField port_t = new TextField("",10);
+        
+        mkpanel.add(port_l);
+        mkpanel.add(port_t);
+        
+        textPanel.add(mkpanel);
+        //mkpanel.setVisible(false);
+        isMKroom = true;
+        mainFrame.setVisible(true);        
     }
 }
+
