@@ -22,6 +22,8 @@ public class OnlineUI {
     private boolean isJNroom = false;
     private Panel jnpanel;
     private Panel mkpanel;
+    String port;
+    String ip;
     
     public OnlineUI() {
         prepareGUI();
@@ -65,7 +67,7 @@ public class OnlineUI {
         mainFrame.setVisible(true);
     }
  
-    private void RoomButton() { 
+    private void RoomButton() {
         Button mkRoomButton = new Button("MAKE ROOM");
         Button joinRoomButton = new Button("JOIN ROOM");
  
@@ -111,16 +113,26 @@ public class OnlineUI {
     
     public void JoinRoom(){
         jnpanel = new Panel();
+        Button enter = new Button("ENTER");
         
         Label port_l = new Label("Port Num");
         Label ip_l = new Label("IP Address");
         TextField port_t = new TextField("",10);
         TextField ip_t = new TextField("",15);
-
+        
+        enter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	ip = ip_t.getText();
+            	port = port_t.getText();
+            	statusLabel.setText("IP : " + ip + " Port : " + port);
+            }
+        });
+        
         jnpanel.add(ip_l);
         jnpanel.add(ip_t);
         jnpanel.add(port_l);
         jnpanel.add(port_t);
+        jnpanel.add(enter);
         
         textPanel.add(jnpanel);
         
@@ -131,12 +143,21 @@ public class OnlineUI {
 
     public void MakeRoom(){
         mkpanel = new Panel();
+        Button enter = new Button("ENTER");
         
         Label port_l = new Label("Port Num");
         TextField port_t = new TextField("",10);
         
+        enter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	port = port_t.getText();
+            	statusLabel.setText("Port : " + port);
+            }
+        });
+        
         mkpanel.add(port_l);
         mkpanel.add(port_t);
+        mkpanel.add(enter);
         
         textPanel.add(mkpanel);
         //mkpanel.setVisible(false);

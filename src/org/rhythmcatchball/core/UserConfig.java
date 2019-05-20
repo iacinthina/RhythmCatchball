@@ -8,16 +8,16 @@ public class UserConfig {
 	
 	UserConfig() {
 		//Player1 key값 초기설정
-		confKey1Set[Key.LOW.getIndex()] = 65;
+		confKey1Set[Key.LOW.getIndex()] = 68;
 		confKey1Set[Key.MIDDLE.getIndex()] = 83;
-		confKey1Set[Key.HIGH.getIndex()] = 68;
-		confKey1Set[Key.RECEIVE.getIndex()] = 16;
+		confKey1Set[Key.HIGH.getIndex()] = 65;
+		confKey1Set[Key.RECEIVE.getIndex()] = 32;
 		
 		//Player2 key값 초기설정
 		confKey2Set[Key.LOW.getIndex()] = 37;
-		confKey2Set[Key.MIDDLE.getIndex()] = 38;
+		confKey2Set[Key.MIDDLE.getIndex()] = 40;
 		confKey2Set[Key.HIGH.getIndex()] = 39;
-		confKey2Set[Key.RECEIVE.getIndex()] = 32;
+		confKey2Set[Key.RECEIVE.getIndex()] = 16;
 		
 	}
 	
