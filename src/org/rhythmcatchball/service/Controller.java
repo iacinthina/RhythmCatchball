@@ -1,3 +1,4 @@
+package org.rhythmcatchball.service;
 import org.rhythmcatchball.gameplay.Player;
 
 public interface Controller {

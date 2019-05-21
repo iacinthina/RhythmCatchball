@@ -125,6 +125,7 @@ public class OnlineUI {
             	ip = ip_t.getText();
             	port = port_t.getText();
             	statusLabel.setText("IP : " + ip + " Port : " + port);
+            	Client client = new Client(ip, port);
             }
         });
         
@@ -152,6 +153,7 @@ public class OnlineUI {
             public void actionPerformed(ActionEvent e) {
             	port = port_t.getText();
             	statusLabel.setText("Port : " + port);
+            	Server server = new Server(port);
             }
         });
         
@@ -165,4 +167,6 @@ public class OnlineUI {
         mainFrame.setVisible(true);        
     }
 }
+
+
 

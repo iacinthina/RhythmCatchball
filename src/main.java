@@ -5,6 +5,7 @@ import org.rhythmcatchball.core.UserConfig;
 import org.rhythmcatchball.gameplay.Ball;
 import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.Player;
+import org.rhythmcatchball.service.KeyboardController;
 
 public class main {
 	
