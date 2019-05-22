@@ -2,18 +2,14 @@ package org.rhythmcatchball.service;
 
 import java.awt.Button;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-public class OnlineUI {
-    private Frame mainFrame;
+public class OnlineUI extends Panel{
     private Label headerLabel;
     private Label statusLabel;
     private Panel roomPanel;
@@ -27,23 +23,11 @@ public class OnlineUI {
     
     public OnlineUI() {
         prepareGUI();
-    }
- 
-    public static void main(String[] args) {
-        OnlineUI mainControl = new OnlineUI();
-        mainControl.RoomButton();
-        
+        RoomButton();
     }
  
     private void prepareGUI() {
-        mainFrame = new Frame("Rhythm Catchball");
-        mainFrame.setSize(768, 480);
-        mainFrame.setLayout(new GridLayout(4, 1));
-        mainFrame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent windowEvent) {
-                System.exit(0);
-            }
-        });
+    	this.setLayout(new GridLayout(4, 1));
  
         headerLabel = new Label();
         headerLabel.setAlignment(Label.CENTER);
@@ -60,11 +44,10 @@ public class OnlineUI {
         textPanel = new Panel();
         textPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
  
-        mainFrame.add(headerLabel);
-        mainFrame.add(roomPanel);
-        mainFrame.add(textPanel);
-        mainFrame.add(statusLabel);
-        mainFrame.setVisible(true);
+        this.add(headerLabel);
+        this.add(roomPanel);
+        this.add(textPanel);
+        this.add(statusLabel);
     }
  
     private void RoomButton() {
@@ -107,8 +90,6 @@ public class OnlineUI {
         
         roomPanel.add(mkRoomButton);
         roomPanel.add(joinRoomButton);
- 
-        mainFrame.setVisible(true); 
     }
     
     public void JoinRoom(){
@@ -125,7 +106,6 @@ public class OnlineUI {
             	ip = ip_t.getText();
             	port = port_t.getText();
             	statusLabel.setText("IP : " + ip + " Port : " + port);
-            	Client client = new Client(ip, port);
             }
         });
         
@@ -137,9 +117,7 @@ public class OnlineUI {
         
         textPanel.add(jnpanel);
         
-        //jnpanel.setVisible(false);
-        isJNroom = true;
-        mainFrame.setVisible(true);        
+        isJNroom = true;       
     }
 
     public void MakeRoom(){
@@ -153,7 +131,6 @@ public class OnlineUI {
             public void actionPerformed(ActionEvent e) {
             	port = port_t.getText();
             	statusLabel.setText("Port : " + port);
-            	Server server = new Server(port);
             }
         });
         
@@ -162,9 +139,7 @@ public class OnlineUI {
         mkpanel.add(enter);
         
         textPanel.add(mkpanel);
-        //mkpanel.setVisible(false);
-        isMKroom = true;
-        mainFrame.setVisible(true);        
+        isMKroom = true;      
     }
 }
 
