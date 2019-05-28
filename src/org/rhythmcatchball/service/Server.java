@@ -3,13 +3,14 @@ package org.rhythmcatchball.service;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 public class Server {
@@ -27,6 +28,15 @@ public class Server {
 	BufferedReader bufferedReader;
 	String data;
 	
+	//test main
+	public static void main(String argsp[]) {
+		Scanner nw = new Scanner(System.in);
+		String port;
+		port = nw.nextLine();
+		Server test = new Server(port);
+		
+	}
+	
 	
 	public Server(String PORTstring) {
 
@@ -39,7 +49,6 @@ public class Server {
 		
 		//로컬 호스트 IP받기 
 		try {
-			
 			serverIP = InetAddress.getLocalHost();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -48,7 +57,7 @@ public class Server {
 		//서버 생성 
 		try {
 			serverSocket = new ServerSocket(PortNum);
-			
+			JOptionPane.showMessageDialog(null, "ip = " + serverIP);
 			System.out.println("서버생성\n");
 			
 			
@@ -71,7 +80,9 @@ public class Server {
 							opponentData = bufferedReader.readLine();
 							
 							if(opponentData.length() > 0) {
-								data = opponentData;	
+								data = opponentData;
+								//test
+								JOptionPane.showMessageDialog(null, data);
 							}
 						}
 						
