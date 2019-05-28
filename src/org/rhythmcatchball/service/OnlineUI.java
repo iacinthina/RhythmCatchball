@@ -10,10 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class OnlineUI extends Panel{
-    private Label headerLabel;
-    private Label statusLabel;
     private Panel roomPanel;
     private Panel textPanel;
+    private Panel controlPanel;
     private boolean isMKroom = false;
     private boolean isJNroom = false;
     private Panel jnpanel;
@@ -23,40 +22,35 @@ public class OnlineUI extends Panel{
     
     public OnlineUI() {
         prepareGUI();
-        RoomButton();
+        //RoomButton();
     }
  
-    private void prepareGUI() {
+ 
+    private void prepareGUI() {        
     	this.setLayout(new GridLayout(4, 1));
- 
-        headerLabel = new Label();
-        headerLabel.setAlignment(Label.CENTER);
-        headerLabel.setText("Select Mode");
- 
-        statusLabel = new Label();
-        statusLabel.setText("click button");
-        statusLabel.setAlignment(Label.CENTER);
-        statusLabel.setSize(350, 100);
- 
+    	
+    	controlPanel = new Panel();
+    	controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+    	
         roomPanel = new Panel();
         roomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         
         textPanel = new Panel();
         textPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
  
-        this.add(headerLabel);
-        this.add(roomPanel);
-        this.add(textPanel);
-        this.add(statusLabel);
+        controlPanel.add(roomPanel);
+        controlPanel.add(textPanel);
+        this.add(controlPanel);
+        this.setVisible(true);
     }
  
-    private void RoomButton() {
+    public void RoomButton(Panel panel) {
         Button mkRoomButton = new Button("MAKE ROOM");
         Button joinRoomButton = new Button("JOIN ROOM");
  
         mkRoomButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("mkRoomButton Button clicked.");
+                //statusLabel.setText("mkRoomButton Button clicked.");
                 if(isMKroom == false){
                     if(isJNroom == true){
                        jnpanel.setVisible(false);
@@ -65,15 +59,15 @@ public class OnlineUI extends Panel{
                     MakeRoom();
                 }
                 else{
-                    if(isJNroom == true)
-                        statusLabel.setText("error");
+//                    if(isJNroom == true)
+//                        statusLabel.setText("error");
                 }
             }
         });
  
         joinRoomButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("joinRoomButton Button clicked.");
+                //statusLabel.setText("joinRoomButton Button clicked.");
                 if(isJNroom == false){
                     if(isMKroom == true){
                        mkpanel.setVisible(false);
@@ -82,14 +76,18 @@ public class OnlineUI extends Panel{
                     JoinRoom();
                 }
                 else{
-                    if(isMKroom == true)
-                        statusLabel.setText("error");
+//                    if(isMKroom == true)
+//                        statusLabel.setText("error");
                 }
             }
         });
         
         roomPanel.add(mkRoomButton);
         roomPanel.add(joinRoomButton);
+        controlPanel.add(roomPanel);
+        
+        panel.add(roomPanel);
+        this.setVisible(true);
     }
     
     public void JoinRoom(){
@@ -105,7 +103,7 @@ public class OnlineUI extends Panel{
             public void actionPerformed(ActionEvent e) {
             	ip = ip_t.getText();
             	port = port_t.getText();
-            	statusLabel.setText("IP : " + ip + " Port : " + port);
+            	//statusLabel.setText("IP : " + ip + " Port : " + port);
             }
         });
         
@@ -116,8 +114,8 @@ public class OnlineUI extends Panel{
         jnpanel.add(enter);
         
         textPanel.add(jnpanel);
-        
-        isJNroom = true;       
+        this.setVisible(true);
+        isJNroom = true;    
     }
 
     public void MakeRoom(){
@@ -130,7 +128,8 @@ public class OnlineUI extends Panel{
         enter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	port = port_t.getText();
-            	statusLabel.setText("Port : " + port);
+            	//statusLabel.setText("Port : " + port);
+            	//Server server = new Server(port);
             }
         });
         
@@ -139,7 +138,8 @@ public class OnlineUI extends Panel{
         mkpanel.add(enter);
         
         textPanel.add(mkpanel);
-        isMKroom = true;      
+        this.setVisible(true);
+        isMKroom = true;
     }
 }
 
