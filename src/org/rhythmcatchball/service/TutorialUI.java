@@ -3,13 +3,13 @@ package org.rhythmcatchball.service;
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
-import com.sun.jna.Native;
+/*import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
-import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;*/
 
 public class TutorialUI extends JFrame {
 	
@@ -51,7 +51,7 @@ public class TutorialUI extends JFrame {
 	public void play_Tutorial()// player와 동영상 파일 필요
 	{
 		// 배경그리기
-		JFrame f = new JFrame();
+		/*JFrame f = new JFrame();
 		f.setLocation(100, 100);
 		f.setSize(1000, 600);
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -77,7 +77,8 @@ public class TutorialUI extends JFrame {
 		String fname = "RhythmCatchball.mp4";
 		emp.prepareMedia(fname);
 		emp.play();
-	
+         */
+ 
 	}
 	
 	public static void main(String[] args) {
