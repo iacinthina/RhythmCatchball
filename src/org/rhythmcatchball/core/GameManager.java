@@ -1,12 +1,21 @@
 package org.rhythmcatchball.core;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
+import org.rhythmcatchball.gameplay.Ball;
+import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.GameObj;
+import org.rhythmcatchball.service.MainUI;
+import org.rhythmcatchball.service.OnlineUI;
+import org.rhythmcatchball.service.TutorialUI;
 
 /**
  * GameManager.java
@@ -26,6 +35,8 @@ public class GameManager extends JFrame {
 	
 	public Graphics buffg;
 	public Image buffImage;
+	private Panel currentUI = null;
+	
 	private ArrayList<GameObj> gameInst; //게임 진행중에 활성화된 오브젝트는 전부 여기로 들어간다.
 	public int modeBeatrate = 30;
 	public int modeTimeLimit = 60;
@@ -119,6 +130,83 @@ public class GameManager extends JFrame {
 	 */
 	public boolean addInstance(GameObj instance) {
 		return gameInst.add(instance);
+	}
+	
+	public void initSinglePlay() {
+		
+		
+		
+	}
+	
+	public static void main(String[] args) {
+		GameManager gm = GameManager.getref();
+		GameSprite.loadImages(gm);
+		int f_width = 640;
+		int f_height = 360;
+
+		gm.setSize(f_width, f_height);
+		//gm.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		TutorialUI tutorialUI = new TutorialUI();
+		MainUI mainUI = new MainUI();
+		OnlineUI onlineUI = new OnlineUI();
+		
+		mainUI.setActionListener("close", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	System.exit(0);
+            }
+		});
+		
+		mainUI.setActionListener("onePlay", gm.UIchanger(tutorialUI));
+		mainUI.setActionListener("twoPlay", gm.UIchanger(tutorialUI));
+		mainUI.setActionListener("onlinePlay", gm.UIchanger(onlineUI));
+		tutorialUI.setActionListener("goBack", gm.UIchanger(mainUI));
+		onlineUI.setActionListener("goBack", gm.UIchanger(mainUI));
+		
+		tutorialUI.setActionListener("proceed", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	gm.remove(gm.currentUI);
+        		int xpos = 0;
+        		int ypos = 0;
+        		String sprkey;
+        		for(int i=0; i<11; i++) {
+        			sprkey = "spr_message_"+i;
+        			xpos = 40+i*40;
+        			ypos = 30+i*30;
+
+        			FloatMessage.create(xpos, ypos, sprkey, true);
+        		}
+            }
+		});
+
+		gm.currentUI = onlineUI;
+		gm.add(gm.currentUI);
+
+		gm.setTitle("리듬캐치볼");
+		gm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		gm.setVisible(true);
+		
+		try {
+			while(true) {
+				Thread.sleep(16);
+				gm.Update();
+				gm.repaint();
+        		//gm.setVisible(true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private ActionListener UIchanger(Panel UIclass) {
+		return new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	remove(currentUI);
+            	add(UIclass);
+        		currentUI = UIclass;
+        		setVisible(true);
+            }
+		};
 	}
 }
 
