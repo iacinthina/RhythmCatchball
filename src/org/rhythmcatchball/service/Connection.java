@@ -3,42 +3,74 @@ package org.rhythmcatchball.service;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
+
 import javax.swing.JOptionPane;
 
-public class Server {
-	
-	/*
-	 * 속도는 UDP가 더 낫지만 싱크 생각해서 TCP로 구현함
-	 * 서버에 클라이언트는 2개만 존재한다는 전제가 있음 
-	 * 아직 종료에 대해서 buffer, socket의 close는 깔끔하지 못
-	 */
-	
+public class Connection {
+	Socket socket;
+	String data;
 	private int PortNum;
 	InetAddress serverIP;
 	Socket opponentSocket, mySocket;
 	ServerSocket serverSocket;
 	BufferedReader bufferedReader;
-	String data;
 	
-	//test main
-	public static void main(String argsp[]) {
-		Scanner nw = new Scanner(System.in);
-		String port;
-		port = nw.nextLine();
-		Server test = new Server(port);
+	public Connection() {
 		
 	}
 	
+	public void Client(String IP, String Port){
+			
+			PortNum = Integer.parseInt(Port);
+			
+			try
+			{
+				socket = new Socket(IP, PortNum);
+			}
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(null, "invalid ip/port", null, JOptionPane.ERROR_MESSAGE, null);
+				return;
+			}
+			
+			new Thread(){
+				@Override
+				public void run()
+				{
+					BufferedReader bufferedReader = null;
+					
+					try
+					{
+						bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	
-	public Server(String PORTstring) {
+						while ( true )
+						{
+							data = bufferedReader.readLine();
+		
+							if( data != null && data.trim().length() > 0 )
+							{
+								//testing message
+								JOptionPane.showMessageDialog(null, data);
+							}
+						}
+					}
+					catch (Exception e)
+					{
+						System.out.println(e+"=>client run");
+						e.printStackTrace();
+					}
+				}
+				
+			}.start();
+		}
+	
+	public void Server(String PORTstring) {
 
 		//입력받은 port번호 정수형으로 변형 
 		PortNum = Integer.parseInt(PORTstring);
@@ -100,12 +132,10 @@ public class Server {
 		}
 	}
 	
-	
-	
-	public void Send(String data){
+	public void Send(String data) {
 		BufferedWriter bufferedWriter;
 		try {
-			bufferedWriter = new BufferedWriter(new OutputStreamWriter(opponentSocket.getOutputStream()));
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			bufferedWriter.write(data);
 			bufferedWriter.newLine();
 			bufferedWriter.flush();
@@ -113,15 +143,11 @@ public class Server {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
-		
+		}			
 	}
 	
-	public String Receive() {
+	public String receive(){
 		return this.data;
 	}
 	
-
 }
