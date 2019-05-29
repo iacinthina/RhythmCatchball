@@ -12,17 +12,22 @@ import java.awt.event.ActionListener;
 public class OnlineUI extends Panel{
     private Panel roomPanel;
     private Panel textPanel;
-    private Panel controlPanel;
+    private Panel controlPanel;			//roomPanel과 textPanel이 올라갈 panel
+    
+    //방만들기와 방 들어가기할 때 텍스트가 두개 동시에 뜨지 않도록 체크하는 변수
     private boolean isMKroom = false;
     private boolean isJNroom = false;
+    
     private Panel jnpanel;
     private Panel mkpanel;
+    
+    //port와 ip 저장하는 변수
     String port;
     String ip;
     
     public OnlineUI() {
-        prepareGUI();
-        //RoomButton();
+        prepareGUI();		//패널 미리 만들어 놓음
+        //RoomButton();		// 버튼 만드는 함수
     }
  
  
@@ -44,53 +49,25 @@ public class OnlineUI extends Panel{
         this.setVisible(true);
     }
  
-    public void RoomButton(Panel panel) {
+    public void RoomButton(Panel up_panel, Panel down_panel) {
         Button mkRoomButton = new Button("MAKE ROOM");
         Button joinRoomButton = new Button("JOIN ROOM");
  
-        mkRoomButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //statusLabel.setText("mkRoomButton Button clicked.");
-                if(isMKroom == false){
-                    if(isJNroom == true){
-                       jnpanel.setVisible(false);
-                       isJNroom = false;   
-                    }
-                    MakeRoom();
-                }
-                else{
-//                    if(isJNroom == true)
-//                        statusLabel.setText("error");
-                }
-            }
-        });
- 
-        joinRoomButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //statusLabel.setText("joinRoomButton Button clicked.");
-                if(isJNroom == false){
-                    if(isMKroom == true){
-                       mkpanel.setVisible(false);
-                       isMKroom = false;   
-                    }
-                    JoinRoom();
-                }
-                else{
-//                    if(isMKroom == true)
-//                        statusLabel.setText("error");
-                }
-            }
-        });
+        mkRoomButton.addActionListener(MakeRoomActionListener(down_panel));
+        joinRoomButton.addActionListener(JoinRoomActionListener(down_panel));
         
         roomPanel.add(mkRoomButton);
         roomPanel.add(joinRoomButton);
-        controlPanel.add(roomPanel);
+        //controlPanel.add(roomPanel);
+        //controlPanel.add(textPanel);
         
-        panel.add(roomPanel);
+        up_panel.add(roomPanel);
+        down_panel.add(textPanel);
+        
         this.setVisible(true);
     }
     
-    public void JoinRoom(){
+    public void JoinRoom(Panel down_panel){
         jnpanel = new Panel();
         Button enter = new Button("ENTER");
         
@@ -113,12 +90,12 @@ public class OnlineUI extends Panel{
         jnpanel.add(port_t);
         jnpanel.add(enter);
         
-        textPanel.add(jnpanel);
-        this.setVisible(true);
+        down_panel.add(jnpanel);
+        down_panel.setVisible(true);
         isJNroom = true;    
     }
 
-    public void MakeRoom(){
+    public void MakeRoom(Panel down_panel){
         mkpanel = new Panel();
         Button enter = new Button("ENTER");
         
@@ -128,8 +105,6 @@ public class OnlineUI extends Panel{
         enter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	port = port_t.getText();
-            	//statusLabel.setText("Port : " + port);
-            	//Server server = new Server(port);
             }
         });
         
@@ -137,9 +112,46 @@ public class OnlineUI extends Panel{
         mkpanel.add(port_t);
         mkpanel.add(enter);
         
-        textPanel.add(mkpanel);
-        this.setVisible(true);
+        down_panel.add(mkpanel);
+        down_panel.setVisible(true);
         isMKroom = true;
+    }
+    
+    public ActionListener MakeRoomActionListener(Panel down_panel) {
+    	return new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(isMKroom == false){
+                    if(isJNroom == true){
+                       jnpanel.setVisible(false);
+                       isJNroom = false;   
+                    }
+                    MakeRoom(down_panel);
+                }
+                else{
+//                    if(isJNroom == true)
+//                        statusLabel.setText("error");
+                }
+            }
+        };
+    }
+    
+    public ActionListener JoinRoomActionListener(Panel down_panel) {
+    	return new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //statusLabel.setText("joinRoomButton Button clicked.");
+                if(isJNroom == false){
+                    if(isMKroom == true){
+                       mkpanel.setVisible(false);
+                       isMKroom = false;   
+                    }
+                    JoinRoom(down_panel);
+                }
+                else{
+//                    if(isMKroom == true)
+//                        statusLabel.setText("error");
+                }
+            }
+        };
     }
 }
 

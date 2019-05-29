@@ -19,6 +19,7 @@ public class MainUI extends JFrame{
     private Label headerLabel;
     private Label statusLabel;
     private Panel controlPanel;
+    private Panel textPanel;
     private Panel mainControlPanel;
     OnlineUI onlineUI;
  
@@ -34,7 +35,7 @@ public class MainUI extends JFrame{
     private void prepareGUI() {
         mainFrame = new Frame("Rhythm Catchball");
         mainFrame.setSize(768, 480);
-        mainFrame.setLayout(new GridLayout(3, 1));
+        mainFrame.setLayout(new GridLayout(4, 1));
         
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
@@ -54,12 +55,16 @@ public class MainUI extends JFrame{
  
         controlPanel = new Panel();
         controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        
+        textPanel = new Panel();
+        textPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
  
         mainControlPanel = new Panel();
         mainControlPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         
         mainFrame.add(headerLabel);
         mainFrame.add(controlPanel);
+        mainFrame.add(textPanel);
         mainFrame.add(statusLabel);
         mainFrame.setVisible(true);
     }
@@ -118,18 +123,12 @@ public class MainUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText("onlinePlay Button clicked.");
             	controlPanel.remove(mainControlPanel);
-            	//controlPanel.add(onlineUI);
-            	onlineUI.RoomButton(controlPanel);
-                //MakeOnlineUI();
+            	
+            	onlineUI.RoomButton(controlPanel, textPanel);
+                
             	mainFrame.setVisible(true);
             }
         };
 	}
-    
-//    public void MakeOnlineUI() {
-//    	OnlineUI onlineUI = new OnlineUI();
-//    	controlPanel.remove(mainControlPanel);
-//    	controlPanel.add(onlineUI, 0);
-//    }
     
 }
