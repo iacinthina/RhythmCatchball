@@ -21,10 +21,17 @@ public class Connection {
 	ServerSocket serverSocket;
 	BufferedReader bufferedReader;
 	
+	//생성하고 바로 생성한 클래서에서 client, server 둘 중 하나 실행해야
 	public Connection() {
 		
 	}
 	
+	public static void main(String args[]) {
+		
+	}
+	
+	//Client생성 메소드
+	//ip, port 입력받아 연결 생
 	public void Client(String IP, String Port){
 			
 			PortNum = Integer.parseInt(Port);
@@ -70,6 +77,7 @@ public class Connection {
 			}.start();
 		}
 	
+	//Server생성 메소
 	public void Server(String PORTstring) {
 
 		//입력받은 port번호 정수형으로 변형 
