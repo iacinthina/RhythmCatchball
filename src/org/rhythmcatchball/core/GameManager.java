@@ -13,6 +13,7 @@ import javax.swing.*;
 import org.rhythmcatchball.gameplay.Ball;
 import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.GameObj;
+import org.rhythmcatchball.gameplay.RoundManager;
 import org.rhythmcatchball.service.MainUI;
 import org.rhythmcatchball.service.OnlineUI;
 import org.rhythmcatchball.service.TutorialUI;
@@ -40,6 +41,7 @@ public class GameManager extends JFrame {
 	private ArrayList<GameObj> gameInst; //게임 진행중에 활성화된 오브젝트는 전부 여기로 들어간다.
 	public int modeBeatrate = 30;
 	public int modeTimeLimit = 60;
+	private UserConfig userConfig;
 	
 	/**
 	 * 생성자
@@ -50,6 +52,7 @@ public class GameManager extends JFrame {
 		gameInst = new ArrayList<GameObj>();
 		buffg = null;
 		buffImage = null;
+		userConfig = new UserConfig();
 	}
 	
 	/**
@@ -79,8 +82,8 @@ public class GameManager extends JFrame {
 	public void Update() {
 		ArrayList<GameObj> removeList = new ArrayList<GameObj>();
 		GameSprite spr = null; 
-		int f_width = 640;
-		int f_height = 360;
+		int f_width = getResWidth();
+		int f_height = getResHeight();
 		buffImage = createImage(f_width, f_height); 
 		buffg = buffImage.getGraphics();
 		
@@ -132,10 +135,12 @@ public class GameManager extends JFrame {
 		return gameInst.add(instance);
 	}
 	
-	public void initSinglePlay() {
-		
-		
-		
+	public void initLocalMulti() {
+		int f_width = getResWidth();
+		int f_height = getResHeight();
+		RoundManager rm = (RoundManager) RoundManager.create(f_width*0.5f, f_height*0.5f);
+    	rm.launchLocal();
+    	
 	}
 	
 	public static void main(String[] args) {
@@ -166,20 +171,11 @@ public class GameManager extends JFrame {
 		tutorialUI.setActionListener("proceed", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	gm.remove(gm.currentUI);
-        		int xpos = 0;
-        		int ypos = 0;
-        		String sprkey;
-        		for(int i=0; i<11; i++) {
-        			sprkey = "spr_message_"+i;
-        			xpos = 40+i*40;
-        			ypos = 30+i*30;
-
-        			FloatMessage.create(xpos, ypos, sprkey, true);
-        		}
+            	gm.initLocalMulti();
             }
 		});
 
-		gm.currentUI = onlineUI;
+		gm.currentUI = mainUI;
 		gm.add(gm.currentUI);
 
 		gm.setTitle("리듬캐치볼");
@@ -207,6 +203,33 @@ public class GameManager extends JFrame {
         		setVisible(true);
             }
 		};
+	}
+	
+	private ActionListener GameStarter(String key) {
+		return new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	remove(currentUI);
+        		currentUI = null;
+        		switch(key) {
+        		case "single":
+        			break;
+        		default:
+        			break;
+        		}
+        		setVisible(true);
+            }
+		};
+	}
+	
+	private void launchSingle() {
+		
+	}
+
+	public int getResWidth() {
+		return userConfig.getResWidth();
+	}
+	public int getResHeight() {
+		return userConfig.getResHeight();
 	}
 }
 

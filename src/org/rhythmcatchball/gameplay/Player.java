@@ -205,4 +205,9 @@ public class Player extends GameObj {
 	public void takeBall(Ball b) {
 		ballsGot.add(b);
 	}
+	
+	public int countBall() {
+		if (ballsGot == null) return -1;
+		return ballsGot.size();
+	}
 }

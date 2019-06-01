@@ -2,11 +2,13 @@ package org.rhythmcatchball.core;
 
 public class UserConfig {
 	float confVolume;
-	float [] confResolu;
+	int[] confResolu = new int[2];
 	int[] confKey1Set = new int[4];	
 	int[] confKey2Set = new int[4];	
 	
 	UserConfig() {
+		confResolu[0] = 640;
+		confResolu[1] = 360;
 		//Player1 key값 초기설정
 		confKey1Set[Key.LOW.getIndex()] = 68;
 		confKey1Set[Key.MIDDLE.getIndex()] = 83;
@@ -23,4 +25,11 @@ public class UserConfig {
 	
 	//일단 만들어놓고 나중에 변경
 	float ChangeVolume(float tmp) { return 0.0f;}
+
+	public void setResolusion(int width, int height) {
+		confResolu[0] = width;
+		confResolu[1] = height;
+	}
+	public int getResWidth() {return confResolu[0];}
+	public int getResHeight() {return confResolu[1];}
 }

@@ -14,7 +14,8 @@ public class Ball extends GameObj
 	private int caughtHold = 0;
 	private float xstart;
 	private float ystart;
-	private Player toward;
+	private float flyHeight;
+	private GameObj toward;
 	
 	Checkout checkout;
 	/**
@@ -31,7 +32,7 @@ public class Ball extends GameObj
 			//포물선 운동 표현
 			if (toward != null) {
 				xpos = lerp(toward.xpos, xstart, lerpPos);
-				ypos = lerp(toward.ypos, ystart, lerpPos) - (float)(Math.sin(Math.PI * lerpPos) * framesTotal);
+				ypos = lerp(toward.ypos, ystart, lerpPos) - (float)(Math.sin(Math.PI * lerpPos) * flyHeight);
 			}
 		}
 	}
@@ -62,6 +63,7 @@ public class Ball extends GameObj
 		ball.toward = null;
 		ball.setSpriteKey("spr_ball");
 		ball.checkout = null;
+		ball.flyHeight = 60;
 		
 		register(ball);
 		return ball;
@@ -97,7 +99,7 @@ public class Ball extends GameObj
 	 * mechanism : 
 	 * comment : 
 	 */
-	public void reset(float x, float y, int airTime, Player target) {
+	public void reset(float x, float y, int airTime, GameObj target) {
 		xstart = x;
 		ystart = y;
 		framesTotal = airTime * getBeatrate();
@@ -105,6 +107,20 @@ public class Ball extends GameObj
 		toward = target;
 		caughtHold = 0;
 		checkout = null;
+		flyHeight = framesTotal;
+		setActive(true); //중요
+		setVisible(true);
+	}
+	
+	public void reset(float x, float y, int airTime, GameObj target, float height) {
+		xstart = x;
+		ystart = y;
+		framesTotal = airTime * getBeatrate();
+		framesLeft = framesTotal;
+		toward = target;
+		caughtHold = 0;
+		checkout = null;
+		flyHeight = height;
 		setActive(true); //중요
 		setVisible(true);
 	}
