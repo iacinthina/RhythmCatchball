@@ -5,6 +5,7 @@ import org.rhythmcatchball.core.UserConfig;
 import org.rhythmcatchball.gameplay.Ball;
 import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.Player;
+import org.rhythmcatchball.service.AIController;
 import org.rhythmcatchball.service.KeyboardController;
 
 public class main {
@@ -49,14 +50,20 @@ public class main {
 		b.setActive(false);
 		P1.takeBall(b);
 		
-		KeyboardController P1C = new KeyboardController();
+
+		AIController P1C = new AIController(null);
+		AIController P2C = new AIController(null);
 		
-		P1C.player = P1;
+		P1C.setPlayer(P1);
+		P2C.setPlayer(P2);
+		
+		/*KeyboardController P1C = new KeyboardController();
+
+		P1C.setPlayer(P1);
 		P1C.keyval[0] = 68;
 		P1C.keyval[1] = 83;
 		P1C.keyval[2] = 65;
 		P1C.keyval[3] = 32;
-		
 		
 		KeyboardController P2C = new KeyboardController();
 		
@@ -67,7 +74,7 @@ public class main {
 		P2C.keyval[3] = 16;
 
 		gm.addKeyListener(P1C);
-		gm.addKeyListener(P2C);
+		gm.addKeyListener(P2C);*/
 		
 		int beatrate = gm.modeBeatrate;
 		int beatcount = 0;
@@ -86,7 +93,7 @@ public class main {
 				P2Score = P2.getScore();
 				//System.out.println("beatcount = "+beatcount);
 			}
-		} catch (Exception e) {
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
