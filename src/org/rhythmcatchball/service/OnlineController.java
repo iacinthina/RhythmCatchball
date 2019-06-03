@@ -39,7 +39,21 @@ public class OnlineController implements Controller{
 			player.catchOnce();
 		}
 	}
-	
-	
 
+	@Override
+	public Player getPlayer() {
+		return player;
+	}
+
+	@Override
+	public boolean catchCheck() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void update(int beatcount) {
+		// TODO Auto-generated method stub
+		
+	}
 }

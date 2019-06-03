@@ -14,6 +14,8 @@ import org.rhythmcatchball.gameplay.Ball;
 import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.GameObj;
 import org.rhythmcatchball.gameplay.RoundManager;
+import org.rhythmcatchball.service.AIController;
+import org.rhythmcatchball.service.KeyboardController;
 import org.rhythmcatchball.service.MainUI;
 import org.rhythmcatchball.service.OnlineUI;
 import org.rhythmcatchball.service.TutorialUI;
@@ -120,7 +122,10 @@ public class GameManager extends JFrame {
 	}
 	
 	public void testBeat() {
-		for(GameObj o : gameInst) {
+		GameObj o;
+		int i, instnum = gameInst.size();
+		for(i = 0; i < instnum; i++) {
+			o = gameInst.get(i);
 			if (o.isAlive() && o.isActive())
 				o.onBeat();
 		}
@@ -141,6 +146,18 @@ public class GameManager extends JFrame {
 		RoundManager rm = (RoundManager) RoundManager.create(f_width*0.5f, f_height*0.5f);
     	rm.launchLocal();
     	
+    	AIController P2C = new AIController(null);
+		P2C.setPlayer(rm.getEntry(1));
+		rm.addController(P2C);
+		
+		KeyboardController P1C = new KeyboardController();
+		P1C.setPlayer(rm.getEntry(0));
+		P1C.keyval[0] = 68;
+		P1C.keyval[1] = 83;
+		P1C.keyval[2] = 65;
+		P1C.keyval[3] = 32;
+		
+		addKeyListener(P1C);
 	}
 	
 	public static void main(String[] args) {

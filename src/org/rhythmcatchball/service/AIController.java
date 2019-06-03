@@ -1,11 +1,12 @@
 package org.rhythmcatchball.service;
 
+import org.rhythmcatchball.core.GameManager;
 import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.GameObj;
 import org.rhythmcatchball.gameplay.Player;
 import org.rhythmcatchball.gameplay.RoundManager;
 
-public class AIController extends GameObj implements Controller {
+public class AIController implements Controller {
 	public Player player;
 	public RoundManager gameInfo;
 	private int framesLeft;
@@ -22,28 +23,29 @@ public class AIController extends GameObj implements Controller {
 		nextBeat = framesLeft;
 		nextCatch = 0;
 		this.gameInfo = gameInfo;
-		
-		register(this);
 	}
 	
-	public void update() {
+	public void update(int beatcount) {
+		if (player == null) {
+			System.out.println("player : " + player);
+			return;
+		}
 		if (nextBeat-1 == nextCatch+1 && nextCatch != 4){
 			player.catchOnce();
-			FloatMessage.create(player.xpos, player.ypos, "spr_message_"+Math.abs(nextCatch), true);
-			System.out.println("AI Catch() nextBeat("+nextBeat+") == nextCatch("+nextCatch+")");
+			FloatMessage.create(player.xpos, player.ypos, "spr_message_"+Math.abs(nextCatch), false);
 		}
-		if (nextCatch == 4)
-			FloatMessage.create(player.xpos, player.ypos, "spr_message_"+Math.abs(nextCatch), true);
 		
 		nextBeat--;
 		framesLeft--;
 		if (framesLeft <= 0) {
-			framesLeft = getBeatrate();
+			framesLeft = getBeatrate()/2;
 			nextBeat = framesLeft;
 			resetCatchTiming();
 			resetThrowTiming();
+			System.out.println("AI Catch() nextBeat("+nextBeat+") == nextCatch("+nextCatch+")");
 		}
 	}
+
 
 	private void resetCatchTiming() {
 		int aicomp[] = {0,0,1,1,1,1,2,2,2,3,4};
@@ -56,7 +58,8 @@ public class AIController extends GameObj implements Controller {
 	}
 	
 	private void resetThrowTiming() {
-		int ballcount = player.countBall();
+		int ballcount = random(player.countBall()+1);
+		if (ballcount == 0) System.out.println("player.countBall() = " + player.countBall());
 		while (ballcount > 0) {
 			player.readyToThrow(random(2));
 			ballcount--;
@@ -64,11 +67,26 @@ public class AIController extends GameObj implements Controller {
 	}
 	
 	public void sync(int framesLeft) {
-		this.framesLeft = getBeatrate();
-		nextBeat = framesLeft/2;
+		this.framesLeft = framesLeft;
+		nextBeat = framesLeft;
 	}
 	
 	private int random(int max) {
-		return (int) (Math.random() * (max-1));
+		return (int) (Math.random() * (max));
+	}
+
+	@Override
+	public Player getPlayer() {
+		return player;
+	}
+
+	@Override
+	public boolean catchCheck() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	private int getBeatrate() {
+		return GameManager.getref().modeBeatrate;
 	}
 }

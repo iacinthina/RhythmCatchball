@@ -8,7 +8,7 @@ package org.rhythmcatchball.gameplay;
  */
 public class Ball extends GameObj
 {
-	private static final int timeover = -4;
+	private static final int timeover = -6;
 	private int framesLeft = 1;
 	private int framesTotal = 1;
 	private int caughtHold = 0;
