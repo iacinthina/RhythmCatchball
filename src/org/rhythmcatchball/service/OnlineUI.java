@@ -172,6 +172,8 @@ public class OnlineUI extends Panel{
     	case "proceed":
     		proceed.addActionListener(actionListener);
     		break;
+    	default:
+			break;
     	}
     }
 }

@@ -94,6 +94,8 @@ public class MainUI extends Panel {
     	case "close":
     		close.addActionListener(actionListener);
     		break;
+    	default:
+			break;
     	}
     }
     

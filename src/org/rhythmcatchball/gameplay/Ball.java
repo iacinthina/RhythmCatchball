@@ -90,6 +90,8 @@ public class Ball extends GameObj
 		case 3: //if(framesLeft == 3 || framesLeft == -3)
 			checkout = Checkout.LAME;
 			break;
+		default:
+			break;
 		}
 		return checkout;	//0이라면 무시
 	}
@@ -145,6 +147,8 @@ public class Ball extends GameObj
 					break;
 				case LAME:
 					FloatMessage.create(xpos, ypos, "spr_message_3", true);
+					break;
+				default:
 					break;
 				}
 			}
