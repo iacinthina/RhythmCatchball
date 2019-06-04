@@ -110,11 +110,17 @@ public class MainUI extends Panel {
 				statusLabel.setText(defaultTooltip);
 			}
 			@Override
-			public void mouseClicked(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+			}
 			@Override
-			public void mousePressed(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+			}
 			@Override
-			public void mouseReleased(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+			}
 		});
     }
 }

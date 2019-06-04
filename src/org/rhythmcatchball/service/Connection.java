@@ -23,15 +23,15 @@ public class Connection {
 	
 	//생성하고 바로 생성한 클래서에서 client, server 둘 중 하나 실행해야
 	public Connection() {
-		
+		//추후 구현 
 	}
 	
 	public static void main(String args[]) {
-		
+		//삭제 예정 
 	}
 	
 	//Client생성 메소드
-	//ip, port 입력받아 연결 생
+	//ip, port 입력받아 연결 생성 
 	public void Client(String IP, String Port){
 			
 			PortNum = Integer.parseInt(Port);

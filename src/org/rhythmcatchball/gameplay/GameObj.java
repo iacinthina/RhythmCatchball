@@ -25,14 +25,18 @@ public class GameObj {
 	 * mechanism : 
 	 * comment : 
 	 */
-	public void update() {}
+	public void update() {
+		//추후 구현 
+	}
 	
 	/**
 	 * purpose : 박자 순간 경신되는 내용
 	 * mechanism : 
 	 * comment : 쓰일것임. 고민중
 	 */
-	public void onBeat() {}
+	public void onBeat() {
+		//추후 구현 
+	}
 	
 	/**
 	 * purpose : 생성자로는 좀 그래

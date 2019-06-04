@@ -81,7 +81,7 @@ public class GameManager extends JFrame {
 	 * mechanism : gameInst 내의 모든 GameObj의 Update를 실행한다. isAlive()가 false면 리스트에서 제거한다
 	 * comment : 
 	 */
-	public void Update() {
+	public void UpdateGame() {
 		ArrayList<GameObj> removeList = new ArrayList<GameObj>();
 		GameSprite spr = null; 
 		int f_width = getResWidth();
@@ -202,7 +202,7 @@ public class GameManager extends JFrame {
 		try {
 			while(true) {
 				Thread.sleep(16);
-				gm.Update();
+				gm.UpdateGame();
 				gm.repaint();
         		//gm.setVisible(true);
 			}
@@ -239,7 +239,7 @@ public class GameManager extends JFrame {
 	}
 	
 	private void launchSingle() {
-		
+		//추후 구현 
 	}
 
 	public int getResWidth() {

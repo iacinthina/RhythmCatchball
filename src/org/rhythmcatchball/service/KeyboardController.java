@@ -10,7 +10,7 @@ public class KeyboardController implements Controller, KeyListener {
 	public int[] keyval = new int[4];
 	
 	public KeyboardController() {
-		
+		//추후 구현 
 	}
 	
 	//player설정 
@@ -57,7 +57,7 @@ public class KeyboardController implements Controller, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-				
+		// TODO Auto-generated method stub
 	}
 	
 	@Override
