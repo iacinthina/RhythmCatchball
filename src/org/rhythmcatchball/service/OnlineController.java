@@ -12,8 +12,7 @@ public class OnlineController implements Controller{
 	public int[] keyval = new int[4];
 	
 	public OnlineController(){
-		
-		
+		//추후 구현 
 	}
 
 	@Override

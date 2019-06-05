@@ -62,6 +62,8 @@ public class TutorialUI extends Panel {
     	case "goBack":
     		goBack.addActionListener(actionListener);
     		break;
+    	default:
+			break;
     	}
     }
 }
