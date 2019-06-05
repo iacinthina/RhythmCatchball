@@ -29,7 +29,7 @@ public class Player extends GameObj {
 		comboLevel = 0;
 		
 	}
-
+	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		ArrayList<Ball> removeList = new ArrayList<Ball>();
@@ -53,7 +53,7 @@ public class Player extends GameObj {
 		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
 		 */
 	}
-	
+	@Override
 	public void onBeat() {
 		// TODO Auto-generated method stub
 		throwAll();

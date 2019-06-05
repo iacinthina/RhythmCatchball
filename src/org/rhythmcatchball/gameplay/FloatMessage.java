@@ -16,6 +16,7 @@ public class FloatMessage extends GameObj
 	 * mechanism : 매 프레임 vspeed만큼 이동하고, vspeed는 점점 0으로, 시간이 다되면 제거.
 	 * comment : 
 	 */
+	@Override
 	public void update()
 	{
 		ypos += vspeed;

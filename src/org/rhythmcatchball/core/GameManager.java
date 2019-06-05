@@ -116,6 +116,7 @@ public class GameManager extends JFrame {
 		removeList.clear();
 	}
 	
+	@Override
 	public void paint(Graphics g){
 		if (buffImage != null)
 			g.drawImage(buffImage, 0, 0, this);

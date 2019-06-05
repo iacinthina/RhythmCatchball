@@ -103,6 +103,7 @@ public class Connection {
 			
 			new Thread()
 			{
+				@Override
 				public void run() {
 					
 					//온라인 플레이어 상대방 연결 

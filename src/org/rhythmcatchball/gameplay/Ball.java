@@ -23,6 +23,7 @@ public class Ball extends GameObj
 	 * mechanism : 매 프레임 진행시간에 따라서 현재위치 계산함. SetPos로 이동
 	 * comment : 
 	 */
+	@Override
 	public void update() {
 		if(caughtHold == 0){
 			framesLeft -= 1;
@@ -36,7 +37,7 @@ public class Ball extends GameObj
 			}
 		}
 	}
-	
+	@Override
 	public void onBeat() {
 		if (caughtHold > 0) {
 			//lame판정 띄워줘야 함... Player 인스턴스가, update때 이 공을 보고 얘는 글러먹었구나 라고 판단할 수 있어야 함.
