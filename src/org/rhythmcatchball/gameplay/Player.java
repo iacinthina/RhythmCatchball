@@ -31,14 +31,11 @@ public class Player extends GameObj {
 	}
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		ArrayList<Ball> removeList = new ArrayList<Ball>();
-		Checkout precision = null;
 		for(Ball b : catchQueue) {
 			if (b.isOver()) {
 				b.checkout = Checkout.LAME;
 				System.out.println("it's over: "+b.checkout);
-				//precision = b.judgement();
 				addScore(Checkout.LAME);
 				opponent.takeBall(b);
 				removeList.add(b);
@@ -48,21 +45,15 @@ public class Player extends GameObj {
 		for(Ball b : removeList) {
 			catchQueue.remove(b);
 		}
-		/**
-		 * (대충 catchQueue에 있는 Ball.isOver() 불러서 못잡으면 점수깎는다는 내용)
-		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
-		 */
 	}
 	@Override
 	public void onBeat() {
-		// TODO Auto-generated method stub
 		throwAll();
-		int holdingPenalty = ballsGot.size();
+		int holdingPenalty = countBall();
 		score = (int) Math.max(0, score - Math.pow(holdingPenalty, 2));
 	}
 	
 	public static GameObj create(float xpos, float ypos) {
-		// TODO Auto-generated method stub
 		/**
 		 * (반드시 register() 사용하고, Player형 인스턴스 생성해서 리턴해야 한다.)
 		 * 이미지 설정도 같이 해주세요
@@ -77,17 +68,6 @@ public class Player extends GameObj {
 		
 		return player;
 	}
-	
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-		super.destroy();
-		/**
-		 * (ArrayList flush)
-		 * 코드 작성 전이나 중이나 후나 프로젝트 매니저한테 물어본 내용 메모해가면서 코드 짤 수 있도록 부탁드립니다.
-		 */
-	}
-	
 	
 	/**
 	 * purpose : 잡기키를 누르면 공을 잡으려고
@@ -207,7 +187,7 @@ public class Player extends GameObj {
 	}
 	
 	public int countBall() {
-		if (ballsGot == null) return -1;
+		if (ballsGot == null) return 0;
 		return ballsGot.size();
 	}
 }

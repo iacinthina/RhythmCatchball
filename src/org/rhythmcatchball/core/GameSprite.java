@@ -40,9 +40,8 @@ public class GameSprite {
 	 * purpose : 
 	 * mechanism : 
 	 * comment : 
-	 * @throws IOException 
 	 */
-	public static boolean loadImages(ImageObserver arg0) throws IOException {
+	public static boolean loadImages(ImageObserver arg0) {
 		/*
 		 * 파일을 돌아가며 설정. Image[] sprite에 넣는다.
 		 */
@@ -58,7 +57,6 @@ public class GameSprite {
 		sprites = new HashMap<String, GameSprite>();
 		try {
 			filereader = new FileReader(file);
-		
 			bufferedreader = new BufferedReader(filereader);
 			
 			while(true)
@@ -73,15 +71,14 @@ public class GameSprite {
 			}
 			//파일로부터 파일명 읽어서 그대로 키값으로 활용, 해쉬맵에 추가 
 			result = true;
+			
+			filereader.close();
+			bufferedreader.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("file does not exists");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			filereader.close();
-			bufferedreader.close();	
 		}
 		return result;//성공시 true
 	}

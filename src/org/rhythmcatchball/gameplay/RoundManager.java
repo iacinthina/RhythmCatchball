@@ -1,6 +1,5 @@
 package org.rhythmcatchball.gameplay;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 import org.rhythmcatchball.core.GameManager;
@@ -17,7 +16,6 @@ public class RoundManager extends GameObj {
 	private ArrayList<Ball> taken;
 	
 	private ArrayList<Controller> ctrls;
-	
 	
 	private int signal_skill;
 	private int signal_toss;

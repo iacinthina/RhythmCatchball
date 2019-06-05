@@ -1,6 +1,7 @@
 package org.rhythmcatchball.service;
 
 import java.awt.Button;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Label;
@@ -10,42 +11,59 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class OnlineUI extends Panel{
-    private Panel roomPanel;
+    private Label statusLabel;
+    private String defaultTooltip;
+    
     private Panel textPanel;
-    private Panel controlPanel;
-    
-    
-    private boolean isMKroom = false;
-    private boolean isJNroom = false;
     private Panel jnpanel;
     private Panel mkpanel;
-    String port;
-    String ip;
+    private Container textPanelEntry;
+    private String port;
+    private String ip;
+
+    private Panel controlPanel;
 
 	private Button host;
 	private Button join;
 	private Button goBack;
 	private Button proceed;
+	private Panel proceedPanel;
+
+    private Container update;
     
-    public OnlineUI() {
+    public OnlineUI(Container update) {
+    	port = "";
+    	ip = "";
+    	defaultTooltip = "Make your game or join to other";
+    	this.update = update;
+    	
         host = new Button("Make Room");
         join = new Button("Join Room");
-        goBack = new Button("Return");
-        proceed = new Button("PREFERENCE");
+        goBack = new Button("Return to Title");
+        proceed = new Button("Game Start");
+
+    	proceedPanel = new Panel();
+    	proceedPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+    	proceedPanel.add(proceed);
         
+    	
         prepareGUI();
+        setMakeRoom();
+        setJoinRoom();
+        RoomButton();
     }
  
  
     private void prepareGUI() {
     	this.setLayout(new GridLayout(3, 1));
     	
+    	statusLabel = new Label();
+        statusLabel.setText(defaultTooltip);
+        statusLabel.setAlignment(Label.CENTER);
+    	
     	controlPanel = new Panel();
     	controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
     	
-        roomPanel = new Panel();
-        roomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        
         textPanel = new Panel();
         textPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
  
@@ -53,72 +71,46 @@ public class OnlineUI extends Panel{
         controlPanel.add(join);
         controlPanel.add(goBack);
 
+        this.add(statusLabel);
         this.add(textPanel);
         this.add(controlPanel);
-        this.add(roomPanel);
         this.setVisible(true);
     }
  
-    public void RoomButton(Panel panel) {
-        Button mkRoomButton = new Button("MAKE ROOM");
-        Button joinRoomButton = new Button("JOIN ROOM");
- 
-        mkRoomButton.addActionListener(new ActionListener() {
+    public void RoomButton() {
+        host.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //statusLabel.setText("mkRoomButton Button clicked.");
-                if(isMKroom == false){
-                    if(isJNroom == true){
-                       jnpanel.setVisible(false);
-                       isJNroom = false;   
-                    }
-                    MakeRoom();
-                }
-                else{
-//                    if(isJNroom == true)
-//                        statusLabel.setText("error");
-                }
+            	setTextPanel(mkpanel);
+            	update.setVisible(true);
             }
         });
- 
-        joinRoomButton.addActionListener(new ActionListener() {
+        join.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //statusLabel.setText("joinRoomButton Button clicked.");
-                if(isJNroom == false){
-                    if(isMKroom == true){
-                       mkpanel.setVisible(false);
-                       isMKroom = false;   
-                    }
-                    JoinRoom();
-                }
-                else{
-//                    if(isMKroom == true)
-//                        statusLabel.setText("error");
-                }
+            	setTextPanel(jnpanel);
+            	update.setVisible(true);
+            	
             }
         });
-        
-        roomPanel.add(mkRoomButton);
-        roomPanel.add(joinRoomButton);
-        controlPanel.add(roomPanel);
-        
-        panel.add(roomPanel);
-        this.setVisible(true);
     }
     
-    public void JoinRoom(){
+    private void setJoinRoom(){
         jnpanel = new Panel();
         Button enter = new Button("ENTER");
         
         Label port_l = new Label("Port Num");
         Label ip_l = new Label("IP Address");
-        TextField port_t = new TextField("",10);
-        TextField ip_t = new TextField("",15);
+        TextField port_t = new TextField(port,10);
+        TextField ip_t = new TextField(ip,15);
         
         enter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	ip = ip_t.getText();
             	port = port_t.getText();
-            	//statusLabel.setText("IP : " + ip + " Port : " + port);
+            	setTextPanel(proceedPanel);
+            	statusLabel.setText("IP : " + ip + " Port : " + port);
+            	update.setVisible(true);
             }
         });
         
@@ -127,36 +119,37 @@ public class OnlineUI extends Panel{
         jnpanel.add(port_l);
         jnpanel.add(port_t);
         jnpanel.add(enter);
-        
-        textPanel.add(jnpanel);
-        this.setVisible(true);
-        isJNroom = true;    
     }
 
-    public void MakeRoom(){
+    private void setMakeRoom(){
         mkpanel = new Panel();
         Button enter = new Button("ENTER");
         
         Label port_l = new Label("Port Num");
-        TextField port_t = new TextField("",10);
-        
+        TextField port_t = new TextField(port,10);
+
         enter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	port = port_t.getText();
-            	//statusLabel.setText("Port : " + port);
-            	//Server server = new Server(port);
+            	setTextPanel(proceedPanel);
+            	statusLabel.setText("Port : " + port);
+            	update.setVisible(true);
             }
         });
         
         mkpanel.add(port_l);
         mkpanel.add(port_t);
         mkpanel.add(enter);
-        
-        textPanel.add(mkpanel);
-        this.setVisible(true);
-        isMKroom = true;
     }
 
+    private void setTextPanel(Panel change) {
+    	if (textPanelEntry != null)
+    		textPanel.remove(textPanelEntry);
+    	textPanelEntry = change;
+    	textPanel.add(textPanelEntry);
+    	setVisible(true);
+    }
+    
     public void setActionListener(String button, ActionListener actionListener) {
     	if (actionListener == null) return;
     	switch(button) {
@@ -173,10 +166,8 @@ public class OnlineUI extends Panel{
     		proceed.addActionListener(actionListener);
     		break;
     	default:
-			break;
+    		//no target
+    		break;
     	}
     }
 }
-
-
-

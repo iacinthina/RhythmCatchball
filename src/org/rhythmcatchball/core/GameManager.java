@@ -95,19 +95,21 @@ public class GameManager extends JFrame {
 		instnum = gameInst.size();
 		for(i = 0; i < instnum; i++) {
 			o = gameInst.get(i);
-			if (o.isAlive()) {
-				if (o.isActive()) {
-					o.update();
-					if (o.getVisible()) { //보여야 그릴 수 있다.(?)
-						spr = GameSprite.get(o.getSpriteKey());
-						if(spr != null)
-							buffg.drawImage(spr.getImage(), Math.round(o.xpos-spr.getxoff()), Math.round(o.ypos-spr.getyoff()), this);
-						buffg.drawLine((int)o.xpos, (int)o.ypos - 30, (int)o.xpos, (int)o.ypos + 30);
-						buffg.drawLine((int)o.xpos - 30, (int)o.ypos, (int)o.xpos + 30, (int)o.ypos);
-					}
-				}
-			} else {
+			if (!o.isAlive()) {
 				removeList.add(o);
+				continue;
+			}
+			if (o.isActive()) {
+				o.update();
+			}
+			if (o.getVisible()) { //보여야 그릴 수 있다.(?)
+				spr = GameSprite.get(o.getSpriteKey());
+				if(spr != null)
+					buffg.drawImage(spr.getImage(), Math.round(o.xpos-spr.getxoff()), Math.round(o.ypos-spr.getyoff()), this);
+				else {
+					buffg.drawLine((int)o.xpos, (int)o.ypos - 30, (int)o.xpos, (int)o.ypos + 30);
+					buffg.drawLine((int)o.xpos - 30, (int)o.ypos, (int)o.xpos + 30, (int)o.ypos);
+				}
 			}
 		}
 		for(GameObj rm : removeList) {
@@ -172,7 +174,7 @@ public class GameManager extends JFrame {
 		
 		TutorialUI tutorialUI = new TutorialUI();
 		MainUI mainUI = new MainUI();
-		OnlineUI onlineUI = new OnlineUI();
+		OnlineUI onlineUI = new OnlineUI(gm);
 		
 		mainUI.setActionListener("close", new ActionListener() {
             public void actionPerformed(ActionEvent e) {

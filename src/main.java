@@ -91,7 +91,7 @@ public class main {
 					FloatMessage.create(xpos, ypos, "spr_message_4", true);
 					//System.out.println("beat");
 				}
-				gm.Update();
+				gm.UpdateGame();
 				gm.repaint();
 				//P1Score = P1.getScore();
 				//P2Score = P2.getScore();

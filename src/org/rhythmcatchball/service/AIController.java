@@ -2,7 +2,6 @@ package org.rhythmcatchball.service;
 
 import org.rhythmcatchball.core.GameManager;
 import org.rhythmcatchball.gameplay.FloatMessage;
-import org.rhythmcatchball.gameplay.GameObj;
 import org.rhythmcatchball.gameplay.Player;
 import org.rhythmcatchball.gameplay.RoundManager;
 

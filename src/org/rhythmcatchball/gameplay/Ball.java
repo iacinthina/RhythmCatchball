@@ -8,7 +8,7 @@ package org.rhythmcatchball.gameplay;
  */
 public class Ball extends GameObj
 {
-	private static final int timeover = -6;
+	private static final int TIMEOVER = -6;
 	private int framesLeft = 1;
 	private int framesTotal = 1;
 	private int caughtHold = 0;
@@ -43,13 +43,12 @@ public class Ball extends GameObj
 			//lame판정 띄워줘야 함... Player 인스턴스가, update때 이 공을 보고 얘는 글러먹었구나 라고 판단할 수 있어야 함.
 			if (--caughtHold == 0) {
 				checkout = Checkout.LAME;
-				framesLeft = timeover;
+				framesLeft = TIMEOVER;
 			}
 		}
 	}
 
 	public static GameObj create(float xpos, float ypos) {
-		// TODO Auto-generated method stub
 		/**
 		 * (반드시 register() 사용하고, Ball형 인스턴스 생성해서 리턴해야 한다.)
 		 * 이미지 설정도 같이 해주세요
@@ -166,7 +165,7 @@ public class Ball extends GameObj
 	 * comment : 
 	 */
 	public boolean isOver() {
-		return (framesLeft <= timeover);
+		return (framesLeft <= TIMEOVER);
 	}
 	
 	/**
