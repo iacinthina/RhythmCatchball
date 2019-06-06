@@ -78,21 +78,10 @@ public class OnlineUI extends Panel{
     }
  
     public void RoomButton() {
-        host.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //statusLabel.setText("mkRoomButton Button clicked.");
-            	setTextPanel(mkpanel);
-            	update.setVisible(true);
-            }
-        });
-        join.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //statusLabel.setText("joinRoomButton Button clicked.");
-            	setTextPanel(jnpanel);
-            	update.setVisible(true);
-            	
-            }
-        });
+        host.addActionListener((ActionEvent e) -> {setTextPanel(mkpanel);
+        											update.setVisible(true);});
+        join.addActionListener((ActionEvent e) -> {setTextPanel(jnpanel);
+													update.setVisible(true);});
     }
     
     private void setJoinRoom(){
@@ -104,14 +93,12 @@ public class OnlineUI extends Panel{
         TextField port_t = new TextField(port,10);
         TextField ip_t = new TextField(ip,15);
         
-        enter.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	ip = ip_t.getText();
-            	port = port_t.getText();
-            	setTextPanel(proceedPanel);
-            	statusLabel.setText("IP : " + ip + " Port : " + port);
-            	update.setVisible(true);
-            }
+        enter.addActionListener((ActionEvent e) -> {
+            ip = ip_t.getText();
+        	port = port_t.getText();
+        	setTextPanel(proceedPanel);
+        	statusLabel.setText("IP : " + ip + " Port : " + port);
+        	update.setVisible(true);
         });
         
         jnpanel.add(ip_l);
@@ -128,14 +115,12 @@ public class OnlineUI extends Panel{
         Label port_l = new Label("Port Num");
         TextField port_t = new TextField(port,10);
 
-        enter.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	port = port_t.getText();
-            	setTextPanel(proceedPanel);
-            	statusLabel.setText("Port : " + port);
-            	update.setVisible(true);
-            }
-        });
+        enter.addActionListener((ActionEvent e) -> {
+    		port = port_t.getText();
+        	setTextPanel(proceedPanel);
+        	statusLabel.setText("Port : " + port);
+        	update.setVisible(true);
+    });
         
         mkpanel.add(port_l);
         mkpanel.add(port_t);
