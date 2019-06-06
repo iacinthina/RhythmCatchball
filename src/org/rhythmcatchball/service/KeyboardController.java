@@ -6,7 +6,7 @@ import org.rhythmcatchball.core.Key;
 import org.rhythmcatchball.gameplay.Player;
 
 public class KeyboardController implements Controller, KeyListener {
-	public Player player;
+	private Player player;
 	public int[] keyval;
 	private boolean catchCheck;
 	

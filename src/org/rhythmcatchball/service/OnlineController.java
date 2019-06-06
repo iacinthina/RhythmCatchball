@@ -5,8 +5,8 @@ import org.rhythmcatchball.gameplay.Player;
 
 public class OnlineController implements Controller{
 	
-	public Player player;
-	public Connection connection;
+	private Player player;
+	private Connection connection;
 	int keyCode;
 	String data;
 	public int[] keyval = new int[4];
