@@ -19,7 +19,7 @@ public class Connection {
 	InetAddress serverIP;
 	Socket opponentSocket, mySocket;
 	ServerSocket serverSocket;
-	BufferedReader bufferedReader;
+	BufferedReader bufferReader;
 	
 	//생성하고 바로 생성한 클래서에서 client, server 둘 중 하나 실행해야
 	public Connection() {
@@ -113,12 +113,12 @@ public class Connection {
 						JOptionPane.showMessageDialog(null, "here's your opponent!!!");
 
 						
-						bufferedReader = new BufferedReader(new InputStreamReader(opponentSocket.getInputStream()));
+						bufferReader = new BufferedReader(new InputStreamReader(opponentSocket.getInputStream()));
 						System.out.println("opponent connected...\n");
 						while(true) {
 							data = null;
 							String opponentData = null;
-							opponentData = bufferedReader.readLine();
+							opponentData = bufferReader.readLine();
 							
 							if(opponentData.length() > 0) {
 								data = opponentData;
