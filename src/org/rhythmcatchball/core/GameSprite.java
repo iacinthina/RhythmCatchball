@@ -71,14 +71,24 @@ public class GameSprite {
 			}
 			//파일로부터 파일명 읽어서 그대로 키값으로 활용, 해쉬맵에 추가 
 			result = true;
-			
-			filereader.close();
-			bufferedreader.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("file does not exists");
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				filereader.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				bufferedreader.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return result;//성공시 true
 	}
