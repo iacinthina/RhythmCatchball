@@ -38,7 +38,7 @@ public class main {
 		gm.setVisible(true);
 
 		RoundManager rm = (RoundManager) RoundManager.create(f_width/2, f_height/2);
-		rm.launchLocal();
+		rm.initPlayers();
 		
 		
 		/*Player P1 = (Player) Player.create(70, 300);
@@ -59,7 +59,7 @@ public class main {
 		P1C.setPlayer(rm.getEntry(0));
 		rm.addController(P1C);*/
 		
-		AIController P2C = new AIController(null);
+		/*AIController P2C = new AIController(null);
 		P2C.setPlayer(rm.getEntry(1));
 		rm.addController(P2C);
 		
@@ -69,7 +69,7 @@ public class main {
 		P1C.keyval[1] = 83;
 		P1C.keyval[2] = 65;
 		P1C.keyval[3] = 32;
-		gm.addKeyListener(P1C);
+		gm.addKeyListener(P1C);*/
 		
 		/*KeyboardController P2C = new KeyboardController();
 		

@@ -41,7 +41,7 @@ public class GameManager extends JFrame {
 	private Panel currentUI = null;
 	
 	private ArrayList<GameObj> gameInst; //게임 진행중에 활성화된 오브젝트는 전부 여기로 들어간다.
-	public int modeBeatrate = 30;
+	public int modeBeatrate = 40;
 	public int modeTimeLimit = 60;
 	private UserConfig userConfig;
 	
@@ -58,25 +58,6 @@ public class GameManager extends JFrame {
 	}
 	
 	/**
-	 * purpose : gui에 이미지 그리기
-	 * mechanism : gameInst를 돌아가면서 스프라이트 그림
-	 * comment : Draw에서 그릴거 다그려둠.
-	 */
-	public void draw(Graphics buffg) {
-		GameSprite spr = null; 
-		for(GameObj o : gameInst) {
-			if (o.getVisible()) { //보여야 그릴 수 있다.(?)
-				spr = GameSprite.get(o.getSpriteKey());
-				if(spr != null)
-					buffg.drawImage(spr.getImage(), Math.round(o.xpos-spr.getxoff()), Math.round(o.ypos-spr.getyoff()), this);
-				buffg.drawLine((int)o.xpos, (int)o.ypos - 30, (int)o.xpos, (int)o.ypos + 30);
-				buffg.drawLine((int)o.xpos - 30, (int)o.ypos, (int)o.xpos + 30, (int)o.ypos);
-			}
-		}
-	}
-	
-	
-	/**
 	 * purpose : 1프레임 진행
 	 * mechanism : gameInst 내의 모든 GameObj의 Update를 실행한다. isAlive()가 false면 리스트에서 제거한다
 	 * comment : 
@@ -88,7 +69,6 @@ public class GameManager extends JFrame {
 		int f_height = getResHeight();
 		buffImage = createImage(f_width, f_height); 
 		buffg = buffImage.getGraphics();
-		
 		
 		int i, instnum;
 		GameObj o = null;
@@ -102,7 +82,7 @@ public class GameManager extends JFrame {
 			if (o.isActive()) {
 				o.update();
 			}
-			if (o.getVisible()) { //보여야 그릴 수 있다.(?)
+			if (o.getVisible()) {
 				spr = GameSprite.get(o.getSpriteKey());
 				if(spr != null)
 					buffg.drawImage(spr.getImage(), Math.round(o.xpos-spr.getxoff()), Math.round(o.ypos-spr.getyoff()), this);
@@ -124,16 +104,6 @@ public class GameManager extends JFrame {
 			g.drawImage(buffImage, 0, 0, this);
 	}
 	
-	public void testBeat() {
-		GameObj o;
-		int i, instnum = gameInst.size();
-		for(i = 0; i < instnum; i++) {
-			o = gameInst.get(i);
-			if (o.isAlive() && o.isActive())
-				o.onBeat();
-		}
-	}
-	
 	/**
 	 * purpose : gameInstances 리스트에 추가
 	 * mechanism : 
@@ -143,24 +113,40 @@ public class GameManager extends JFrame {
 		return gameInst.add(instance);
 	}
 	
-	public void initLocalMulti() {
+	private void initSinglePlay() {
 		int f_width = getResWidth();
 		int f_height = getResHeight();
 		RoundManager rm = (RoundManager) RoundManager.create(f_width*0.5f, f_height*0.5f);
-    	rm.launchLocal();
+    	rm.initPlayers();
     	
+		KeyboardController P1C = new KeyboardController(userConfig.getKey1Set());
+		P1C.setPlayer(rm.getEntry(0));
+		rm.addController(P1C);
+		addKeyListener(P1C);
+		requestFocus();
+
     	AIController P2C = new AIController(null);
 		P2C.setPlayer(rm.getEntry(1));
 		rm.addController(P2C);
-		
-		KeyboardController P1C = new KeyboardController();
+	}
+	
+	private void initLocalMulti() {
+		int f_width = getResWidth();
+		int f_height = getResHeight();
+		RoundManager rm = (RoundManager) RoundManager.create(f_width*0.5f, f_height*0.5f);
+    	rm.initPlayers();
+    	
+		KeyboardController P1C = new KeyboardController(userConfig.getKey1Set());
 		P1C.setPlayer(rm.getEntry(0));
-		P1C.keyval[0] = 68;
-		P1C.keyval[1] = 83;
-		P1C.keyval[2] = 65;
-		P1C.keyval[3] = 32;
-		
+		rm.addController(P1C);
 		addKeyListener(P1C);
+
+		KeyboardController P2C = new KeyboardController(userConfig.getKey2Set());
+		P2C.setPlayer(rm.getEntry(1));
+		rm.addController(P2C);
+		addKeyListener(P2C);
+		
+		requestFocus();
 	}
 	
 	public static void main(String[] args) {
@@ -171,8 +157,9 @@ public class GameManager extends JFrame {
 
 		gm.setSize(f_width, f_height);
 		//gm.setLayout(new FlowLayout(FlowLayout.CENTER));
-		
-		TutorialUI tutorialUI = new TutorialUI();
+
+		TutorialUI tutorialUI_single = new TutorialUI();
+		TutorialUI tutorialUI_local = new TutorialUI();
 		MainUI mainUI = new MainUI();
 		OnlineUI onlineUI = new OnlineUI(gm);
 		
@@ -182,13 +169,20 @@ public class GameManager extends JFrame {
             }
 		});
 		
-		mainUI.setActionListener("onePlay", gm.UIchanger(tutorialUI));
-		mainUI.setActionListener("twoPlay", gm.UIchanger(tutorialUI));
+		mainUI.setActionListener("onePlay", gm.UIchanger(tutorialUI_single));
+		mainUI.setActionListener("twoPlay", gm.UIchanger(tutorialUI_local));
 		mainUI.setActionListener("onlinePlay", gm.UIchanger(onlineUI));
-		tutorialUI.setActionListener("goBack", gm.UIchanger(mainUI));
+		tutorialUI_single.setActionListener("goBack", gm.UIchanger(mainUI));
+		tutorialUI_local.setActionListener("goBack", gm.UIchanger(mainUI));
 		onlineUI.setActionListener("goBack", gm.UIchanger(mainUI));
 		
-		tutorialUI.setActionListener("proceed", new ActionListener() {
+		tutorialUI_single.setActionListener("proceed", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	gm.remove(gm.currentUI);
+            	gm.initSinglePlay();
+            }
+		});
+		tutorialUI_local.setActionListener("proceed", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	gm.remove(gm.currentUI);
             	gm.initLocalMulti();
@@ -207,7 +201,6 @@ public class GameManager extends JFrame {
 				Thread.sleep(16);
 				gm.UpdateGame();
 				gm.repaint();
-        		//gm.setVisible(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -225,29 +218,10 @@ public class GameManager extends JFrame {
 		};
 	}
 	
-	private ActionListener GameStarter(String key) {
-		return new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	remove(currentUI);
-        		currentUI = null;
-        		switch(key) {
-        		case "single":
-        			break;
-        		default:
-        			break;
-        		}
-        		setVisible(true);
-            }
-		};
-	}
-	
-	private void launchSingle() {
-		//추후 구현 
-	}
-
 	public int getResWidth() {
 		return userConfig.getResWidth();
 	}
+	
 	public int getResHeight() {
 		return userConfig.getResHeight();
 	}

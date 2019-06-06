@@ -7,34 +7,24 @@ import org.rhythmcatchball.gameplay.Player;
 
 public class KeyboardController implements Controller, KeyListener {
 	public Player player;
-	public int[] keyval = new int[4];
+	public int[] keyval;
+	private boolean catchCheck;
 	
-	public KeyboardController() {
-		//추후 구현 
+	public KeyboardController(int[] keySet) {
+		if (keySet != null)
+			keyval = keySet;
+		catchCheck = false;
 	}
 	
 	//player설정 
+	@Override
 	public void setPlayer(Player playertoset) {
 		this.player = playertoset;
 	}
 
 	//누른 키에 대해 작동 
-	public void keyTyped(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		System.out.println("keyCode = "+keyCode);
-		if(keyCode == keyval[Key.LOW.getIndex()]) {
-			player.readyToThrow(0);
-		}
-		if (keyCode == keyval[Key.MIDDLE.getIndex()]) {
-			player.readyToThrow(1);
-		}
-		if(keyCode == keyval[Key.HIGH.getIndex()]) {
-			player.readyToThrow(2);
-		}
-		if(keyCode == keyval[Key.RECEIVE.getIndex()]) {
-			player.catchOnce();
-		}
-	}
+	@Override
+	public void keyTyped(KeyEvent e) {}
 	
 
 	@Override
@@ -52,13 +42,12 @@ public class KeyboardController implements Controller, KeyListener {
 		}
 		if(keyCode == keyval[Key.RECEIVE.getIndex()]) {
 			player.catchOnce();
+			catchCheck = true;
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-	}
+	public void keyReleased(KeyEvent e) {}
 	
 	@Override
 	public Player getPlayer() {
@@ -67,13 +56,11 @@ public class KeyboardController implements Controller, KeyListener {
 
 	@Override
 	public boolean catchCheck() {
-		// TODO Auto-generated method stub
-		return false;
+		return catchCheck;
 	}
 
 	@Override
 	public void update(int beatcount) {
-		// TODO Auto-generated method stub
-		
+		catchCheck = false;
 	}
 }

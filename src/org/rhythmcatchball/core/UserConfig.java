@@ -20,7 +20,6 @@ public class UserConfig {
 		confKey2Set[Key.MIDDLE.getIndex()] = 40;
 		confKey2Set[Key.HIGH.getIndex()] = 39;
 		confKey2Set[Key.RECEIVE.getIndex()] = 16;
-		
 	}
 	
 	//일단 만들어놓고 나중에 변경
@@ -32,4 +31,11 @@ public class UserConfig {
 	}
 	public int getResWidth() {return confResolu[0];}
 	public int getResHeight() {return confResolu[1];}
+
+	public int[] getKey1Set() {
+		return confKey1Set;
+	}
+	public int[] getKey2Set() {
+		return confKey2Set;
+	}
 }

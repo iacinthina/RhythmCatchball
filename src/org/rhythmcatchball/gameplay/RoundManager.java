@@ -23,6 +23,7 @@ public class RoundManager extends GameObj {
 	private int signal_great;
 	private int signal_reversal;
 	
+	
 	public RoundManager() {
 		entry = new ArrayList<Player>();
 		playtime = -3;
@@ -61,11 +62,15 @@ public class RoundManager extends GameObj {
 		if (++beatcount >= beatrate) {
 			beatcount = 0;
 			onBeat();
-			for(Player p : entry)
-				p.onBeat();
-			for(Ball b : taken)
-				b.onBeat();
+			System.out.println("playtime = "+playtime);
+			if (tossable.isEmpty()) {
+				for(Player p : entry)
+					p.onBeat();
+				for(Ball b : taken)
+					b.onBeat();
+			}
 		}
+		signal_toss();
 		
 		//짝수일때는 0부터, 홀수일때는 1부터
 		Controller c;
@@ -80,18 +85,18 @@ public class RoundManager extends GameObj {
 				System.out.println("c = ctrls.get("+i+")");
 				continue;
 			}
-			c.update(beatcount);
-			if (/*c.catchCheck() && */!tossable.isEmpty()) {
+			if (c.catchCheck() && !tossable.isEmpty()) {
 				Ball toss = tossable.get(0);
 				if (toss != null) {
 					tossable.remove(0);
 					Player target = c.getPlayer().opponent;
 					target.takeBall(toss);
-					toss.reset(toss.xpos, toss.ypos, 1, target);
+					toss.reset(toss.xpos, toss.ypos, 0.5f, target, 0f);
 					taken.add(toss);
 				}
 				System.out.println("toss = "+toss);
 			}
+			c.update(beatcount);
 		}
 		
 	}
@@ -102,16 +107,22 @@ public class RoundManager extends GameObj {
 			tossable.add(tossed);
 			tossed = null;
 		}
-		if (playtime++ < 0) {
+		if (playtime < 0) {
 			Ball b = (Ball) Ball.create(xpos, ypos);
 			b.reset(xpos, ypos, 2, this, GameManager.getref().getResHeight() * 0.3f);
 			tossed = b;
 		}
-		if (playtime >= timelimit)
-			;//gameend
+		if (playtime == 0) {
+			for(Player player : entry) 
+				player.setActive(true);
+		}
+		if (playtime >= timelimit) {
+			endGame();
+		}
+		playtime++;
 	}
 	
-	public void launchLocal() {
+	public void initPlayers() {
 		int xdiff = (int) (GameManager.getref().getResWidth() * 0.4);
 		int ydiff = (int) (GameManager.getref().getResHeight() * 0.3);
 		Player P1 = (Player) Player.create(xpos - xdiff, ypos + ydiff);
@@ -121,19 +132,47 @@ public class RoundManager extends GameObj {
 
 		entry.add(P1);
 		entry.add(P2);
-		//P1.setActive(false);
-		//P2.setActive(false);
+		P1.setActive(false);
+		P2.setActive(false);
+	}
+	
+	private void endGame() {
+		int score, highest = -1;
+		boolean draw = false;
+		for(Player player : entry) {
+			score = player.getScore();
+			if (score == highest)
+				draw = true;
+			else if (score > highest) {
+				highest = score;
+			}
+		}
+		
+		int msgtime = 1000;
+		float vspd = -5f, fric = 0.3f;
+		for(Player player : entry) {
+			if (player.getScore() == highest) {
+				if (draw)
+					FloatMessage.create(player.xpos, player.ypos, "endgame_draw", msgtime, vspd, fric);
+				else 
+					FloatMessage.create(player.xpos, player.ypos, "endgame_win", msgtime, vspd, fric);
+			} else
+				FloatMessage.create(player.xpos, player.ypos, "endgame_lose", msgtime, vspd, fric);
+			
+			player.setActive(false);
+		}
+		setActive(false);
 	}
 	
 	public Player getEntry(int index) {
 		if (entry.isEmpty()) {
-			launchLocal();
+			initPlayers();
 			return entry.get(index);
 		}
 		return entry.get(index);
 	}
 	
-	public void addController (Controller ctrl) {
+	public void addController(Controller ctrl) {
 		if (ctrl != null) ctrls.add(ctrl);
 	}
 	

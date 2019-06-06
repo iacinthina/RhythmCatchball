@@ -105,7 +105,7 @@ public class Ball extends GameObj
 		xstart = x;
 		ystart = y;
 		framesTotal = airTime * getBeatrate();
-		framesLeft = framesTotal;
+		framesLeft = Math.max(1, framesTotal);
 		toward = target;
 		caughtHold = 0;
 		checkout = null;
@@ -114,11 +114,11 @@ public class Ball extends GameObj
 		setVisible(true);
 	}
 	
-	public void reset(float x, float y, int airTime, GameObj target, float height) {
+	public void reset(float x, float y, float airTime, GameObj target, float height) {
 		xstart = x;
 		ystart = y;
-		framesTotal = airTime * getBeatrate();
-		framesLeft = framesTotal;
+		framesTotal = (int) (airTime * getBeatrate());
+		framesLeft = Math.max(1, framesTotal);
 		toward = target;
 		caughtHold = 0;
 		checkout = null;
