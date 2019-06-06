@@ -163,11 +163,8 @@ public class GameManager extends JFrame {
 		MainUI mainUI = new MainUI();
 		OnlineUI onlineUI = new OnlineUI(gm);
 		
-		mainUI.setActionListener("close", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	System.exit(0);
-            }
-		});
+		mainUI.setActionListener("close", (ActionEvent e) -> System.exit(0));
+		
 		
 		mainUI.setActionListener("onePlay", gm.UIchanger(tutorialUI_single));
 		mainUI.setActionListener("twoPlay", gm.UIchanger(tutorialUI_local));
@@ -176,18 +173,10 @@ public class GameManager extends JFrame {
 		tutorialUI_local.setActionListener("goBack", gm.UIchanger(mainUI));
 		onlineUI.setActionListener("goBack", gm.UIchanger(mainUI));
 		
-		tutorialUI_single.setActionListener("proceed", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	gm.remove(gm.currentUI);
-            	gm.initSinglePlay();
-            }
-		});
-		tutorialUI_local.setActionListener("proceed", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	gm.remove(gm.currentUI);
-            	gm.initLocalMulti();
-            }
-		});
+		tutorialUI_single.setActionListener("proceed", (ActionEvent e) -> {gm.remove(gm.currentUI);
+																			gm.initSinglePlay();});
+		tutorialUI_local.setActionListener("proceed", (ActionEvent e) -> {gm.remove(gm.currentUI);
+																			gm.initLocalMulti();});
 
 		gm.currentUI = mainUI;
 		gm.add(gm.currentUI);
@@ -208,14 +197,10 @@ public class GameManager extends JFrame {
 	}
 	
 	private ActionListener UIchanger(Panel UIclass) {
-		return new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	remove(currentUI);
-            	add(UIclass);
-        		currentUI = UIclass;
-        		setVisible(true);
-            }
-		};
+		return (ActionEvent e) -> {remove(currentUI);
+									add(UIclass);
+									currentUI = UIclass;
+									setVisible(true);};
 	}
 	
 	public int getResWidth() {
