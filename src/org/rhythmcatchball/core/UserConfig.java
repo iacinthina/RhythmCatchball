@@ -7,6 +7,8 @@ public class UserConfig {
 	int[] confKey2Set = new int[4];	
 	
 	UserConfig() {
+		confVolume = 0.5f;
+		
 		confResolu[0] = 640;
 		confResolu[1] = 360;
 		//Player1 key값 초기설정
@@ -23,7 +25,8 @@ public class UserConfig {
 	}
 	
 	//일단 만들어놓고 나중에 변경
-	float ChangeVolume(float tmp) { return 0.0f;}
+	public void setVolume(float tmp) { confVolume = tmp; }
+	public float getVolume() { return confVolume; }
 
 	public void setResolusion(int width, int height) {
 		confResolu[0] = width;
@@ -32,10 +35,6 @@ public class UserConfig {
 	public int getResWidth() {return confResolu[0];}
 	public int getResHeight() {return confResolu[1];}
 
-	public int[] getKey1Set() {
-		return confKey1Set;
-	}
-	public int[] getKey2Set() {
-		return confKey2Set;
-	}
+	public int[] getKey1Set() {return confKey1Set;}
+	public int[] getKey2Set() {return confKey2Set;}
 }

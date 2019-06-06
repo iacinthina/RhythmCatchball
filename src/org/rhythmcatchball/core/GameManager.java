@@ -1,5 +1,4 @@
 package org.rhythmcatchball.core;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Panel;
@@ -10,11 +9,10 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import org.rhythmcatchball.gameplay.Ball;
-import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.GameObj;
 import org.rhythmcatchball.gameplay.RoundManager;
 import org.rhythmcatchball.service.AIController;
+import org.rhythmcatchball.service.ConfigureUI;
 import org.rhythmcatchball.service.KeyboardController;
 import org.rhythmcatchball.service.MainUI;
 import org.rhythmcatchball.service.OnlineUI;
@@ -162,6 +160,7 @@ public class GameManager extends JFrame {
 		TutorialUI tutorialUI_local = new TutorialUI();
 		MainUI mainUI = new MainUI();
 		OnlineUI onlineUI = new OnlineUI(gm);
+		ConfigureUI configureUI = new ConfigureUI(gm, gm.userConfig);
 		
 		mainUI.setActionListener("close", (ActionEvent e) -> System.exit(0));
 		
@@ -169,9 +168,11 @@ public class GameManager extends JFrame {
 		mainUI.setActionListener("onePlay", gm.UIchanger(tutorialUI_single));
 		mainUI.setActionListener("twoPlay", gm.UIchanger(tutorialUI_local));
 		mainUI.setActionListener("onlinePlay", gm.UIchanger(onlineUI));
+		mainUI.setActionListener("preference", gm.UIchanger(configureUI));
 		tutorialUI_single.setActionListener("goBack", gm.UIchanger(mainUI));
 		tutorialUI_local.setActionListener("goBack", gm.UIchanger(mainUI));
 		onlineUI.setActionListener("goBack", gm.UIchanger(mainUI));
+		configureUI.setActionListener("goBack", gm.UIchanger(mainUI));
 		
 		tutorialUI_single.setActionListener("proceed", (ActionEvent e) -> {gm.remove(gm.currentUI);
 																			gm.initSinglePlay();});
