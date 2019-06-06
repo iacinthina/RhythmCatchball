@@ -6,8 +6,8 @@ import org.rhythmcatchball.gameplay.Player;
 import org.rhythmcatchball.gameplay.RoundManager;
 
 public class AIController implements Controller {
-	public Player player;
-	public RoundManager gameInfo;
+	private Player player;
+	private RoundManager gameInfo;
 	private int framesLeft;
 	private int nextCatch;
 	private int nextBeat;
