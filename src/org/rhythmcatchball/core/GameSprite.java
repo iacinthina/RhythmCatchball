@@ -78,7 +78,8 @@ public class GameSprite {
 			e.printStackTrace();
 		} finally {
 			try {
-				filereader.close();
+				if(filereader != null)
+					filereader.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
