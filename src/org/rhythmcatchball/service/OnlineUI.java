@@ -21,8 +21,6 @@ public class OnlineUI extends Panel{
     private String port;
     private String ip;
 
-    private Panel controlPanel;
-
 	private Button host;
 	private Button join;
 	private Button goBack;
@@ -55,6 +53,7 @@ public class OnlineUI extends Panel{
  
  
     private void prepareGUI() {
+    	Panel controlPanel;
     	this.setLayout(new GridLayout(3, 1));
     	
     	statusLabel = new Label();

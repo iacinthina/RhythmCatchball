@@ -18,7 +18,6 @@ import java.awt.event.MouseListener;
  * 메인 화면의 틀만 잡아놓기
  */
 public class MainUI extends Panel {
-    private Label headerLabel;
     private Label statusLabel;
     private Panel controlPanel;
  
@@ -37,6 +36,7 @@ public class MainUI extends Panel {
     }
     
     private void prepareGUI() {
+    	Label headerLabel;
     	this.setLayout(new GridLayout(3, 1));
     	
         headerLabel = new Label();
