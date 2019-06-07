@@ -34,8 +34,12 @@ public class GameManager extends JFrame {
 		return singleton;
 	} //싱글톤 디자인 패턴
 	
-	public Graphics buffg;
-	public Image buffImage;
+
+	private int frameWidth;
+	private int frameHeight;
+	
+	private Graphics buffg;
+	private Image buffImage;
 	private Panel currentUI = null;
 	
 	private ArrayList<GameObj> gameInst; //게임 진행중에 활성화된 오브젝트는 전부 여기로 들어간다.
@@ -53,6 +57,8 @@ public class GameManager extends JFrame {
 		buffg = null;
 		buffImage = null;
 		userConfig = new UserConfig();
+		frameWidth = 640;//getResWidth();
+		frameHeight = 360;//getResHeight();
 	}
 	
 	/**
@@ -60,12 +66,10 @@ public class GameManager extends JFrame {
 	 * mechanism : gameInst 내의 모든 GameObj의 Update를 실행한다. isAlive()가 false면 리스트에서 제거한다
 	 * comment : 
 	 */
-	public void UpdateGame() {
+	public void updateGame() {
 		ArrayList<GameObj> removeList = new ArrayList<GameObj>();
 		GameSprite spr = null; 
-		int f_width = getResWidth();
-		int f_height = getResHeight();
-		buffImage = createImage(f_width, f_height); 
+		buffImage = createImage(frameWidth, frameHeight); 
 		buffg = buffImage.getGraphics();
 		
 		int i, instnum;
@@ -112,9 +116,7 @@ public class GameManager extends JFrame {
 	}
 	
 	private void initSinglePlay() {
-		int f_width = getResWidth();
-		int f_height = getResHeight();
-		RoundManager rm = (RoundManager) RoundManager.create(f_width*0.5f, f_height*0.5f);
+		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
     	rm.initPlayers();
     	
 		KeyboardController P1C = new KeyboardController(userConfig.getKey1Set());
@@ -129,9 +131,7 @@ public class GameManager extends JFrame {
 	}
 	
 	private void initLocalMulti() {
-		int f_width = getResWidth();
-		int f_height = getResHeight();
-		RoundManager rm = (RoundManager) RoundManager.create(f_width*0.5f, f_height*0.5f);
+		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
     	rm.initPlayers();
     	
 		KeyboardController P1C = new KeyboardController(userConfig.getKey1Set());
@@ -150,10 +150,8 @@ public class GameManager extends JFrame {
 	public static void main(String[] args) {
 		GameManager gm = GameManager.getref();
 		GameSprite.loadImages(gm);
-		int f_width = 640;
-		int f_height = 360;
 
-		gm.setSize(f_width, f_height);
+		gm.setSize(gm.frameWidth, gm.frameHeight);
 		//gm.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		TutorialUI tutorialUI_single = new TutorialUI();
@@ -169,15 +167,25 @@ public class GameManager extends JFrame {
 		mainUI.setActionListener("twoPlay", gm.UIchanger(tutorialUI_local));
 		mainUI.setActionListener("onlinePlay", gm.UIchanger(onlineUI));
 		mainUI.setActionListener("preference", gm.UIchanger(configureUI));
-		tutorialUI_single.setActionListener("goBack", gm.UIchanger(mainUI));
-		tutorialUI_local.setActionListener("goBack", gm.UIchanger(mainUI));
-		onlineUI.setActionListener("goBack", gm.UIchanger(mainUI));
-		configureUI.setActionListener("goBack", gm.UIchanger(mainUI));
 		
-		tutorialUI_single.setActionListener("proceed", (ActionEvent e) -> {gm.remove(gm.currentUI);
-																			gm.initSinglePlay();});
-		tutorialUI_local.setActionListener("proceed", (ActionEvent e) -> {gm.remove(gm.currentUI);
-																			gm.initLocalMulti();});
+		String BackToTitle = "goBack";
+		tutorialUI_single.setActionListener(BackToTitle, gm.UIchanger(mainUI));
+		tutorialUI_local.setActionListener(BackToTitle, gm.UIchanger(mainUI));
+		onlineUI.setActionListener(BackToTitle, gm.UIchanger(mainUI));
+		configureUI.setActionListener(BackToTitle, gm.UIchanger(mainUI));
+		
+		tutorialUI_single.setActionListener("proceed", 
+			(ActionEvent e) -> {
+				gm.remove(gm.currentUI);
+				gm.initSinglePlay();
+			}
+		);
+		tutorialUI_local.setActionListener("proceed", 
+			(ActionEvent e) -> {
+				gm.remove(gm.currentUI);
+				gm.initLocalMulti();
+			}
+		);
 
 		gm.currentUI = mainUI;
 		gm.add(gm.currentUI);
@@ -187,9 +195,9 @@ public class GameManager extends JFrame {
 		gm.setVisible(true);
 		
 		try {
-			while(true) {
+			while(gm != null) {
 				Thread.sleep(16);
-				gm.UpdateGame();
+				gm.updateGame();
 				gm.repaint();
 			}
 		} catch (Exception e) {
@@ -198,10 +206,12 @@ public class GameManager extends JFrame {
 	}
 	
 	private ActionListener UIchanger(Panel UIclass) {
-		return (ActionEvent e) -> {remove(currentUI);
-									add(UIclass);
-									currentUI = UIclass;
-									setVisible(true);};
+		return (ActionEvent e) -> {
+			remove(currentUI);
+			add(UIclass);
+			currentUI = UIclass;
+			setVisible(true);
+		};
 	}
 	
 	public int getResWidth() {

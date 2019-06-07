@@ -43,6 +43,17 @@ public class ConfigureUI extends Panel {
 
 		this.add(optionPanel, BorderLayout.CENTER);
 		this.add(controlPanel, BorderLayout.SOUTH);
+		
+
+		this.addKeyListener(
+			new KeyAdapter() {
+			    @Override
+			    public void keyPressed(KeyEvent event) {
+			    	System.out.println("keyevent = "+ event.getKeyCode());
+			    }
+			}
+		);
+		this.requestFocus();
 	}
 	
 	public void setActionListener(String button, ActionListener actionListener) {
@@ -65,16 +76,16 @@ public class ConfigureUI extends Panel {
 		Button plus = new Button("+");
 		volumeText = new Label();
 
-		minus.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+		minus.addActionListener(
+			(ActionEvent e) -> {
             	volumeChanged(-0.1f);
-            }
-		});
-		plus.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+			}
+		);
+		plus.addActionListener(
+			(ActionEvent e) -> {
             	volumeChanged(0.1f);
-            }
-		});
+			}
+		);
 		
 		volumeChanged(0);
 		
@@ -96,6 +107,36 @@ public class ConfigureUI extends Panel {
 		}*/
 		volumeText.setText(vtext);
 		update.setVisible(true);
+	}
+	
+	private Panel addOptionKeySetting() {
+		Panel option = new Panel();
+		Button minus = new Button("-");
+		Button plus = new Button("+");
+		volumeText = new Label();
+
+		minus.addActionListener(
+			(ActionEvent e) -> {
+            	volumeChanged(-0.1f);
+			}
+		);
+		plus.addActionListener(
+			(ActionEvent e) -> {
+            	volumeChanged(0.1f);
+			}
+		);
+		
+		volumeChanged(0);
+		
+		option.add(volumeText);
+		option.add(minus);
+		option.add(plus);
+		
+		return option;
+	}
+	
+	private void keyChanged(int[] keySet, int index) {
+
 	}
 	
 	private float clamp(float x, float min, float max) {

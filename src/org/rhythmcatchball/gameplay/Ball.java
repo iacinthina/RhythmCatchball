@@ -39,9 +39,9 @@ public class Ball extends GameObj
 	}
 	@Override
 	public void onBeat() {
-		if (caughtHold > 0) {//(caughtHold>0 && --caughtHold==0)
-			//lame판정 띄워줘야 함... Player 인스턴스가, update때 이 공을 보고 얘는 글러먹었구나 라고 판단할 수 있어야 함.
-			if (--caughtHold == 0) {
+		if (caughtHold > 0) {
+			caughtHold--;
+			if (caughtHold == 0) {
 				checkout = Checkout.LAME;
 				framesLeft = TIMEOVER;
 			}
@@ -93,7 +93,7 @@ public class Ball extends GameObj
 		default:
 			break;
 		}
-		return checkout;	//0이라면 무시
+		return checkout;
 	}
 	
 	/**

@@ -7,9 +7,9 @@ package org.rhythmcatchball.gameplay;
  */
 public class FloatMessage extends GameObj
 {
-	public int framesLeft;
-	public float vspeed;
-	public float friction;
+	private int framesLeft;
+	private float vspeed;
+	private float friction;
 	
 	/**
 	 * purpose : 메세지의 움직임

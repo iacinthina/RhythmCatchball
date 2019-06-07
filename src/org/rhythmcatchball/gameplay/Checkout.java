@@ -8,6 +8,6 @@ public enum Checkout {
 	
 	private int score;
 	
-	Checkout(int Score) { this.score = Score; }
+	Checkout(int score) { this.score = score; }
 	public int getScore() { return score; }
 }

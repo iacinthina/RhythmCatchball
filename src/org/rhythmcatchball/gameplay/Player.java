@@ -19,7 +19,7 @@ public class Player extends GameObj {
 	/**
 	 * 생성자. 리스트 초기화
 	 */
-	public Player() {
+	private Player() {
 		opponent = null;
 		throwQueue = new Ball[3];
 		catchQueue = new ArrayList<Ball>();
@@ -27,15 +27,14 @@ public class Player extends GameObj {
 		score = 0;
 		combo = 0;
 		comboLevel = 0;
-		
 	}
+	
 	@Override
 	public void update() {
 		ArrayList<Ball> removeList = new ArrayList<Ball>();
 		for(Ball b : catchQueue) {
 			if (b.isOver()) {
 				b.checkout = Checkout.LAME;
-				System.out.println("it's over: "+b.checkout);
 				addScore(Checkout.LAME);
 				opponent.takeBall(b);
 				removeList.add(b);

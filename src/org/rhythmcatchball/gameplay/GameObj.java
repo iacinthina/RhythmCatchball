@@ -106,7 +106,6 @@ public class GameObj {
 	 * comment : 
 	 */
 	public static int getBeatrate() {
-		int beat = GameManager.getref().modeBeatrate;
-		return beat;
+		return GameManager.getref().modeBeatrate;
 	}
 }

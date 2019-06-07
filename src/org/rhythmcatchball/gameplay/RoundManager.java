@@ -23,7 +23,7 @@ public class RoundManager extends GameObj {
 	private int signal_great;
 	private int signal_reversal;
 
-	public RoundManager() {
+	private RoundManager() {
 		entry = new ArrayList<Player>();
 		playtime = -3;
 		timelimit = 60;
@@ -71,33 +71,7 @@ public class RoundManager extends GameObj {
 		}
 		signal_toss();
 
-		// 짝수일때는 0부터, 홀수일때는 1부터
-		Controller c;
-		int i, order, cnt;
-		i = (beatcount % 2 == 0) ? 0 : ctrls.size() - 1;
-		order = (i == 0) ? 1 : -1;
-		cnt = 0;
-		// iteration
-		for (; cnt < ctrls.size(); cnt++, i += order) {
-			c = ctrls.get(i);
-			if (c == null) {
-				System.out.println("c = ctrls.get(" + i + ")");
-				continue;
-			}
-			if (c.catchCheck() && !tossable.isEmpty()) {
-				Ball toss = tossable.get(0);
-				if (toss != null) {
-					tossable.remove(0);
-					Player target = c.getPlayer().opponent;
-					target.takeBall(toss);
-					toss.reset(toss.xpos, toss.ypos, 0.5f, target, 0f);
-					taken.add(toss);
-				}
-				System.out.println("toss = " + toss);
-			}
-			c.update(beatcount);
-		}
-
+		updateControllers();
 	}
 
 	@Override
@@ -124,19 +98,20 @@ public class RoundManager extends GameObj {
 	public void initPlayers() {
 		int xdiff = (int) (GameManager.getref().getResWidth() * 0.4);
 		int ydiff = (int) (GameManager.getref().getResHeight() * 0.3);
-		Player P1 = (Player) Player.create(xpos - xdiff, ypos + ydiff);
-		Player P2 = (Player) Player.create(xpos + xdiff, ypos + ydiff);
-		P1.opponent = P2;
-		P2.opponent = P1;
+		Player p1 = (Player) Player.create(xpos - xdiff, ypos + ydiff);
+		Player p2 = (Player) Player.create(xpos + xdiff, ypos + ydiff);
+		p1.opponent = p2;
+		p2.opponent = p1;
 
-		entry.add(P1);
-		entry.add(P2);
-		P1.setActive(false);
-		P2.setActive(false);
+		entry.add(p1);
+		entry.add(p2);
+		p1.setActive(false);
+		p2.setActive(false);
 	}
 
 	private void endGame() {
-		int score, highest = -1;
+		int score;
+		int highest = -1;
 		boolean draw = false;
 		for (Player player : entry) {
 			score = player.getScore();
@@ -148,7 +123,8 @@ public class RoundManager extends GameObj {
 		}
 
 		int msgtime = 1000;
-		float vspd = -5f, fric = 0.3f;
+		float vspd = -5f;
+		float fric = 0.3f;
 		for (Player player : entry) {
 			if (player.getScore() == highest) {
 				if (draw)
@@ -161,6 +137,33 @@ public class RoundManager extends GameObj {
 			player.setActive(false);
 		}
 		setActive(false);
+	}
+	
+	private void updateControllers() {
+		// 짝수일때는 0부터, 홀수일때는 1부터
+		Player target;
+		Ball toss;
+		Controller c;
+		int i = (beatcount % 2 == 0) ? 0 : ctrls.size() - 1;
+		int order = (i == 0) ? 1 : -1;
+		int cnt = 0;
+		// iteration
+		for (; cnt < ctrls.size(); cnt++, i += order) {
+			c = ctrls.get(i);
+			if (c == null) continue;
+			//Toss starting ball to opponent
+			if (c.catchCheck() && !tossable.isEmpty()) {
+				toss = tossable.get(0);
+				if (toss != null) {
+					tossable.remove(0);
+					target = c.getPlayer().opponent;
+					target.takeBall(toss);
+					toss.reset(toss.xpos, toss.ypos, 0.5f, target, 0f);
+					taken.add(toss);
+				};
+			}
+			c.update(beatcount);
+		}
 	}
 
 	public Player getEntry(int index) {
