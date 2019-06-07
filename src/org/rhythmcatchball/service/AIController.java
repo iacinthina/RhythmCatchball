@@ -1,5 +1,6 @@
 package org.rhythmcatchball.service;
 
+import java.util.Random;
 import org.rhythmcatchball.core.GameManager;
 import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.Player;
@@ -51,7 +52,7 @@ public class AIController implements Controller {
 
 
 	private void resetCatchTiming() {
-		int aicomp[] = {0,0,1,1,1,1,2,2,2,3,4};
+		int[] aicomp = {0,0,1,1,1,1,2,2,2,3,4};
 		int choose = random(aicomp.length);
 		nextCatch = aicomp[choose];
 		if (random(3) == 0 && nextCatch != 4) {
@@ -75,7 +76,8 @@ public class AIController implements Controller {
 	}
 	
 	private int random(int max) {
-		return (int) (Math.random() * (max));
+		Random r = new Random();
+		return r.nextInt(1) * max;	// 0 에서 1 사이의 값 반환
 	}
 
 	@Override

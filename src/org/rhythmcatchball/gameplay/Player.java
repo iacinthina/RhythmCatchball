@@ -22,8 +22,8 @@ public class Player extends GameObj {
 	private Player() {
 		opponent = null;
 		throwQueue = new Ball[3];
-		catchQueue = new ArrayList<Ball>();
-		ballsGot = new ArrayList<Ball>();
+		catchQueue = new ArrayList<>();
+		ballsGot = new ArrayList<>();
 		score = 0;
 		combo = 0;
 		comboLevel = 0;
@@ -31,7 +31,7 @@ public class Player extends GameObj {
 	
 	@Override
 	public void update() {
-		ArrayList<Ball> removeList = new ArrayList<Ball>();
+		ArrayList<Ball> removeList = new ArrayList<>();
 		for(Ball b : catchQueue) {
 			if (b.isOver()) {
 				b.checkout = Checkout.LAME;

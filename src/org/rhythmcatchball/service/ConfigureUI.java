@@ -77,14 +77,10 @@ public class ConfigureUI extends Panel {
 		volumeText = new Label();
 
 		minus.addActionListener(
-			(ActionEvent e) -> {
-            	volumeChanged(-0.1f);
-			}
+			(ActionEvent e) -> volumeChanged(-0.1f)
 		);
 		plus.addActionListener(
-			(ActionEvent e) -> {
-            	volumeChanged(0.1f);
-			}
+			(ActionEvent e) -> volumeChanged(0.1f)
 		);
 		
 		volumeChanged(0);
@@ -116,14 +112,10 @@ public class ConfigureUI extends Panel {
 		volumeText = new Label();
 
 		minus.addActionListener(
-			(ActionEvent e) -> {
-            	volumeChanged(-0.1f);
-			}
+			(ActionEvent e) -> volumeChanged(-0.1f)
 		);
 		plus.addActionListener(
-			(ActionEvent e) -> {
-            	volumeChanged(0.1f);
-			}
+			(ActionEvent e) -> volumeChanged(0.1f)
 		);
 		
 		volumeChanged(0);

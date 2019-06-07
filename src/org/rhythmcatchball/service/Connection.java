@@ -17,7 +17,8 @@ public class Connection {
 	String data;
 	private int PortNum;
 	InetAddress serverIP;
-	Socket opponentSocket, mySocket;
+	Socket opponentSocket;
+	Socket mySocket;
 	ServerSocket serverSocket;
 	BufferedReader bufferReader;
 	
@@ -26,7 +27,7 @@ public class Connection {
 		//추후 구현 
 	}
 	
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		//삭제 예정 
 	}
 	

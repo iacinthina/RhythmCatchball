@@ -24,16 +24,16 @@ public class RoundManager extends GameObj {
 	private int signal_reversal;
 
 	private RoundManager() {
-		entry = new ArrayList<Player>();
+		entry = new ArrayList<>();
 		playtime = -3;
 		timelimit = 60;
 		beatcount = 0;
 
-		tossable = new ArrayList<Ball>();
+		tossable = new ArrayList<>();
 		tossed = null;
-		taken = new ArrayList<Ball>();
+		taken = new ArrayList<>();
 
-		ctrls = new ArrayList<Controller>();
+		ctrls = new ArrayList<>();
 
 		signal_skill = 0;
 		signal_toss = 0;
@@ -160,7 +160,7 @@ public class RoundManager extends GameObj {
 					target.takeBall(toss);
 					toss.reset(toss.xpos, toss.ypos, 0.5f, target, 0f);
 					taken.add(toss);
-				};
+				}
 			}
 			c.update(beatcount);
 		}
