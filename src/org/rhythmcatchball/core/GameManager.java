@@ -53,7 +53,7 @@ public class GameManager extends JFrame {
 	 */
 	
 	private GameManager() {
-		gameInst = new ArrayList<GameObj>();
+		gameInst = new ArrayList<>();
 		buffg = null;
 		buffImage = null;
 		userConfig = new UserConfig();
@@ -67,12 +67,13 @@ public class GameManager extends JFrame {
 	 * comment : 
 	 */
 	public void updateGame() {
-		ArrayList<GameObj> removeList = new ArrayList<GameObj>();
+		ArrayList<GameObj> removeList = new ArrayList<>();
 		GameSprite spr = null; 
 		buffImage = createImage(frameWidth, frameHeight); 
 		buffg = buffImage.getGraphics();
 		
-		int i, instnum;
+		int i;
+		int instnum;
 		GameObj o = null;
 		instnum = gameInst.size();
 		for(i = 0; i < instnum; i++) {
