@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 
 import javax.swing.ImageIcon;
 
@@ -54,7 +53,7 @@ public class GameSprite {
 		FileReader filereader = null;
 		BufferedReader bufferedreader = null;
 		
-		sprites = new HashMap<String, GameSprite>();
+		sprites = new HashMap<>();
 		try {
 			filereader = new FileReader(file);
 			bufferedreader = new BufferedReader(filereader);
