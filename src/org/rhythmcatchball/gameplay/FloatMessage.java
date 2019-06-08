@@ -62,6 +62,11 @@ public class FloatMessage extends GameObj
 	 * comment : 
 	 */
 	private void reduceSpd() {
-		vspeed -= Integer.signum((int) vspeed) * Math.min(friction, Math.abs(vspeed)); //vspeed는 Update()가 호출될 때마다 0에 가까워진다.
+		vspeed -= sign(vspeed) * Math.min(friction, Math.abs(vspeed)); //vspeed는 Update()가 호출될 때마다 0에 가까워진다.
+	}
+	
+	private float sign(float n) {
+		if (n == 0) return 0;
+		return (n > 0)? 1 : -1;
 	}
 }

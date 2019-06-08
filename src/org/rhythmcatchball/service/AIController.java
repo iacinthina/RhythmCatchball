@@ -13,7 +13,7 @@ public class AIController implements Controller {
 	private int nextCatch;
 	private int nextBeat;
 	private boolean catchCheck;
-	private Random rand = new Random();
+	private Random rand;
 
 	public AIController(RoundManager gameInfo) {
 		framesLeft = getBeatrate();
@@ -21,6 +21,7 @@ public class AIController implements Controller {
 		nextCatch = 0;
 		this.gameInfo = gameInfo;
 		catchCheck = false;
+		rand = new Random();
 	}
 	
 	@Override

@@ -40,7 +40,7 @@ public class GameManager extends JFrame {
 	
 	private Graphics buffg;
 	private Image buffImage;
-	private Panel currentUI = null;
+	private Panel currentUI;
 	
 	private ArrayList<GameObj> gameInst; //게임 진행중에 활성화된 오브젝트는 전부 여기로 들어간다.
 	public int modeBeatrate = 40;
@@ -56,6 +56,7 @@ public class GameManager extends JFrame {
 		gameInst = new ArrayList<>();
 		buffg = null;
 		buffImage = null;
+		currentUI = null;
 		userConfig = new UserConfig();
 		frameWidth = 640;//getResWidth();
 		frameHeight = 360;//getResHeight();
@@ -162,7 +163,6 @@ public class GameManager extends JFrame {
 		ConfigureUI configureUI = new ConfigureUI(gm, gm.userConfig);
 		
 		mainUI.setActionListener("close", (ActionEvent e) -> System.exit(0));
-		
 		
 		mainUI.setActionListener("onePlay", gm.uiChanger(tutoUISingle));
 		mainUI.setActionListener("twoPlay", gm.uiChanger(tutoUILocal));
