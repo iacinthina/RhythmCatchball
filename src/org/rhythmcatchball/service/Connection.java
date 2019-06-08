@@ -132,9 +132,10 @@ public class Connection {
 			opponentSocket = serverSocket.accept();
 			socket = opponentSocket;
 		} catch (Exception e) {
-			e.printStackTrace();
+			errMsg = "accept failed";
 		}
-
+		
+		if (socket == null) return false;
 		boolean connected = socket.isConnected();
 		if (!connected) 
 			errMsg = "invalid address";

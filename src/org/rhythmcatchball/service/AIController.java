@@ -6,28 +6,22 @@ import org.rhythmcatchball.gameplay.FloatMessage;
 import org.rhythmcatchball.gameplay.Player;
 import org.rhythmcatchball.gameplay.RoundManager;
 
-public class AIController implements Controller {
-	private Player player;
+public class AIController extends Controller {
 	private RoundManager gameInfo;
 	private int framesLeft;
 	private int nextCatch;
 	private int nextBeat;
-	private boolean catchCheck;
 	private Random rand;
 
 	public AIController(RoundManager gameInfo) {
+		super();
 		framesLeft = getBeatrate();
 		nextBeat = framesLeft;
 		nextCatch = 0;
 		this.gameInfo = gameInfo;
-		catchCheck = false;
 		rand = new Random();
 	}
 	
-	@Override
-	public void setPlayer(Player playertoset) {
-		this.player = playertoset;
-	}
 	
 	public void update(int beatcount) {
 		if (player == null) {
@@ -79,19 +73,5 @@ public class AIController implements Controller {
 	private int random(int max) {
 		if (max <= 0) return 0;
 		return this.rand.nextInt(max);
-	}
-
-	@Override
-	public Player getPlayer() {
-		return player;
-	}
-
-	@Override
-	public boolean catchCheck() {
-		return catchCheck;
-	}
-	
-	private int getBeatrate() {
-		return GameManager.getref().modeBeatrate;
 	}
 }

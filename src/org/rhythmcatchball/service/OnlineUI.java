@@ -24,37 +24,40 @@ public class OnlineUI extends Panel{
     private String port;
     private String ip;
 
+    private Panel controlPanel;
 	private Button host;
 	private Button join;
 	private Button goBack;
-	private Button proceed;
-	private Panel proceedPanel;
+	private Button cancel;
+	private Panel cancelPanel;
 
     private Container update;
+    
+    private Thread t;
     
     public OnlineUI(Container update) {
     	port = "";
     	ip = "";
     	defaultTooltip = "Make your game or join to other";
     	this.update = update;
+    	t = null;
     	
         host = new Button("Make Room");
         join = new Button("Join Room");
         goBack = new Button("Return to Title");
-        proceed = new Button("Game Start");
+        cancel = new Button("Cancel Connection");
         
     	connection = new Connection();
     	
         prepareGUI();
         setMakeRoom();
         setJoinRoom();
-        setStartGame();
-        roomButton();
+        setCancelation();
+        roomButtons();
     }
  
  
     private void prepareGUI() {
-    	Panel controlPanel;
     	this.setLayout(new GridLayout(3, 1));
     	
     	statusLabel = new Label();
@@ -86,7 +89,16 @@ public class OnlineUI extends Panel{
         this.setVisible(true);
     }
  
-    public void roomButton() {
+    private void setTextPanel(Panel change) {
+		if (textPanelEntry != null)
+    		textPanel.remove(textPanelEntry);
+    	textPanelEntry = change;
+		if (change != null)
+			textPanel.add(textPanelEntry);
+    	update.setVisible(true);
+    }
+    
+    private void roomButtons() {
         host.addActionListener(
     		(ActionEvent e) -> {
     			resetConnection();
@@ -102,7 +114,53 @@ public class OnlineUI extends Panel{
 			}
 		);
     }
+
+    private void enableButtons() {
+    	controlPanel.setVisible(true);
+    	update.setVisible(true);
+    }
     
+    private void disableButtons() {
+    	controlPanel.setVisible(false);
+    	update.setVisible(true);
+    }
+
+    private void waitJoinRoom() {
+    	t = new Thread() {
+    		public void run() {
+    			boolean connected = connection.asClient(ip, port);
+    			if (isInterrupted()) {
+    				System.out.println("interrupted");
+    				return;
+    			}
+				if (connected) {
+	        		statusLabel.setText("Connection Success");
+	        		GameManager.getref().initOnlineMulti(connection);
+	        	} else
+	        		statusLabel.setText("Connection Failed... "+connection.getErrMsg());
+    		}
+    	};
+    	t.start();
+    }
+    
+    private void waitMakeRoom() {
+    	t = new Thread() {
+    		public void run() {
+    			boolean connected = connection.asServerWait();
+    			if (isInterrupted()) {
+    				System.out.println("interrupted");
+    				return;
+    			}
+				if (connected) {
+	        		statusLabel.setText("Connection Success");
+	        		GameManager.getref().initOnlineMulti(connection);
+	        	} else
+	        		statusLabel.setText("Connection Failed... "+connection.getErrMsg());
+    		}
+    	};
+    	t.start();
+    }
+
     private void setJoinRoom(){
         jnpanel = new Panel();
         Button enter = new Button("ENTER");
@@ -117,11 +175,11 @@ public class OnlineUI extends Panel{
 	            ip = ipTextField.getText();
 	        	port = portTextField.getText();
         		statusLabel.setText("Waiting for Connection to ["+ip+"]...");
-	        	if (connection.asClient(ip, port)) {
-	        		statusLabel.setText("Connection Success");
-		        	setTextPanel(proceedPanel);
-	        	} else
-	        		statusLabel.setText("Connection Failed... "+connection.getErrMsg());
+        		
+	        	setTextPanel(cancelPanel);
+	        	disableButtons();
+        		waitJoinRoom();
+        		
 	        	update.setVisible(true);
     		}
 		);
@@ -145,8 +203,10 @@ public class OnlineUI extends Panel{
 	    		port = portTextfield.getText();
         		statusLabel.setText("Waiting for Host Creation...");
 	        	if (connection.asServer(port)) {
-	        		statusLabel.setText("Host Created");
-		        	setTextPanel(proceedPanel);
+	        		statusLabel.setText("Waiting for Connection from client...");
+		        	setTextPanel(cancelPanel);
+		        	disableButtons();
+		        	waitMakeRoom();
 	        	} else
 	        		statusLabel.setText("Host Creation Failed... "+connection.getErrMsg());
 	        	
@@ -158,54 +218,30 @@ public class OnlineUI extends Panel{
         mkpanel.add(portTextfield);
         mkpanel.add(enter);
     }
-
-    private void setTextPanel(Panel change) {
-    	if (textPanelEntry != null)
-    		textPanel.remove(textPanelEntry);
-    	textPanelEntry = change;
-    	textPanel.add(textPanelEntry);
-    	setVisible(true);
-    }
     
-    private void setStartGame() {
-    	proceedPanel = new Panel();
-    	proceedPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-    	proceedPanel.add(proceed);
-    	proceed.addActionListener(
+    private void setCancelation() {
+    	cancelPanel = new Panel();
+    	cancelPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+    	cancelPanel.add(cancel);
+    	cancel.addActionListener(
     		(ActionEvent e) -> {
-	    		String msgSent = "start please";
-    	    	if (connection.isServer()) {
-            		statusLabel.setText("Waiting for Client...");
-    	    		if (connection.asServerWait())
-            			statusLabel.setText("Client Connected");
-    	    		connection.send(msgSent);
-    	    		while(connection.recv() == null) {
-    	    			;
-    	    		}
-    	    		GameManager.getref().initOnlineMulti();
-    	    	} else if (connection.isClient()) {
-	    			statusLabel.setText("Waiting for Host to start...");
-    	    		while (connection.recv() != msgSent) {
-    	    			;
-    	    		}
-    	    		connection.send("go");
-    	    		GameManager.getref().initOnlineMulti();
-    	    	} else {
-    	    		statusLabel.setText("Connection Lost");
-    	    	}
+    			setTextPanel(null);
+    			enableButtons();
+    			resetConnection();
+	    		statusLabel.setText("Connection Canceled");
+    			if (t != null) {
+    				t.interrupt();
+    			}
 			}
 		);
     }
     
     private void resetConnection() {
-		if (connection.isServer()) {
-    		statusLabel.setText("Host Closed");
+		if (connection.isServer())
     		connection.closeServer();
-		} else if (connection.isClient()) {
-    		statusLabel.setText("Disconnected");
-		}
 		connection.closeClient();
     }
+    
     
     public void setActionListener(String button, ActionListener actionListener) {
     	if (actionListener == null) return;
@@ -219,12 +255,13 @@ public class OnlineUI extends Panel{
     	case "goBack":
     		goBack.addActionListener(actionListener);
     		break;
-    	case "proceed":
-    		proceed.addActionListener(actionListener);
+    	case "cancel":
+    		cancel.addActionListener(actionListener);
     		break;
     	default:
     		//no target
     		break;
     	}
     }
+
 }

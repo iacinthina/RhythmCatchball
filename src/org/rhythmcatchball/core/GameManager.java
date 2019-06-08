@@ -13,8 +13,10 @@ import org.rhythmcatchball.gameplay.GameObj;
 import org.rhythmcatchball.gameplay.RoundManager;
 import org.rhythmcatchball.service.AIController;
 import org.rhythmcatchball.service.ConfigureUI;
+import org.rhythmcatchball.service.Connection;
 import org.rhythmcatchball.service.KeyboardController;
 import org.rhythmcatchball.service.MainUI;
+import org.rhythmcatchball.service.OnlineController;
 import org.rhythmcatchball.service.OnlineUI;
 import org.rhythmcatchball.service.TutorialUI;
 
@@ -149,22 +151,21 @@ public class GameManager extends JFrame {
 		requestFocus();
 	}
 	
-	public void initOnlineMulti() {
+	public void initOnlineMulti(Connection connection) {
 		remove(currentUI);
 		currentUI = null;
 		
 		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
     	rm.initPlayers();
     	
-		KeyboardController player1Control = new KeyboardController(userConfig.getKey1Set());
+		OnlineController player1Control = new OnlineController(connection, userConfig.getKey1Set());
 		player1Control.setPlayer(rm.getEntry(0));
 		rm.addController(player1Control);
 		addKeyListener(player1Control);
 
-		KeyboardController player2Control = new KeyboardController(userConfig.getKey2Set());
+		OnlineController player2Control = new OnlineController(connection);
 		player2Control.setPlayer(rm.getEntry(1));
 		rm.addController(player2Control);
-		addKeyListener(player2Control);
 		
 		requestFocus();
 	}

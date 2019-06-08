@@ -5,28 +5,17 @@ import java.awt.event.KeyListener;
 import org.rhythmcatchball.core.Key;
 import org.rhythmcatchball.gameplay.Player;
 
-public class KeyboardController implements Controller, KeyListener {
-	private Player player;
+public class KeyboardController extends Controller implements KeyListener {
 	private int[] keyval;
-	private boolean catchCheck;
 	
 	public KeyboardController(int[] keySet) {
+		super();
 		if (keySet != null)
 			keyval = keySet;
 		catchCheck = false;
 	}
-	
-	//player설정 
-	@Override
-	public void setPlayer(Player playertoset) {
-		this.player = playertoset;
-	}
 
 	//누른 키에 대해 작동 
-	@Override
-	public void keyTyped(KeyEvent e) {}
-	
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
@@ -48,19 +37,7 @@ public class KeyboardController implements Controller, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {}
-	
-	@Override
-	public Player getPlayer() {
-		return player;
-	}
 
 	@Override
-	public boolean catchCheck() {
-		return catchCheck;
-	}
-
-	@Override
-	public void update(int beatcount) {
-		catchCheck = false;
-	}
+	public void keyTyped(KeyEvent e) {}
 }
