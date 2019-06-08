@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class TutorialUI extends Panel {
-    private Panel ImagePanel;
+    private Panel imagePanel;
     private Panel controlPanel;
 	
 	private Button proceed;
@@ -20,27 +20,27 @@ public class TutorialUI extends Panel {
 	{
     	this.setLayout(new BorderLayout());
 
-    	ImagePanel = new Panel();
-    	ImagePanel.setLayout(new GridLayout(2, 2));
+    	imagePanel = new Panel();
+    	imagePanel.setLayout(new GridLayout(2, 2));
     	
     	ImageIcon image;
     	JLabel labelimage;
     	
     	image = new ImageIcon("sprites/msg_praise0.png");
     	labelimage = new JLabel(image);
-    	ImagePanel.add(labelimage);
+    	imagePanel.add(labelimage);
     	
     	image = new ImageIcon("sprites/msg_praise1.png");
     	labelimage = new JLabel(image);
-    	ImagePanel.add(labelimage);
+    	imagePanel.add(labelimage);
     	
     	image = new ImageIcon("sprites/msg_praise2.png");
     	labelimage = new JLabel(image);
-    	ImagePanel.add(labelimage);
+    	imagePanel.add(labelimage);
     	
     	image = new ImageIcon("sprites/msg_praise3.png");
     	labelimage = new JLabel(image);
-    	ImagePanel.add(labelimage);
+    	imagePanel.add(labelimage);
     	
 		proceed = new Button("Game Start");
 		goBack = new Button("Return to Title");
@@ -49,7 +49,7 @@ public class TutorialUI extends Panel {
 		controlPanel.add(proceed);
 		controlPanel.add(goBack);
 
-		this.add(ImagePanel, BorderLayout.CENTER);
+		this.add(imagePanel, BorderLayout.CENTER);
 		this.add(controlPanel, BorderLayout.SOUTH);
 	}
 	

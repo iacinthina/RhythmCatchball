@@ -8,7 +8,6 @@ import java.awt.Label;
 import java.awt.Panel;
 import java.awt.event.*;
 
-import org.rhythmcatchball.core.GameManager;
 import org.rhythmcatchball.core.UserConfig;
 
 public class ConfigureUI extends Panel {

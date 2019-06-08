@@ -120,30 +120,30 @@ public class GameManager extends JFrame {
 		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
     	rm.initPlayers();
     	
-		KeyboardController P1C = new KeyboardController(userConfig.getKey1Set());
-		P1C.setPlayer(rm.getEntry(0));
-		rm.addController(P1C);
-		addKeyListener(P1C);
+		KeyboardController player1 = new KeyboardController(userConfig.getKey1Set());
+		player1.setPlayer(rm.getEntry(0));
+		rm.addController(player1);
+		addKeyListener(player1);
 		requestFocus();
 
-    	AIController P2C = new AIController(null);
-		P2C.setPlayer(rm.getEntry(1));
-		rm.addController(P2C);
+    	AIController player2 = new AIController(null);
+		player2.setPlayer(rm.getEntry(1));
+		rm.addController(player2);
 	}
 	
 	private void initLocalMulti() {
 		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
     	rm.initPlayers();
     	
-		KeyboardController P1C = new KeyboardController(userConfig.getKey1Set());
-		P1C.setPlayer(rm.getEntry(0));
-		rm.addController(P1C);
-		addKeyListener(P1C);
+		KeyboardController player1Control = new KeyboardController(userConfig.getKey1Set());
+		player1Control.setPlayer(rm.getEntry(0));
+		rm.addController(player1Control);
+		addKeyListener(player1Control);
 
-		KeyboardController P2C = new KeyboardController(userConfig.getKey2Set());
-		P2C.setPlayer(rm.getEntry(1));
-		rm.addController(P2C);
-		addKeyListener(P2C);
+		KeyboardController player2Control = new KeyboardController(userConfig.getKey2Set());
+		player2Control.setPlayer(rm.getEntry(1));
+		rm.addController(player2Control);
+		addKeyListener(player2Control);
 		
 		requestFocus();
 	}
@@ -155,8 +155,8 @@ public class GameManager extends JFrame {
 		gm.setSize(gm.frameWidth, gm.frameHeight);
 		//gm.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-		TutorialUI tutorialUI_single = new TutorialUI();
-		TutorialUI tutorialUI_local = new TutorialUI();
+		TutorialUI tutoUISingle = new TutorialUI();
+		TutorialUI tutoUILocal = new TutorialUI();
 		MainUI mainUI = new MainUI();
 		OnlineUI onlineUI = new OnlineUI(gm);
 		ConfigureUI configureUI = new ConfigureUI(gm, gm.userConfig);
@@ -164,24 +164,24 @@ public class GameManager extends JFrame {
 		mainUI.setActionListener("close", (ActionEvent e) -> System.exit(0));
 		
 		
-		mainUI.setActionListener("onePlay", gm.UIchanger(tutorialUI_single));
-		mainUI.setActionListener("twoPlay", gm.UIchanger(tutorialUI_local));
-		mainUI.setActionListener("onlinePlay", gm.UIchanger(onlineUI));
-		mainUI.setActionListener("preference", gm.UIchanger(configureUI));
+		mainUI.setActionListener("onePlay", gm.uiChanger(tutoUISingle));
+		mainUI.setActionListener("twoPlay", gm.uiChanger(tutoUILocal));
+		mainUI.setActionListener("onlinePlay", gm.uiChanger(onlineUI));
+		mainUI.setActionListener("preference", gm.uiChanger(configureUI));
 		
-		String BackToTitle = "goBack";
-		tutorialUI_single.setActionListener(BackToTitle, gm.UIchanger(mainUI));
-		tutorialUI_local.setActionListener(BackToTitle, gm.UIchanger(mainUI));
-		onlineUI.setActionListener(BackToTitle, gm.UIchanger(mainUI));
-		configureUI.setActionListener(BackToTitle, gm.UIchanger(mainUI));
+		String backToTitle = "goBack";
+		tutoUISingle.setActionListener(backToTitle, gm.uiChanger(mainUI));
+		tutoUILocal.setActionListener(backToTitle, gm.uiChanger(mainUI));
+		onlineUI.setActionListener(backToTitle, gm.uiChanger(mainUI));
+		configureUI.setActionListener(backToTitle, gm.uiChanger(mainUI));
 		
-		tutorialUI_single.setActionListener("proceed", 
+		tutoUISingle.setActionListener("proceed", 
 			(ActionEvent e) -> {
 				gm.remove(gm.currentUI);
 				gm.initSinglePlay();
 			}
 		);
-		tutorialUI_local.setActionListener("proceed", 
+		tutoUILocal.setActionListener("proceed", 
 			(ActionEvent e) -> {
 				gm.remove(gm.currentUI);
 				gm.initLocalMulti();
@@ -206,11 +206,11 @@ public class GameManager extends JFrame {
 		}
 	}
 	
-	private ActionListener UIchanger(Panel UIclass) {
+	private ActionListener uiChanger(Panel uiClass) {
 		return (ActionEvent e) -> {
 			remove(currentUI);
-			add(UIclass);
-			currentUI = UIclass;
+			add(uiClass);
+			currentUI = uiClass;
 			setVisible(true);
 		};
 	}

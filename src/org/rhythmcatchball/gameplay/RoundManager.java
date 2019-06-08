@@ -17,11 +17,11 @@ public class RoundManager extends GameObj {
 
 	private ArrayList<Controller> ctrls;
 
-	private int signal_skill;
-	private int signal_toss;
-	private int signal_grab;
-	private int signal_great;
-	private int signal_reversal;
+	private int signalSkill;
+	private int signalToss;
+	private int signalGrab;
+	private int signalGreat;
+	private int signalReversal;
 
 	private RoundManager() {
 		entry = new ArrayList<>();
@@ -35,11 +35,11 @@ public class RoundManager extends GameObj {
 
 		ctrls = new ArrayList<>();
 
-		signal_skill = 0;
-		signal_toss = 0;
-		signal_grab = 0;
-		signal_great = 0;
-		signal_reversal = 0;
+		signalSkill = 0;
+		signalToss = 0;
+		signalGrab = 0;
+		signalGreat = 0;
+		signalReversal = 0;
 	}
 
 	public static GameObj create(float xpos, float ypos) {
@@ -69,7 +69,7 @@ public class RoundManager extends GameObj {
 					b.onBeat();
 			}
 		}
-		signal_toss();
+		signalToss();
 
 		updateControllers();
 	}
@@ -179,12 +179,12 @@ public class RoundManager extends GameObj {
 			ctrls.add(ctrl);
 	}
 
-	private void signal_toss() {
+	private void signalToss() {
 		for (Player p : entry) {
 			if (p.countBall() == 3)
-				signal_toss++;
+				signalToss++;
 		}
-		if (signal_toss > 80 && signal_toss < 100 && playtime < 300) {
+		if (signalToss > 80 && signalToss < 100 && playtime < 300) {
 			// lettersign=3 sign_toss=100 alarm[2]=beat*3
 		}
 	}

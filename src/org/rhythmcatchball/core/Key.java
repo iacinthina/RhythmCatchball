@@ -6,10 +6,10 @@ public enum Key {
 	HIGH(2), 
 	RECEIVE(3);
 	
-	int index_num;
-	Key(int index_num){this.index_num = index_num;}
+	int indexNum;
+	Key(int indexNum){this.indexNum = indexNum;}
 	
 	public int getIndex() {
-		return index_num;
+		return indexNum;
 	}
 }

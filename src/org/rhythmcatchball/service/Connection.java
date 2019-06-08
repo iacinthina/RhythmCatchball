@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 public class Connection {
 	Socket socket;
 	String data;
-	private int PortNum;
+	private int portNum;
 	InetAddress serverIP;
 	Socket opponentSocket;
 	Socket mySocket;
@@ -33,13 +33,13 @@ public class Connection {
 	
 	//Client생성 메소드
 	//ip, port 입력받아 연결 생성 
-	public void Client(String IP, String Port){
+	public void Client(String ip, String port){
 			
-			PortNum = Integer.parseInt(Port);
+			portNum = Integer.parseInt(port);
 			
 			try
 			{
-				socket = new Socket(IP, PortNum);
+				socket = new Socket(ip, portNum);
 			}
 			catch (Exception e)
 			{
@@ -79,10 +79,10 @@ public class Connection {
 		}
 	
 	//Server생성 메소
-	public void Server(String PORTstring) {
+	public void Server(String portString) {
 
 		//입력받은 port번호 정수형으로 변형 
-		PortNum = Integer.parseInt(PORTstring);
+		portNum = Integer.parseInt(portString);
 		
 		JOptionPane.showMessageDialog(null, "waiting for opponent...");
 
@@ -97,7 +97,7 @@ public class Connection {
 		}
 		//서버 생성 
 		try {
-			serverSocket = new ServerSocket(PortNum);
+			serverSocket = new ServerSocket(portNum);
 			JOptionPane.showMessageDialog(null, "ip = " + serverIP);
 			System.out.println("서버생성\n");
 			

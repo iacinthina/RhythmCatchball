@@ -99,11 +99,11 @@ public class MainUI extends Panel {
     	}
     }
     
-    public void setToolTip(Button button, String Message) {
+    public void setToolTip(Button button, String message) {
     	button.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-                statusLabel.setText(Message);
+                statusLabel.setText(message);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {

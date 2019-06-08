@@ -87,23 +87,23 @@ public class OnlineUI extends Panel{
         jnpanel = new Panel();
         Button enter = new Button("ENTER");
         
-        Label port_l = new Label("Port Num");
-        Label ip_l = new Label("IP Address");
-        TextField port_t = new TextField(port,10);
-        TextField ip_t = new TextField(ip,15);
+        Label portLable = new Label("Port Num");
+        Label ipLabel = new Label("IP Address");
+        TextField portTextField = new TextField(port,10);
+        TextField ipTextField = new TextField(ip,15);
         
         enter.addActionListener((ActionEvent e) -> {
-            ip = ip_t.getText();
-        	port = port_t.getText();
+            ip = ipTextField.getText();
+        	port = portTextField.getText();
         	setTextPanel(proceedPanel);
         	statusLabel.setText("IP : " + ip + " Port : " + port);
         	update.setVisible(true);
         });
         
-        jnpanel.add(ip_l);
-        jnpanel.add(ip_t);
-        jnpanel.add(port_l);
-        jnpanel.add(port_t);
+        jnpanel.add(ipLabel);
+        jnpanel.add(ipTextField);
+        jnpanel.add(portLable);
+        jnpanel.add(portTextField);
         jnpanel.add(enter);
     }
 
@@ -111,18 +111,18 @@ public class OnlineUI extends Panel{
         mkpanel = new Panel();
         Button enter = new Button("ENTER");
         
-        Label port_l = new Label("Port Num");
-        TextField port_t = new TextField(port,10);
+        Label portLabel = new Label("Port Num");
+        TextField portTextfield = new TextField(port,10);
 
         enter.addActionListener((ActionEvent e) -> {
-    		port = port_t.getText();
+    		port = portTextfield.getText();
         	setTextPanel(proceedPanel);
         	statusLabel.setText("Port : " + port);
         	update.setVisible(true);
     });
         
-        mkpanel.add(port_l);
-        mkpanel.add(port_t);
+        mkpanel.add(portLabel);
+        mkpanel.add(portTextfield);
         mkpanel.add(enter);
     }
 
