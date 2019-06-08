@@ -33,7 +33,7 @@ public class Connection {
 	
 	//Client생성 메소드
 	//ip, port 입력받아 연결 생성 
-	public void Client(String ip, String port){
+	public void client(String ip, String port){
 			
 			portNum = Integer.parseInt(port);
 			
@@ -79,7 +79,7 @@ public class Connection {
 		}
 	
 	//Server생성 메소
-	public void Server(String portString) {
+	public void server(String portString) {
 
 		//입력받은 port번호 정수형으로 변형 
 		portNum = Integer.parseInt(portString);
@@ -142,7 +142,7 @@ public class Connection {
 		}
 	}
 	
-	public void Send(String data) {
+	public void send(String data) {
 		BufferedWriter bufferedWriter;
 		try {
 			bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));

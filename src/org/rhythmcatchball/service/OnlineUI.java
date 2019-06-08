@@ -48,7 +48,7 @@ public class OnlineUI extends Panel{
         prepareGUI();
         setMakeRoom();
         setJoinRoom();
-        RoomButton();
+        roomButton();
     }
  
  
@@ -76,7 +76,7 @@ public class OnlineUI extends Panel{
         this.setVisible(true);
     }
  
-    public void RoomButton() {
+    public void roomButton() {
         host.addActionListener((ActionEvent e) -> {setTextPanel(mkpanel);
         											update.setVisible(true);});
         join.addActionListener((ActionEvent e) -> {setTextPanel(jnpanel);
