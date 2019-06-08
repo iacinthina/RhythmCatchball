@@ -13,6 +13,7 @@ public class AIController implements Controller {
 	private int nextCatch;
 	private int nextBeat;
 	private boolean catchCheck;
+	private Random rand = new Random();
 
 	public AIController(RoundManager gameInfo) {
 		framesLeft = getBeatrate();
@@ -76,8 +77,7 @@ public class AIController implements Controller {
 	}
 	
 	private int random(int max) {
-		Random r = new Random();
-		return r.nextInt(1) * max;	// 0 에서 1 사이의 값 반환
+		return this.rand.nextInt(1) * max;	// 0 에서 1 사이의 값 반환
 	}
 
 	@Override
