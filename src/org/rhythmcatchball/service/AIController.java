@@ -64,9 +64,8 @@ public class AIController implements Controller {
 	
 	private void resetThrowTiming() {
 		int ballcount = random(player.countBall()+1);
-		//if (ballcount == 0) System.out.println("player.countBall() = " + player.countBall());
 		while (ballcount > 0) {
-			player.readyToThrow(random(2));
+			player.readyToThrow(random(3));
 			ballcount--;
 		}
 	}
@@ -77,7 +76,8 @@ public class AIController implements Controller {
 	}
 	
 	private int random(int max) {
-		return this.rand.nextInt(1) * max;	// 0 에서 1 사이의 값 반환
+		if (max <= 0) return 0;
+		return this.rand.nextInt(max);
 	}
 
 	@Override
