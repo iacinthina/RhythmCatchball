@@ -10,9 +10,12 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.rhythmcatchball.core.GameManager;
+
 public class OnlineUI extends Panel{
     private Label statusLabel;
     private String defaultTooltip;
+    private Connection connection;
     
     private Panel textPanel;
     private Panel jnpanel;
@@ -39,15 +42,13 @@ public class OnlineUI extends Panel{
         join = new Button("Join Room");
         goBack = new Button("Return to Title");
         proceed = new Button("Game Start");
-
-    	proceedPanel = new Panel();
-    	proceedPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-    	proceedPanel.add(proceed);
         
+    	connection = new Connection();
     	
         prepareGUI();
         setMakeRoom();
         setJoinRoom();
+        setStartGame();
         roomButton();
     }
  
@@ -70,6 +71,15 @@ public class OnlineUI extends Panel{
         controlPanel.add(join);
         controlPanel.add(goBack);
 
+    	Button checkMyIP = new Button("What is my IP?(Be careful with this button)");
+    	checkMyIP.addActionListener(
+    		(ActionEvent e) -> {
+    			statusLabel.setText("Your IP is: "+connection.checkMyIP());
+				update.setVisible(true);
+			}
+		);
+    	controlPanel.add(checkMyIP);
+        
         this.add(statusLabel);
         this.add(textPanel);
         this.add(controlPanel);
@@ -77,10 +87,20 @@ public class OnlineUI extends Panel{
     }
  
     public void roomButton() {
-        host.addActionListener((ActionEvent e) -> {setTextPanel(mkpanel);
-        											update.setVisible(true);});
-        join.addActionListener((ActionEvent e) -> {setTextPanel(jnpanel);
-													update.setVisible(true);});
+        host.addActionListener(
+    		(ActionEvent e) -> {
+    			resetConnection();
+    			setTextPanel(mkpanel);
+    			update.setVisible(true);
+			}
+		);
+        join.addActionListener(
+    		(ActionEvent e) -> {
+    			resetConnection();
+    			setTextPanel(jnpanel);
+				update.setVisible(true);
+			}
+		);
     }
     
     private void setJoinRoom(){
@@ -92,13 +112,19 @@ public class OnlineUI extends Panel{
         TextField portTextField = new TextField(port,10);
         TextField ipTextField = new TextField(ip,15);
         
-        enter.addActionListener((ActionEvent e) -> {
-            ip = ipTextField.getText();
-        	port = portTextField.getText();
-        	setTextPanel(proceedPanel);
-        	statusLabel.setText("IP : " + ip + " Port : " + port);
-        	update.setVisible(true);
-        });
+        enter.addActionListener(
+    		(ActionEvent e) -> {
+	            ip = ipTextField.getText();
+	        	port = portTextField.getText();
+        		statusLabel.setText("Waiting for Connection to ["+ip+"]...");
+	        	if (connection.asClient(ip, port)) {
+	        		statusLabel.setText("Connection Success");
+		        	setTextPanel(proceedPanel);
+	        	} else
+	        		statusLabel.setText("Connection Failed... "+connection.getErrMsg());
+	        	update.setVisible(true);
+    		}
+		);
         
         jnpanel.add(ipLabel);
         jnpanel.add(ipTextField);
@@ -114,12 +140,19 @@ public class OnlineUI extends Panel{
         Label portLabel = new Label("Port Num");
         TextField portTextfield = new TextField(port,10);
 
-        enter.addActionListener((ActionEvent e) -> {
-    		port = portTextfield.getText();
-        	setTextPanel(proceedPanel);
-        	statusLabel.setText("Port : " + port);
-        	update.setVisible(true);
-    });
+        enter.addActionListener(
+    		(ActionEvent e) -> {
+	    		port = portTextfield.getText();
+        		statusLabel.setText("Waiting for Host Creation...");
+	        	if (connection.asServer(port)) {
+	        		statusLabel.setText("Host Created");
+		        	setTextPanel(proceedPanel);
+	        	} else
+	        		statusLabel.setText("Host Creation Failed... "+connection.getErrMsg());
+	        	
+	        	update.setVisible(true);
+    		}
+		);
         
         mkpanel.add(portLabel);
         mkpanel.add(portTextfield);
@@ -132,6 +165,46 @@ public class OnlineUI extends Panel{
     	textPanelEntry = change;
     	textPanel.add(textPanelEntry);
     	setVisible(true);
+    }
+    
+    private void setStartGame() {
+    	proceedPanel = new Panel();
+    	proceedPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+    	proceedPanel.add(proceed);
+    	proceed.addActionListener(
+    		(ActionEvent e) -> {
+	    		String msgSent = "start please";
+    	    	if (connection.isServer()) {
+            		statusLabel.setText("Waiting for Client...");
+    	    		if (connection.asServerWait())
+            			statusLabel.setText("Client Connected");
+    	    		connection.send(msgSent);
+    	    		while(connection.recv() == null) {
+    	    			;
+    	    		}
+    	    		GameManager.getref().initOnlineMulti();
+    	    	} else if (connection.isClient()) {
+	    			statusLabel.setText("Waiting for Host to start...");
+    	    		while (connection.recv() != msgSent) {
+    	    			;
+    	    		}
+    	    		connection.send("go");
+    	    		GameManager.getref().initOnlineMulti();
+    	    	} else {
+    	    		statusLabel.setText("Connection Lost");
+    	    	}
+			}
+		);
+    }
+    
+    private void resetConnection() {
+		if (connection.isServer()) {
+    		statusLabel.setText("Host Closed");
+    		connection.closeServer();
+		} else if (connection.isClient()) {
+    		statusLabel.setText("Disconnected");
+		}
+		connection.closeClient();
     }
     
     public void setActionListener(String button, ActionListener actionListener) {

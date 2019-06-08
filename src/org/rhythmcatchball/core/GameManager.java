@@ -149,6 +149,26 @@ public class GameManager extends JFrame {
 		requestFocus();
 	}
 	
+	public void initOnlineMulti() {
+		remove(currentUI);
+		currentUI = null;
+		
+		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
+    	rm.initPlayers();
+    	
+		KeyboardController player1Control = new KeyboardController(userConfig.getKey1Set());
+		player1Control.setPlayer(rm.getEntry(0));
+		rm.addController(player1Control);
+		addKeyListener(player1Control);
+
+		KeyboardController player2Control = new KeyboardController(userConfig.getKey2Set());
+		player2Control.setPlayer(rm.getEntry(1));
+		rm.addController(player2Control);
+		addKeyListener(player2Control);
+		
+		requestFocus();
+	}
+	
 	public static void main(String[] args) {
 		GameManager gm = GameManager.getref();
 		GameSprite.loadImages(gm);
@@ -178,12 +198,14 @@ public class GameManager extends JFrame {
 		tutoUISingle.setActionListener("proceed", 
 			(ActionEvent e) -> {
 				gm.remove(gm.currentUI);
+				gm.currentUI = null;
 				gm.initSinglePlay();
 			}
 		);
 		tutoUILocal.setActionListener("proceed", 
 			(ActionEvent e) -> {
 				gm.remove(gm.currentUI);
+				gm.currentUI = null;
 				gm.initLocalMulti();
 			}
 		);

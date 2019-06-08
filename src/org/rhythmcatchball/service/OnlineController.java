@@ -4,15 +4,14 @@ import org.rhythmcatchball.core.Key;
 import org.rhythmcatchball.gameplay.Player;
 
 public class OnlineController implements Controller{
-	
 	private Player player;
 	private Connection connection;
-	int keyCode;
-	String data;
+	private int keyCode;
+	private String data;
 	public int[] keyval = new int[4];
 	
-	public OnlineController(){
-		//추후 구현 
+	public OnlineController(Connection connection){
+		this.connection = connection;
 	}
 
 	@Override
