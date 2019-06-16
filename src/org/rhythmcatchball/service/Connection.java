@@ -12,6 +12,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class Connection {
+	private static final int PORTMIN = 1000;
 	private static final int PORTMAX = 65535;
 	
 	Socket socket;
@@ -211,8 +212,8 @@ public class Connection {
 			errMsg = "Failed to get port number";
 			return false;
 		}
-		if (portNum <= 0 || portNum > PORTMAX) {
-			errMsg = "Invaild port number range (0 ~ "+PORTMAX+")";
+		if (portNum < PORTMIN || portNum > PORTMAX) {
+			errMsg = "Invaild port number range ("+PORTMIN+" ~ "+PORTMAX+")";
 			return false;
 		}
 		return true;

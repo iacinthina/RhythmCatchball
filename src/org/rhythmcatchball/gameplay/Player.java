@@ -1,6 +1,8 @@
 package org.rhythmcatchball.gameplay;
 import java.util.ArrayList;
 
+import org.rhythmcatchball.service.Connection;
+
 /**
  * Player.java
  * @author pc1
@@ -8,6 +10,10 @@ import java.util.ArrayList;
  * 게임이 시작되면 생성하는 플레이어 오브젝트. 게임 진행중에 항상 2개 이상이 존재해야 한다.
  */
 public class Player extends GameObj {
+	private static final int ONONE = 0;
+	private static final int OSELF = 1;
+	private static final int OTHER = 2;
+	
 	public Player opponent; //상대방 플레이어. 내가 공을 던질 타겟(나한테 공을 던지는 대상은 알 수 없음)
 	private Ball[] throwQueue; //박자가 경신되는 순간에, 이 배열에 있는 공을 위치에 따라 다른 속도로 던진다.
 	private ArrayList<Ball> catchQueue; //내가 받을 공들. 상태를 체크할 수 있다.
@@ -15,6 +21,10 @@ public class Player extends GameObj {
 	private int score; //점수. 출력할 수 있어야 한다
 	private int combo; //놓치지만 않으면 하나씩 쌓인다.
 	private int comboLevel; //콤보에 따른 보너스 점수를 얻기 위한 마커
+
+	private int onlineType;
+	ArrayList<Checkout> lastResult;
+	private int onlineSync;
 	
 	/**
 	 * 생성자. 리스트 초기화
@@ -27,10 +37,15 @@ public class Player extends GameObj {
 		score = 0;
 		combo = 0;
 		comboLevel = 0;
+		
+		onlineType = ONONE;
+		lastResult = null;
+		onlineSync = 0;
 	}
 	
 	@Override
 	public void update() {
+		onlineMakeBallWait();
 		ArrayList<Ball> removeList = new ArrayList<>();
 		for(Ball b : catchQueue) {
 			if (b.isOver()) {
@@ -47,7 +62,8 @@ public class Player extends GameObj {
 	}
 	@Override
 	public void onBeat() {
-		throwAll();
+		if (onlineType == ONONE || onlineSync == onlineGetThrow())
+			throwAll();
 		int holdingPenalty = countBall();
 		score = (int) Math.max(0, score - Math.pow(holdingPenalty, 2));
 	}
@@ -155,9 +171,12 @@ public class Player extends GameObj {
 		int[] bonus = {25, 50, 100, 200, 300, 0}; //요구 콤보수에 도달했을 때 얻는 점수
 		
 		//판정에 따라 다른 점수.
+		onlineSetBallResult(precision);
 		if (precision != null) {
 			score = Math.max(score + precision.getScore(), 0);
 			if (precision == Checkout.LAME) {
+				if (combo > 1)
+					FloatMessage.create(xpos, ypos, "combo_break.png", true);
 				combo = 0;
 				comboLevel = 0; //콤보레벨도 초기화해서 5콤보를 두번째 달성했을 때도 점수부여. 이후도 마찬가지
 			} else {
@@ -188,5 +207,83 @@ public class Player extends GameObj {
 	public int countBall() {
 		if (ballsGot == null) return 0;
 		return ballsGot.size();
+	}
+
+	public void onlineIsSelf() {
+		onlineType = OSELF;
+		lastResult = new ArrayList<>();
+	}
+	public void onlineIsOther() {
+		onlineType = OTHER;
+	}
+	
+	private void onlineMakeBallWait() {
+		if (onlineType != OTHER) return;
+		//실질적인 판정을 따기 전에 공을 멈추게하기
+		Checkout precision = null;
+		
+		for(Ball grab: catchQueue) {
+			precision = grab.judgement();
+			if (precision == Checkout.EXACTLY) {
+				grab.caught(false);
+			}
+		}
+	}
+	
+	private void onlineSetBallResult(Checkout result) {
+		if (onlineType != OSELF) return;
+		lastResult.add(result);
+	}
+	
+	public Checkout onlineGetBallResult() {
+		if (lastResult == null) return null;
+		if (lastResult.isEmpty()) return null;
+		Checkout result = lastResult.get(0);
+		lastResult.remove(0);
+		return result;
+	}
+	
+	public void onlineProcessWaitingBall(Checkout precision) {
+		if (onlineType != OTHER) return;
+		Ball grab = null; //잡은 공은 ballsGot리스트에서 제외
+		
+		if (precision != null) {
+			if (catchQueue.isEmpty()) {
+				System.out.println("error : checkout exists but no ball to proceed");
+			} else {
+				grab = catchQueue.get(0);
+				ballsGot.add(grab);
+				catchQueue.remove(grab);
+				grab.checkout = precision;
+				grab.caught(true);
+				addScore(precision); //정확도에 따라 점수를 얻는다. 안좋은 판정을 받더라도
+			}
+		}
+	}
+
+	public void onlineSyncThrow(boolean row[]) {
+		int bitmask = 1;
+		int data = 0;
+		
+		for(int i = 0; i < row.length; i++) {
+			bitmask *= 2;
+			if (row[i])
+				data += bitmask;
+		}
+		
+		onlineSync = data;
+	}
+	
+	public int onlineGetThrow() {
+		int bitmask = 1;
+		int data = 0;
+		
+		for(int i = 0; i < throwQueue.length; i++) {
+			bitmask *= 2;
+			if (throwQueue[i] != null)
+				data += bitmask;
+		}
+		
+		return data;
 	}
 }

@@ -6,10 +6,13 @@ import org.rhythmcatchball.core.GameManager;
 import org.rhythmcatchball.service.Controller;
 
 public class RoundManager extends GameObj {
+	private static final int RETURN_DELAY = 300;
+	
 	private ArrayList<Player> entry;
 	private int playtime;
 	private int timelimit;
 	private int beatcount;
+	private int gameEnd;
 
 	private ArrayList<Ball> tossable;
 	private Ball tossed;
@@ -28,6 +31,7 @@ public class RoundManager extends GameObj {
 		playtime = -3;
 		timelimit = 60;
 		beatcount = 0;
+		gameEnd = 0;
 
 		tossable = new ArrayList<>();
 		tossed = null;
@@ -56,6 +60,11 @@ public class RoundManager extends GameObj {
 
 	@Override
 	public void update() {
+		if (gameEnd > 0) {
+			if (++gameEnd > RETURN_DELAY)
+				GameManager.getref().restoreMainScreen();
+			return;
+		}
 		int beatrate = getBeatrate();
 
 		if (++beatcount >= beatrate) {
@@ -136,7 +145,8 @@ public class RoundManager extends GameObj {
 			}
 			player.setActive(false);
 		}
-		setActive(false);
+		gameEnd = 1;
+		//setActive(false);
 	}
 	
 	private void updateControllers() {

@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -48,6 +49,8 @@ public class GameManager extends JFrame {
 	public int modeBeatrate = 40;
 	public int modeTimeLimit = 60;
 	private UserConfig userConfig;
+	
+	private MainUI mainUI;
 	
 	/**
 	 * 생성자
@@ -120,6 +123,8 @@ public class GameManager extends JFrame {
 	}
 	
 	private void initSinglePlay() {
+		changeUI(null);
+		
 		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
     	rm.initPlayers();
     	
@@ -135,6 +140,8 @@ public class GameManager extends JFrame {
 	}
 	
 	private void initLocalMulti() {
+		changeUI(null);
+		
 		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
     	rm.initPlayers();
     	
@@ -152,8 +159,7 @@ public class GameManager extends JFrame {
 	}
 	
 	public void initOnlineMulti(Connection connection) {
-		remove(currentUI);
-		currentUI = null;
+		changeUI(null);
 		
 		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
     	rm.initPlayers();
@@ -162,12 +168,23 @@ public class GameManager extends JFrame {
 		player1Control.setPlayer(rm.getEntry(0));
 		rm.addController(player1Control);
 		addKeyListener(player1Control);
+		rm.getEntry(0).onlineIsSelf();
 
 		OnlineController player2Control = new OnlineController(connection);
 		player2Control.setPlayer(rm.getEntry(1));
 		rm.addController(player2Control);
+		rm.getEntry(1).onlineIsOther();
 		
 		requestFocus();
+	}
+	
+	public void restoreMainScreen() {
+		KeyListener removeListeners[] = this.getKeyListeners();
+		for(KeyListener l : removeListeners) {
+			System.out.println("remove : " + l);
+			this.removeKeyListener(l);
+		}
+		changeUI(mainUI);
 	}
 	
 	public static void main(String[] args) {
@@ -180,6 +197,7 @@ public class GameManager extends JFrame {
 		TutorialUI tutoUISingle = new TutorialUI();
 		TutorialUI tutoUILocal = new TutorialUI();
 		MainUI mainUI = new MainUI();
+		gm.mainUI = mainUI;
 		OnlineUI onlineUI = new OnlineUI(gm);
 		ConfigureUI configureUI = new ConfigureUI(gm, gm.userConfig);
 		
@@ -198,21 +216,16 @@ public class GameManager extends JFrame {
 		
 		tutoUISingle.setActionListener("proceed", 
 			(ActionEvent e) -> {
-				gm.remove(gm.currentUI);
-				gm.currentUI = null;
 				gm.initSinglePlay();
 			}
 		);
 		tutoUILocal.setActionListener("proceed", 
 			(ActionEvent e) -> {
-				gm.remove(gm.currentUI);
-				gm.currentUI = null;
 				gm.initLocalMulti();
 			}
 		);
 
-		gm.currentUI = mainUI;
-		gm.add(gm.currentUI);
+		gm.changeUI(mainUI);
 
 		gm.setTitle("리듬캐치볼");
 		gm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -231,11 +244,18 @@ public class GameManager extends JFrame {
 	
 	private ActionListener uiChanger(Panel uiClass) {
 		return (ActionEvent e) -> {
-			remove(currentUI);
-			add(uiClass);
-			currentUI = uiClass;
+			changeUI(uiClass);
 			setVisible(true);
 		};
+	}
+	
+	private void changeUI(Panel uiClass) {
+		if (currentUI != null)
+			remove(currentUI);
+		if (uiClass != null) {
+			add(uiClass);
+		}
+		currentUI = uiClass;
 	}
 	
 	public int getResWidth() {
