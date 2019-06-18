@@ -9,8 +9,8 @@ public class UserConfig {
 	public UserConfig() {
 		confVolume = 0.8f;
 		
-		confResolu[0] = 640;
-		confResolu[1] = 360;
+		confResolu[0] = 1280;
+		confResolu[1] = 720;
 		//Player1 key값 초기설정
 		confKey1Set[Key.LOW.getIndex()] = 68;
 		confKey1Set[Key.MIDDLE.getIndex()] = 83;
@@ -39,9 +39,15 @@ public class UserConfig {
 	public int[] getKey2Set() {return confKey2Set;}
 	
 	public void copy(UserConfig userConfigCopy) {
-		this.confVolume = userConfigCopy.confVolume;
-		this.confResolu = userConfigCopy.confResolu.clone();
-		this.confKey1Set = userConfigCopy.confKey1Set.clone();
-		this.confKey2Set = userConfigCopy.confKey2Set.clone();
+		if (userConfigCopy == null) return;
+		confVolume = userConfigCopy.confVolume;
+		int[][] targetList = {confResolu, confKey1Set, confKey2Set};
+		int[][] copyList = {userConfigCopy.confResolu, userConfigCopy.confKey1Set, userConfigCopy.confKey2Set};
+
+		int j = 0;
+		for(int i = 0; i < targetList.length; i++) {
+			for(j = 0; j < targetList[i].length; j++)
+				targetList[i][j] = copyList[i][j];
+		}
 	}
 }

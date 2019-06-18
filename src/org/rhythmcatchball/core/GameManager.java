@@ -37,9 +37,8 @@ public class GameManager extends JFrame {
 		return singleton;
 	} //싱글톤 디자인 패턴
 	
-
-	private int frameWidth;
-	private int frameHeight;
+	private int roomWidth;
+	private int roomHeight;
 	
 	private Graphics buffg;
 	private Image buffImage;
@@ -64,8 +63,8 @@ public class GameManager extends JFrame {
 		buffImage = null;
 		currentUI = null;
 		userConfig = new UserConfig();
-		frameWidth = 640;//getResWidth();
-		frameHeight = 360;//getResHeight();
+		roomWidth = 640;
+		roomHeight = 360;
 		finitiveTimeoutCounter = 0;
 	}
 	
@@ -77,7 +76,7 @@ public class GameManager extends JFrame {
 	public void updateGame() {
 		ArrayList<GameObj> removeList = new ArrayList<>();
 		GameSprite spr = null; 
-		buffImage = createImage(frameWidth, frameHeight); 
+		buffImage = createImage(roomWidth, roomHeight);
 		buffg = buffImage.getGraphics();
 		
 		int i;
@@ -112,7 +111,7 @@ public class GameManager extends JFrame {
 	@Override
 	public void paint(Graphics g){
 		if (buffImage != null)
-			g.drawImage(buffImage, 0, 0, this);
+			g.drawImage(buffImage, 0, 0, userConfig.getResWidth(), userConfig.getResHeight(), this);
 	}
 	
 	/**
@@ -127,7 +126,7 @@ public class GameManager extends JFrame {
 	private void initSinglePlay() {
 		changeUI(null);
 		
-		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
+		RoundManager rm = (RoundManager) RoundManager.create(roomWidth*0.5f, roomHeight*0.5f);
     	rm.initPlayers();
     	
 		KeyboardController player1 = new KeyboardController(userConfig.getKey1Set());
@@ -144,7 +143,7 @@ public class GameManager extends JFrame {
 	private void initLocalMulti() {
 		changeUI(null);
 		
-		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
+		RoundManager rm = (RoundManager) RoundManager.create(roomWidth*0.5f, roomHeight*0.5f);
     	rm.initPlayers();
     	
 		KeyboardController player1Control = new KeyboardController(userConfig.getKey1Set());
@@ -163,7 +162,7 @@ public class GameManager extends JFrame {
 	public void initOnlineMulti(Connection connection) {
 		changeUI(null);
 		
-		RoundManager rm = (RoundManager) RoundManager.create(frameWidth*0.5f, frameHeight*0.5f);
+		RoundManager rm = (RoundManager) RoundManager.create(roomWidth*0.5f, roomHeight*0.5f);
     	rm.initPlayers();
     	
 		OnlineController player1Control = new OnlineController(connection, userConfig.getKey1Set());
@@ -199,7 +198,7 @@ public class GameManager extends JFrame {
 		GameSound.loadSounds();
 		GameSound.updateVolume();
 
-		gm.setSize(gm.frameWidth, gm.frameHeight);
+		gm.setSize(gm.userConfig.getResWidth(), gm.userConfig.getResHeight());
 		//gm.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		TutorialUI tutoUISingle = new TutorialUI();
@@ -238,9 +237,11 @@ public class GameManager extends JFrame {
 		gm.setTitle("리듬캐치볼");
 		gm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gm.setVisible(true);
+		gm.setFocusTraversalKeysEnabled(false);
+		gm.setResizable(false);
 		
 		try {
-			while(gm.finitiveTimeoutCounter == Integer.MAX_VALUE) {
+			while(gm.finitiveTimeoutCounter != Integer.MAX_VALUE) {
 				gm.finitiveTimeoutCounter = 0;
 				Thread.sleep(16);
 				gm.updateGame();
@@ -268,12 +269,12 @@ public class GameManager extends JFrame {
 		currentUI = uiClass;
 	}
 	
-	public int getResWidth() {
-		return userConfig.getResWidth();
+	public int getRoomWidth() {
+		return roomWidth;
 	}
 	
-	public int getResHeight() {
-		return userConfig.getResHeight();
+	public int getRoomHeight() {
+		return roomHeight;
 	}
 
 	public float getVolume() {
@@ -283,6 +284,10 @@ public class GameManager extends JFrame {
 	public void changeConfig(UserConfig newConfig) {
 		if (newConfig != null)
 			userConfig = newConfig;
+	}
+	
+	public void updateResolution() {
+		setSize(userConfig.getResWidth(), userConfig.getResHeight());
 	}
 	
 	public static void playSound(String key) {

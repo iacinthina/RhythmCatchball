@@ -94,7 +94,7 @@ public class RoundManager extends GameObj {
 		if (playtime < 0) {
 			GameManager.playSound("snd_prebeat");
 			Ball b = (Ball) Ball.create(xpos, ypos);
-			b.reset(xpos, ypos, 2, this, GameManager.getref().getResHeight() * 0.3f);
+			b.reset(xpos, ypos, 2, this, GameManager.getref().getRoomHeight() * 0.3f);
 			tossed = b;
 		}
 		if (playtime == 0) {
@@ -111,8 +111,8 @@ public class RoundManager extends GameObj {
 	}
 
 	public void initPlayers() {
-		int xdiff = (int) (GameManager.getref().getResWidth() * 0.4);
-		int ydiff = (int) (GameManager.getref().getResHeight() * 0.3);
+		int xdiff = (int) (GameManager.getref().getRoomWidth() * 0.4);
+		int ydiff = (int) (GameManager.getref().getRoomHeight() * 0.3);
 		Player p1 = (Player) Player.create(xpos - xdiff, ypos + ydiff);
 		Player p2 = (Player) Player.create(xpos + xdiff, ypos + ydiff);
 		p1.opponent = p2;

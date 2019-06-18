@@ -1,15 +1,24 @@
 package org.rhythmcatchball.core;
 
 public enum Key {
-	LOW(0),
-	MIDDLE(1), 
-	HIGH(2), 
-	RECEIVE(3);
+	LOW(0, "Fast Throw"),
+	MIDDLE(1, "Middle Throw"), 
+	HIGH(2, "Long Throw"), 
+	RECEIVE(3, "Catch");
 	
 	int indexNum;
-	Key(int indexNum){this.indexNum = indexNum;}
+	String desc;
+	Key(int indexNum, String desc){
+		this.indexNum = indexNum;
+		this.desc = desc;
+	}
 	
 	public int getIndex() {
 		return indexNum;
+	}
+	
+	@Override
+	public String toString() {
+		return desc;
 	}
 }
