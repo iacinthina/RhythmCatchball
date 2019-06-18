@@ -51,6 +51,7 @@ public class GameManager extends JFrame {
 	private UserConfig userConfig;
 	
 	private MainUI mainUI;
+	private int finitiveTimeoutCounter;
 	
 	/**
 	 * 생성자
@@ -65,6 +66,7 @@ public class GameManager extends JFrame {
 		userConfig = new UserConfig();
 		frameWidth = 640;//getResWidth();
 		frameHeight = 360;//getResHeight();
+		finitiveTimeoutCounter = 0;
 	}
 	
 	/**
@@ -188,12 +190,14 @@ public class GameManager extends JFrame {
 			flush.destroy();
 		}
 		changeUI(mainUI);
+		finitiveTimeoutCounter = 0;
 	}
 	
 	public static void main(String[] args) {
 		GameManager gm = GameManager.getref();
 		GameSprite.loadImages(gm);
 		GameSound.loadSounds();
+		GameSound.updateVolume();
 
 		gm.setSize(gm.frameWidth, gm.frameHeight);
 		//gm.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -236,7 +240,8 @@ public class GameManager extends JFrame {
 		gm.setVisible(true);
 		
 		try {
-			while(gm != null) {
+			while(gm.finitiveTimeoutCounter == Integer.MAX_VALUE) {
+				gm.finitiveTimeoutCounter = 0;
 				Thread.sleep(16);
 				gm.updateGame();
 				gm.repaint();
@@ -250,6 +255,7 @@ public class GameManager extends JFrame {
 		return (ActionEvent e) -> {
 			changeUI(uiClass);
 			setVisible(true);
+			GameSound.play("snd_beat");
 		};
 	}
 	
@@ -268,6 +274,15 @@ public class GameManager extends JFrame {
 	
 	public int getResHeight() {
 		return userConfig.getResHeight();
+	}
+
+	public float getVolume() {
+		return userConfig.getVolume();
+	}
+	
+	public void changeConfig(UserConfig newConfig) {
+		if (newConfig != null)
+			userConfig = newConfig;
 	}
 	
 	public static void playSound(String key) {

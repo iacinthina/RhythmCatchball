@@ -6,8 +6,8 @@ public class UserConfig {
 	int[] confKey1Set = new int[4];	
 	int[] confKey2Set = new int[4];	
 	
-	UserConfig() {
-		confVolume = 0.5f;
+	public UserConfig() {
+		confVolume = 0.8f;
 		
 		confResolu[0] = 640;
 		confResolu[1] = 360;
@@ -37,4 +37,11 @@ public class UserConfig {
 
 	public int[] getKey1Set() {return confKey1Set;}
 	public int[] getKey2Set() {return confKey2Set;}
+	
+	public void copy(UserConfig userConfigCopy) {
+		this.confVolume = userConfigCopy.confVolume;
+		this.confResolu = userConfigCopy.confResolu.clone();
+		this.confKey1Set = userConfigCopy.confKey1Set.clone();
+		this.confKey2Set = userConfigCopy.confKey2Set.clone();
+	}
 }

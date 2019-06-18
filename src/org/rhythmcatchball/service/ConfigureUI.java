@@ -8,6 +8,7 @@ import java.awt.Label;
 import java.awt.Panel;
 import java.awt.event.*;
 
+import org.rhythmcatchball.core.GameSound;
 import org.rhythmcatchball.core.UserConfig;
 
 public class ConfigureUI extends Panel {
@@ -96,10 +97,7 @@ public class ConfigureUI extends Panel {
 		float curVol = clamp(userConfigCopy.getVolume()+diff, 0, 1);
 		userConfigCopy.setVolume(curVol);
 		vtext = vtext + Math.round(curVol*100);
-		
-		/*for(float f = 0; f < 1; f += 0.1f) {
-			vtext = vtext + ((f <= curVol)?"O":"-");
-		}*/
+		GameSound.play("snd_beat", curVol);
 		volumeText.setText(vtext);
 		update.setVisible(true);
 	}

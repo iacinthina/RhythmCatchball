@@ -84,7 +84,8 @@ public class GameSprite {
 				e.printStackTrace();
 			}
 			try {
-				bufferedreader.close();
+				if(bufferedreader != null)
+					bufferedreader.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
