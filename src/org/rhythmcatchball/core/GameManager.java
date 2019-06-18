@@ -184,7 +184,6 @@ public class GameManager extends JFrame {
 			System.out.println("remove : " + l);
 			this.removeKeyListener(l);
 		}
-		System.out.println("instnum = "+gameInst.size());
 		for(GameObj flush : gameInst) {
 			flush.destroy();
 		}

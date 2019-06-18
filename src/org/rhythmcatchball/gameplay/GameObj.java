@@ -1,4 +1,6 @@
 package org.rhythmcatchball.gameplay;
+import java.util.ArrayList;
+
 import org.rhythmcatchball.core.GameManager;
 
 /**
@@ -43,7 +45,7 @@ public class GameObj {
 	 * mechanism : 
 	 * comment : 현재 구현된 method body는 안쓰일것.
 	 */
-	protected static GameObj create(float xpos, float ypos) {
+	public static GameObj create(float xpos, float ypos) {
 		GameObj instance = null;
 		
 		instance = new GameObj();
@@ -107,5 +109,38 @@ public class GameObj {
 	 */
 	public static int getBeatrate() {
 		return GameManager.getref().modeBeatrate;
+	}
+	
+	public static void displayNumber(ArrayList<GameObj> display, int number, float xpos, float ypos, float gap, String fontkey) {
+		int i = 0;
+		String score = ""+Math.abs(number);
+		boolean negative = (number < 0);
+
+		if (negative) i = 1;
+		
+		int decimal = Math.max(0, display.size() - score.length());
+		for(; i < decimal; i++) {
+			score = '0' + score;
+		}
+		
+		if (negative) score = '-' + score;
+		
+		int index = 0;
+		for(GameObj numb : display) {
+			numb.xpos = xpos;
+			numb.ypos = ypos;
+			numb.setSpriteKey(fontkey+score.charAt(index));
+			
+			index++;
+			xpos += gap;
+		}
+	}
+	
+	public static ArrayList<GameObj> createMass(int size, float xpos, float ypos) {
+		if (size <= 0) return null;
+		ArrayList<GameObj> mass = new ArrayList<>();
+		for(int i = 0; i < size; i++)
+			mass.add(GameObj.create(xpos, ypos));
+		return mass;
 	}
 }

@@ -29,6 +29,7 @@ public class AIController extends Controller {
 			return;
 		}
 		catchCheck = false;
+		updateDisplay();
 		nextBeat--;
 		framesLeft--;
 		

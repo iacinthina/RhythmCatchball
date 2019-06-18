@@ -105,6 +105,7 @@ public class Player extends GameObj {
 					grab.caught(true);
 					canGrab = false;
 					addScore(precision); //정확도에 따라 점수를 얻는다. 안좋은 판정을 받더라도
+					
 				} else {
 					grab.caught(false);
 				}
@@ -176,7 +177,7 @@ public class Player extends GameObj {
 			score = Math.max(score + precision.getScore(), 0);
 			if (precision == Checkout.LAME) {
 				if (combo > 1)
-					FloatMessage.create(xpos, ypos, "combo_break.png", true);
+					FloatMessage.create(xpos, ypos, "combo_break", true);
 				combo = 0;
 				comboLevel = 0; //콤보레벨도 초기화해서 5콤보를 두번째 달성했을 때도 점수부여. 이후도 마찬가지
 			} else {

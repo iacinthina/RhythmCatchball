@@ -34,6 +34,7 @@ public class OnlineController extends Controller implements KeyListener {
 	@Override
 	public void update(int beatcount) {
 		catchCheck = false;
+		updateDisplay();
 		data = connection.recv();
 		if (data != null) {
 			//if (!isKeyboardPlayer)

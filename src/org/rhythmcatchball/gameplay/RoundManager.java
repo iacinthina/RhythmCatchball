@@ -20,6 +20,7 @@ public class RoundManager extends GameObj {
 
 	private ArrayList<Controller> ctrls;
 
+	private ArrayList<GameObj> displayTime;
 	private int signalSkill;
 	private int signalToss;
 	private int signalGrab;
@@ -39,6 +40,7 @@ public class RoundManager extends GameObj {
 
 		ctrls = new ArrayList<>();
 
+		displayTime = GameObj.createMass(3, 0, 0);
 		signalSkill = 0;
 		signalToss = 0;
 		signalGrab = 0;
@@ -102,6 +104,7 @@ public class RoundManager extends GameObj {
 			endGame();
 		}
 		playtime++;
+		updateDisplay();
 	}
 
 	public void initPlayers() {
@@ -132,7 +135,7 @@ public class RoundManager extends GameObj {
 		}
 
 		int msgtime = 1000;
-		float vspd = -5f;
+		float vspd = -7f;
 		float fric = 0.3f;
 		for (Player player : entry) {
 			if (player.getScore() == highest) {
@@ -197,5 +200,14 @@ public class RoundManager extends GameObj {
 		if (signalToss > 80 && signalToss < 100 && playtime < 300) {
 			// lettersign=3 sign_toss=100 alarm[2]=beat*3
 		}
+	}
+	
+	private void updateDisplay() {
+		int realPlayTime = (playtime < 0) ? timelimit:Math.max(0, timelimit - playtime);
+		float numberGap = 14;
+		float xpos = this.xpos - numberGap*(displayTime.size()-1)/2;
+		float ypos = this.ypos - 48;
+		String numberFont = "number_russo_";
+		GameObj.displayNumber(displayTime, realPlayTime, xpos, ypos, numberGap, numberFont);
 	}
 }
