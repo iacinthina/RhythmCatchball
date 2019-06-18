@@ -1,6 +1,7 @@
 package org.rhythmcatchball.gameplay;
 import java.util.ArrayList;
 
+import org.rhythmcatchball.core.GameManager;
 import org.rhythmcatchball.service.Connection;
 
 /**
@@ -157,6 +158,7 @@ public class Player extends GameObj {
 					//(i+1)*beat만큼의 프레임동안 날아갈 것. shoot에 그 값을 할당한다
 					shoot.reset(xpos, ypos, (i+1), opponent);
 					opponent.catchQueue.add(shoot);
+					GameManager.playSound("snd_throw");
 				}
 			}
 		}
@@ -180,11 +182,13 @@ public class Player extends GameObj {
 					FloatMessage.create(xpos, ypos, "combo_break", true);
 				combo = 0;
 				comboLevel = 0; //콤보레벨도 초기화해서 5콤보를 두번째 달성했을 때도 점수부여. 이후도 마찬가지
+				GameManager.playSound("snd_fall");
 			} else {
 				if (++combo >= comboReq[comboLevel]) {
 					score += bonus[comboLevel];
 					comboLevel = Math.max(comboLevel+1, 5);
 				}
+				GameManager.playSound("snd_grab");
 			}
 		}
 	}

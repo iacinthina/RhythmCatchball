@@ -46,7 +46,7 @@ public class GameSprite {
 		 */
 		Image loadimg;
 		GameSprite spr;
-		File file = new File("sprites/spritesName.txt");
+		File file = new File("sprites/asset.txt");
 		boolean result = false;
 		//파일 directory 바꿔줘야함
 		

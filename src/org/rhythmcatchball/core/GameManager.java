@@ -193,6 +193,7 @@ public class GameManager extends JFrame {
 	public static void main(String[] args) {
 		GameManager gm = GameManager.getref();
 		GameSprite.loadImages(gm);
+		GameSound.loadSounds();
 
 		gm.setSize(gm.frameWidth, gm.frameHeight);
 		//gm.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -267,6 +268,10 @@ public class GameManager extends JFrame {
 	
 	public int getResHeight() {
 		return userConfig.getResHeight();
+	}
+	
+	public static void playSound(String key) {
+		GameSound.play(key);
 	}
 }
 

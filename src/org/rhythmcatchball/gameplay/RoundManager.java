@@ -92,17 +92,20 @@ public class RoundManager extends GameObj {
 			tossed = null;
 		}
 		if (playtime < 0) {
+			GameManager.playSound("snd_prebeat");
 			Ball b = (Ball) Ball.create(xpos, ypos);
 			b.reset(xpos, ypos, 2, this, GameManager.getref().getResHeight() * 0.3f);
 			tossed = b;
 		}
 		if (playtime == 0) {
+			GameManager.playSound("snd_start");
 			for (Player player : entry)
 				player.setActive(true);
 		}
 		if (playtime >= timelimit) {
 			endGame();
 		}
+		GameManager.playSound("snd_beat");
 		playtime++;
 		updateDisplay();
 	}
