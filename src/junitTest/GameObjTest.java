@@ -13,38 +13,6 @@ import org.rhythmcatchball.gameplay.GameObj;
 
 class GameObjTest {
 
-	@Test // GameObj test
-	public void test_GameObj() throws IllegalArgumentException, IllegalAccessException {
-		GameObj test = new GameObj();
-		Field field;
-		boolean flag = true;
-		float x = test.xpos;
-		assertEquals(0, x, 0);
-		float y = test.ypos;
-		assertEquals(0, y, 0);
-		try {
-			field = test.getClass().getDeclaredField("sprKey");
-			field.setAccessible(true);
-			flag = flag && (field.get(test) == "");
-			field = test.getClass().getDeclaredField("alive");
-			field.setAccessible(true);
-			flag = flag && (Boolean) field.get(test);
-			field = test.getClass().getDeclaredField("active");
-			field.setAccessible(true);
-			flag = flag && (Boolean) field.get(test);
-			field = test.getClass().getDeclaredField("visible");
-			field.setAccessible(true);
-			flag = flag && (Boolean) field.get(test);
-
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		}
-
-		assertTrue(flag, "Create success");
-	}
-
 	@Test // create
 	public void test_Create() {
 		boolean testResult = true;
