@@ -18,7 +18,7 @@ public abstract class Controller {
 	protected int score;
 	protected ArrayList<GameObj> displayScore;
 	protected GameObj displayBall;
-	protected float scorePos[];
+	protected float[] scorePos;
 	protected float ballNumY;
 
 	protected Controller() {
@@ -45,7 +45,7 @@ public abstract class Controller {
 		return catchCheck;
 	}
 	
-	public void update(int beatcount) {
+	public void update() {
 		updateDisplay();
 		catchCheck = false;
 	}
@@ -62,10 +62,10 @@ public abstract class Controller {
 			setScorePos(0, 0, DEFAULT_GAP);
 		}
 		
-		int score = player.getScore();
+		int updateScore = player.getScore();
 		float xpos = player.xpos + scorePos[0];
 		float ypos = player.ypos + scorePos[1];
-		GameObj.displayNumber(displayScore, score, xpos, ypos, DEFAULT_GAP, SCORE_FONT);
+		GameObj.displayNumber(displayScore, updateScore, xpos, ypos, DEFAULT_GAP, SCORE_FONT);
 		
 		//ball count
 		if (displayBall != null) {
@@ -76,8 +76,8 @@ public abstract class Controller {
 	}
 	
 	protected void setScorePos(float xpos, float ypos, float gap) {
-		float scorePos[] = {xpos, ypos, gap};
-		this.scorePos = scorePos;
+		float[] scoreArr = {xpos, ypos, gap};
+		this.scorePos = scoreArr;
 	}
 }
 

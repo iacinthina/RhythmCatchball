@@ -135,7 +135,7 @@ public class GameManager extends JFrame {
 		addKeyListener(player1);
 		requestFocus();
 
-    	AIController player2 = new AIController(null);
+    	AIController player2 = new AIController();
 		player2.setPlayer(rm.getEntry(1));
 		rm.addController(player2);
 	}

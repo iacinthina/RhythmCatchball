@@ -60,7 +60,7 @@ public class Connection {
 	}
 	
 	public String recv() {
-		String data = null;
+		String recvData = null;
 		try {
 			if (!isConnected()) {
 				socketClear();
@@ -69,19 +69,19 @@ public class Connection {
 				bufferedWriter = null;
 				bufferReader = null;
 				errMsg = "Connection Lost";
-				return data;
+				return recvData;
 			}
 			if (bufferReader == null)
 				bufferReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			if (bufferReader.ready())
-				data = bufferReader.readLine();
+				recvData = bufferReader.readLine();
 		
 		} catch (SocketException s) {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return data;
+		return recvData;
 	}
 	
 	public boolean asClient(String ip, String port) {
@@ -123,8 +123,7 @@ public class Connection {
 	public boolean asServerWait() {
 		Socket opponentSocket = null;
 
-		if (socket != null) {
-			if (socket.isConnected())
+		if (socket != null && socket.isConnected()) {
 				return true;
 		}
 		
@@ -187,16 +186,14 @@ public class Connection {
 	}
 	
 	private void socketClear() throws IOException {
-		if (socket != null) {
-			if (!socket.isClosed()) 
-				socket.close();
+		if (socket != null && !socket.isClosed()) {
+			socket.close();
 		}
 	}
 
 	private void serverSocketClear() throws IOException {
-		if (serverSocket != null) {
-			if (!serverSocket.isClosed()) 
-				serverSocket.close();
+		if (serverSocket != null && !serverSocket.isClosed()) {
+			serverSocket.close();
 		}
 	}
 	

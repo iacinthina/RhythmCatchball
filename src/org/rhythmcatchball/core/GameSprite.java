@@ -65,13 +65,11 @@ public class GameSprite {
 					break;
 				loadimg = new ImageIcon("sprites/"+filename + ".png").getImage();//이미지 파일 로드시 오류처리? 필요?
 				spr = new GameSprite(loadimg.getWidth(arg0)/2, loadimg.getHeight(arg0)/2, loadimg);
-				System.out.println("spr = "+spr+" fname = "+filename);
 				sprites.put(filename, spr);
 			}
 			//파일로부터 파일명 읽어서 그대로 키값으로 활용, 해쉬맵에 추가 
 			result = true;
 		} catch (FileNotFoundException e) {
-			System.out.println("file does not exists");
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,14 +78,12 @@ public class GameSprite {
 				if(filereader != null)
 					filereader.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			try {
 				if(bufferedreader != null)
 					bufferedreader.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

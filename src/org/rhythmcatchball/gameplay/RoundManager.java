@@ -21,11 +21,7 @@ public class RoundManager extends GameObj {
 	private ArrayList<Controller> ctrls;
 
 	private ArrayList<GameObj> displayTime;
-	private int signalSkill;
 	private int signalToss;
-	private int signalGrab;
-	private int signalGreat;
-	private int signalReversal;
 
 	private RoundManager() {
 		entry = new ArrayList<>();
@@ -41,11 +37,7 @@ public class RoundManager extends GameObj {
 		ctrls = new ArrayList<>();
 
 		displayTime = GameObj.createMass(3, 0, 0);
-		signalSkill = 0;
 		signalToss = 0;
-		signalGrab = 0;
-		signalGreat = 0;
-		signalReversal = 0;
 	}
 
 	public static GameObj create(float xpos, float ypos) {
@@ -72,7 +64,6 @@ public class RoundManager extends GameObj {
 		if (++beatcount >= beatrate) {
 			beatcount = 0;
 			onBeat();
-			System.out.println("playtime = " + playtime);
 			if (tossable.isEmpty()) {
 				for (Player p : entry)
 					p.onBeat();
@@ -152,7 +143,6 @@ public class RoundManager extends GameObj {
 			player.setActive(false);
 		}
 		gameEnd = 1;
-		//setActive(false);
 	}
 	
 	private void updateControllers() {
@@ -178,7 +168,7 @@ public class RoundManager extends GameObj {
 					taken.add(toss);
 				}
 			}
-			c.update(beatcount);
+			c.update();
 		}
 	}
 

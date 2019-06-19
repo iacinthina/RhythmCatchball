@@ -240,13 +240,13 @@ public class ConfigureUI extends Panel implements KeyListener {
 			}
 		}
 		
-		int width_min = 320;
-		int height_min = 180;
+		int widthMin = 320;
+		int heightMin = 180;
 		resMenu.addItemListener(
 			(ItemEvent e) -> {
 				String[] resInfo = resMenu.getSelectedItem().split("x");
-				int width = Math.max(width_min, Integer.parseInt(resInfo[0]));
-				int height = Math.max(height_min, Integer.parseInt(resInfo[1]));
+				int width = Math.max(widthMin, Integer.parseInt(resInfo[0]));
+				int height = Math.max(heightMin, Integer.parseInt(resInfo[1]));
 				userConfigCopy.setResolusion(width, height);
 			}
 		);
@@ -255,10 +255,6 @@ public class ConfigureUI extends Panel implements KeyListener {
 		option.add(resMenu);
 		
 		return option;
-	}
-	
-	private void keyChanged(int[] keySet, int index) {
-
 	}
 	
 	private float clamp(float x, float min, float max) {
@@ -274,10 +270,15 @@ public class ConfigureUI extends Panel implements KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+		//Override
+	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {
+		//Override
+	}
+	
 	
 	private void updateKeySet() {
 		for(KeySetInfo info : keySetList) {

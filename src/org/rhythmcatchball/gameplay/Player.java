@@ -2,7 +2,6 @@ package org.rhythmcatchball.gameplay;
 import java.util.ArrayList;
 
 import org.rhythmcatchball.core.GameManager;
-import org.rhythmcatchball.service.Connection;
 
 /**
  * Player.java
@@ -266,7 +265,7 @@ public class Player extends GameObj {
 		}
 	}
 
-	public void onlineSyncThrow(boolean row[]) {
+	public void onlineSyncThrow(boolean[] row) {
 		int bitmask = 1;
 		int data = 0;
 		

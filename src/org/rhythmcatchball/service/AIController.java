@@ -1,31 +1,26 @@
 package org.rhythmcatchball.service;
 
 import java.util.Random;
-import org.rhythmcatchball.core.GameManager;
 import org.rhythmcatchball.gameplay.FloatMessage;
-import org.rhythmcatchball.gameplay.Player;
 import org.rhythmcatchball.gameplay.RoundManager;
 
 public class AIController extends Controller {
-	private RoundManager gameInfo;
 	private int framesLeft;
 	private int nextCatch;
 	private int nextBeat;
 	private Random rand;
 
-	public AIController(RoundManager gameInfo) {
+	public AIController() {
 		super();
 		framesLeft = getBeatrate();
 		nextBeat = framesLeft;
 		nextCatch = 0;
-		this.gameInfo = gameInfo;
 		rand = new Random();
 	}
 	
-	
-	public void update(int beatcount) {
+	@Override
+	public void update() {
 		if (player == null) {
-			//System.out.println("player : " + player);
 			return;
 		}
 		catchCheck = false;
@@ -43,7 +38,6 @@ public class AIController extends Controller {
 			nextBeat = framesLeft;
 			resetCatchTiming();
 			resetThrowTiming();
-			//System.out.println("AI Catch() nextBeat("+nextBeat+") == nextCatch("+nextCatch+")");
 		}
 	}
 
@@ -55,7 +49,6 @@ public class AIController extends Controller {
 		if (random(3) == 0 && nextCatch != 4) {
 			nextCatch *= -1;
 		}
-		//System.out.println("resetCatchTiming() "+nextCatch);
 	}
 	
 	private void resetThrowTiming() {

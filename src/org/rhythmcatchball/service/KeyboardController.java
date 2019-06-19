@@ -3,7 +3,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import org.rhythmcatchball.core.Key;
-import org.rhythmcatchball.gameplay.Player;
 
 public class KeyboardController extends Controller implements KeyListener {
 	private int[] keyval;
@@ -19,7 +18,6 @@ public class KeyboardController extends Controller implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		System.out.println("keyCode = "+keyCode);
 		if(keyCode == keyval[Key.LOW.getIndex()]) {
 			player.readyToThrow(0);
 		}
@@ -36,8 +34,12 @@ public class KeyboardController extends Controller implements KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+		//Override
+	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {
+		//Override
+	}
 }
