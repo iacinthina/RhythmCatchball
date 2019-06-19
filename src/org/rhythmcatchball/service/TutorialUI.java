@@ -3,9 +3,14 @@ package org.rhythmcatchball.service;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Panel;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -18,27 +23,30 @@ public class TutorialUI extends Panel {
 	
 	public TutorialUI() 
 	{
-    	this.setLayout(new BorderLayout());
+		BufferedImage img = null;
+		Image dimg = null;
+
+		this.setLayout(new BorderLayout());
 
     	imagePanel = new Panel();
     	imagePanel.setLayout(new GridLayout(2, 2));
     	
     	ImageIcon image;
-    	JLabel labelimage;
+    	JLabel labelimage = null;
     	
-    	image = new ImageIcon("sprites/msg_praise0.png");
+    	image = new ImageIcon("sprites/start.gif");
     	labelimage = new JLabel(image);
     	imagePanel.add(labelimage);
     	
-    	image = new ImageIcon("sprites/msg_praise1.png");
+    	image = new ImageIcon("sprites/throw.gif");
     	labelimage = new JLabel(image);
     	imagePanel.add(labelimage);
     	
-    	image = new ImageIcon("sprites/msg_praise2.png");
+    	image = new ImageIcon("sprites/receive.gif");
     	labelimage = new JLabel(image);
     	imagePanel.add(labelimage);
     	
-    	image = new ImageIcon("sprites/msg_praise3.png");
+    	image = new ImageIcon("sprites/end.gif");
     	labelimage = new JLabel(image);
     	imagePanel.add(labelimage);
     	
