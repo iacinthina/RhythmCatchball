@@ -110,11 +110,17 @@ public class MainUI extends Panel {
 				statusLabel.setText(defaultTooltip);
 			}
 			@Override
-			public void mouseClicked(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				// Do nothing because of X and Y.
+				}
 			@Override
-			public void mousePressed(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {
+				// Do nothing because of X and Y.
+				}
 			@Override
-			public void mouseReleased(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {
+				// Do nothing because of X and Y.
+			}
 		});
     }
 }
