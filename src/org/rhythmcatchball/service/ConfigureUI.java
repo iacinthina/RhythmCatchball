@@ -96,6 +96,7 @@ public class ConfigureUI extends Panel implements KeyListener {
 				userConfig.copy(userConfigCopy);
 				updateKeySet();
 				GameManager.getref().updateResolution();
+				GameSound.updateVolume();
 			}
 		);
 		
