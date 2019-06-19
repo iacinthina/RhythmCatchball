@@ -30,7 +30,6 @@ public class AIController extends Controller {
 		
 		if (nextBeat == nextCatch+1 && nextCatch != 4){
 			player.catchOnce();
-			FloatMessage.create(player.xpos, player.ypos, "spr_message_"+Math.abs(nextCatch), false);
 			catchCheck = true;
 		}
 		if (framesLeft <= 0) {
