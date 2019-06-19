@@ -1,8 +1,6 @@
 package org.rhythmcatchball.gameplay;
 import java.util.ArrayList;
-
 import org.rhythmcatchball.core.GameManager;
-
 /**
  * Player.java
  * @author pc1
@@ -253,7 +251,6 @@ public class Player extends GameObj {
 		
 		if (precision != null) {
 			if (catchQueue.isEmpty()) {
-				System.out.println("error : checkout exists but no ball to proceed");
 			} else {
 				grab = catchQueue.get(0);
 				ballsGot.add(grab);
