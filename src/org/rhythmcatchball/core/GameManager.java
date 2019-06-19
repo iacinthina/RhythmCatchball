@@ -180,9 +180,8 @@ public class GameManager extends JFrame {
 	}
 	
 	public void restoreMainScreen() {
-		KeyListener removeListeners[] = this.getKeyListeners();
+		KeyListener[] removeListeners = this.getKeyListeners();
 		for(KeyListener l : removeListeners) {
-			System.out.println("remove : " + l);
 			this.removeKeyListener(l);
 		}
 		for(GameObj flush : gameInst) {
@@ -199,7 +198,6 @@ public class GameManager extends JFrame {
 		GameSound.updateVolume();
 
 		gm.setSize(gm.userConfig.getResWidth(), gm.userConfig.getResHeight());
-		//gm.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		TutorialUI tutoUISingle = new TutorialUI();
 		TutorialUI tutoUILocal = new TutorialUI();
@@ -222,14 +220,12 @@ public class GameManager extends JFrame {
 		configureUI.setActionListener(backToTitle, gm.uiChanger(mainUI));
 		
 		tutoUISingle.setActionListener("proceed", 
-			(ActionEvent e) -> {
-				gm.initSinglePlay();
-			}
+			(ActionEvent e) -> gm.initSinglePlay()
+			
 		);
 		tutoUILocal.setActionListener("proceed", 
-			(ActionEvent e) -> {
-				gm.initLocalMulti();
-			}
+			(ActionEvent e) -> gm.initLocalMulti()
+			
 		);
 
 		gm.changeUI(mainUI);
