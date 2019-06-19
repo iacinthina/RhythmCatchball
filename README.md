@@ -19,16 +19,28 @@
 
 만약 java가 설치되었음에도 불구하고 오류가 생기는 경우, 자바 환경변수를 설정해 주어야 한다.
 
-1.(이미지)
+1.
+
+![image](https://user-images.githubusercontent.com/50068946/59775423-2dcf2c80-92ec-11e9-8474-8c4949fb7369.png)
+
 내 컴퓨터의 속성을 연다.
 
-2.(이미지)
+2.
+
+![image](https://user-images.githubusercontent.com/50068946/59775429-30ca1d00-92ec-11e9-8476-631695279e78.png)
+
 고급 시스템 설정을 클릭하여 환경변수를 클릭한다.
 
-3.(이미지)
+3.
+
+![image](https://user-images.githubusercontent.com/50068946/59775434-332c7700-92ec-11e9-8318-160759cb133a.png)
+
 환경변수에 새로 만들기를 클릭한다.
 
-4.(이미지)
+4.
+
+![image](https://user-images.githubusercontent.com/50068946/59775444-36276780-92ec-11e9-924d-785bc2a008cc.png)
+
 주어진 사진과 동일하게 환경변수 "JAVA_HOME"을 새로 생성한다.
 환경변수의 경로는 자신의 컴퓨터 내에 java 폴더로 설정한다.
 
