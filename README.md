@@ -89,21 +89,25 @@ space를 눌러서 공을 잡을 수 있습니다
 판정은 4가지가 있습니다
 
 ![check_exactly](https://user-images.githubusercontent.com/50068946/59751325-496e0f00-92bb-11e9-8b1c-6cfc7a579354.png)
+
 EXACTLY
 
 ![check_neat](https://user-images.githubusercontent.com/50068946/59751327-496e0f00-92bb-11e9-8e37-f9044444e2e4.png)
+
 NEAT
 
 ![check_cool](https://user-images.githubusercontent.com/50068946/59751324-48d57880-92bb-11e9-99fa-e85b518f43f3.png)
+
 COOL
 
 ![check_lame](https://user-images.githubusercontent.com/50068946/59751326-496e0f00-92bb-11e9-98c9-c50b4489fd74.png)
+
 LAME
 
 
-박자를 얼마나 정확히 맞췄냐에 따라 점수를 받습니다
+박자를 얼마나 정확히 맞췄냐에 따라 점수를 받습니다.
 
-만약 공을 놓쳤을 시 LAME을 받고 점수가 조금 깎이고 공은 상대방에게로 돌아가니다 (ㅁ맞나요?????)
+만약 공을 놓쳤을 시 LAME을 받고 점수가 깎입니다.
 
 ![여러개받음](https://user-images.githubusercontent.com/50068946/59751336-4b37d280-92bb-11e9-94dd-cf7b59dfc6c6.gif)
 
