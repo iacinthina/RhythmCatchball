@@ -29,31 +29,21 @@
 
 
 공은 세 박자로 던질 수 있습니다
-```
-박자 1 이미지
-```
+
+![공여러개던짐](https://user-images.githubusercontent.com/50068946/59751333-4a9f3c00-92bb-11e9-83a0-1dcb31546fd4.gif)
+
 가장 느리게 던지기
 
-기본 (a ←) 키
+  기본 (a ←) 키
 
-```
-박자 2 이미지
-```
+
 보통속도로 던지기
 
-기본 (s ↑) 키
+  기본 (s ↑) 키
 
-```
-박자 3 이미지
-```
 빠르게 던지기
 
-기본 (d →) 키
-
-```
-공 받는 이미지
-```
-공 받기
+  기본 (d →) 키
 
 space를 눌러서 공을 잡을 수 있습니다
 
@@ -71,9 +61,7 @@ space를 눌러서 공을 잡을 수 있습니다
 
 
 ### 2. 게임 플레이
-```
-시작할 때 이미지
-```
+![start](https://user-images.githubusercontent.com/50068946/59751330-4a06a580-92bb-11e9-88ae-3d641ef0d80e.gif)
 
 게임은 60초동안 플레이 할 수 있습니다
 
@@ -88,34 +76,31 @@ space를 눌러서 공을 잡을 수 있습니다
 
 던지는 방법은 세가지 입니다
 
-```
-느린 이미지
-```
+![throw](https://user-images.githubusercontent.com/50068946/59751331-4a06a580-92bb-11e9-9252-5ffeadc8bc94.gif)
+
 느리게 던지기
 
-```
-중간 이미지
-```
 중간속도로 던지기
 
-```
-빠른 이미지
-```
 빠르게 던지기
 
-```
-공 받는 이미지
-```
+
+![receive](https://user-images.githubusercontent.com/50068946/59751329-496e0f00-92bb-11e9-878c-78837f3af2a6.gif)
+
 박자에 맞춰 공을 받으면 됩니다
 
 판정은 4가지가 있습니다
 
+![check_exactly](https://user-images.githubusercontent.com/50068946/59751325-496e0f00-92bb-11e9-8b1c-6cfc7a579354.png)
 EXACTLY
 
+![check_neat](https://user-images.githubusercontent.com/50068946/59751327-496e0f00-92bb-11e9-8e37-f9044444e2e4.png)
 NEAT
 
+![check_cool](https://user-images.githubusercontent.com/50068946/59751324-48d57880-92bb-11e9-99fa-e85b518f43f3.png)
 COOL
 
+![check_lame](https://user-images.githubusercontent.com/50068946/59751326-496e0f00-92bb-11e9-98c9-c50b4489fd74.png)
 LAME
 
 
@@ -123,9 +108,8 @@ LAME
 
 만약 공을 놓쳤을 시 LAME을 받고 점수가 조금 깎이고 공은 상대방에게로 돌아가니다 (ㅁ맞나요?????)
 
-```
-공 여러개~! 받는 이미지
-```
+![여러개받음](https://user-images.githubusercontent.com/50068946/59751336-4b37d280-92bb-11e9-94dd-cf7b59dfc6c6.gif)
+
 공이 여러개가 동시에 오는 경우
 
 처음 누른 박자에 맞춰 점수가 판정됩니다
@@ -134,29 +118,17 @@ LAME
 
 
 ### 3. 환경설정
-```
-  소리, 등등 옵션 이미지
-  
-```
+![메인화면](https://user-images.githubusercontent.com/50068946/59751335-4a9f3c00-92bb-11e9-9b4f-98988dc89903.PNG)
 
-환경설정은 메인화면에서 조작할 수 있습니다
+환경설정은 메인화면에 있습니다
 
-```
-키 바꾸는 이미지
-  
-```
-여기서 1p와 2p의 키를 바꿀 수 있습니다
 
-```
-소리 ㅇㅁㅈ
-  
-```
-음향은 여기서 설정할 수 있습니다
+![키설정](https://user-images.githubusercontent.com/50068946/59751338-4b37d280-92bb-11e9-92c1-0372ec55ea36.PNG)
 
-```
-해상도
-```
-해상도는 여기서 설정할 수 
+
+여기서 1p와 2p의 키를 변경하고
+
+음향과 해상도도 설정할 수 있습니다. 
 
 
 
