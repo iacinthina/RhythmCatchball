@@ -137,7 +137,7 @@ public class GameObj {
 	}
 	
 	public static ArrayList<GameObj> createMass(int size, float xpos, float ypos) {
-		if (size <= 0) return null;
+		if (size <= 0) return new ArrayList<>();
 		ArrayList<GameObj> mass = new ArrayList<>();
 		for(int i = 0; i < size; i++)
 			mass.add(GameObj.create(xpos, ypos));
