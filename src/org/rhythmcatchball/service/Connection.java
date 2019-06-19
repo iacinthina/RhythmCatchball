@@ -55,7 +55,7 @@ public class Connection {
 		} catch (SocketException s) {
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 	}
 	
@@ -79,7 +79,7 @@ public class Connection {
 		} catch (SocketException s) {
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 		return recvData;
 	}

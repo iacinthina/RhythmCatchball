@@ -244,7 +244,7 @@ public class GameManager extends JFrame {
 				gm.repaint();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
 	}
 	

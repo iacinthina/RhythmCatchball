@@ -70,21 +70,21 @@ public class GameSprite {
 			//파일로부터 파일명 읽어서 그대로 키값으로 활용, 해쉬맵에 추가 
 			result = true;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		} finally {
 			try {
 				if(filereader != null)
 					filereader.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				
 			}
 			try {
 				if(bufferedreader != null)
 					bufferedreader.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				
 			}
 		}
 		return result;//성공시 true

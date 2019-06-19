@@ -56,13 +56,13 @@ public class GameSound {
 				if (filereader != null)
 					filereader.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				
 			}
 			try {
 				if (bufferedreader != null)
 					bufferedreader.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				
 			}
 		}
 		return result;// 성공시 true
