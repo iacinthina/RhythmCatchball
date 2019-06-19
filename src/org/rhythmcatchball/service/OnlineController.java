@@ -31,7 +31,7 @@ public class OnlineController extends Controller implements KeyListener {
 	}
 
 	@Override
-	public void update(int beatcount) {
+	public void update() {
 		String data;
 		catchCheck = false;
 		updateDisplay();
