@@ -22,19 +22,25 @@
 
 ### 1. 내 컴퓨터의 속성을 연다.
 
-![image](https://user-images.githubusercontent.com/50068946/59775423-2dcf2c80-92ec-11e9-8474-8c4949fb7369.png)
+![image](https://user-images.githubusercontent.com/50068946/59775444-36276780-92ec-11e9-924d-785bc2a008cc.png)
+
+
 
 
 
 ### 2.고급 시스템 설정을 클릭하여 환경변수를 클릭한다.
 
-![image](https://user-images.githubusercontent.com/50068946/59775429-30ca1d00-92ec-11e9-8476-631695279e78.png)
+![image](https://user-images.githubusercontent.com/50068946/59775423-2dcf2c80-92ec-11e9-8474-8c4949fb7369.png)
+
+
 
 
 
 ### 3. 환경변수에 새로 만들기를 클릭한다.
 
-![image](https://user-images.githubusercontent.com/50068946/59775434-332c7700-92ec-11e9-8318-160759cb133a.png)
+![image](https://user-images.githubusercontent.com/50068946/59775429-30ca1d00-92ec-11e9-8476-631695279e78.png)
+
+
 
 
 
@@ -42,8 +48,8 @@
 
 환경변수의 경로는 자신의 컴퓨터 내에 java 폴더로 설정한다.
 
-![image](https://user-images.githubusercontent.com/50068946/59775444-36276780-92ec-11e9-924d-785bc2a008cc.png)
 
+![image](https://user-images.githubusercontent.com/50068946/59775434-332c7700-92ec-11e9-8318-160759cb133a.png)
 
 
 
